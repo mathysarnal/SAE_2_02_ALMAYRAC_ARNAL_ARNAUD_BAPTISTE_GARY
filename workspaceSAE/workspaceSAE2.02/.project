@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>AAide</name>
+	<name>workspaceSAE2.02</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -8,11 +8,4 @@
 	</buildSpec>
 	<natures>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>jdk26-api-docs</name>
-			<type>2</type>
-			<location>D:/jdk-26/docs</location>
-		</link>
-	</linkedResources>
 </projectDescription>

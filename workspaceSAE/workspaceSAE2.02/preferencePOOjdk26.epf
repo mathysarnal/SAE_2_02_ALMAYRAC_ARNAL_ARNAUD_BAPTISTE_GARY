@@ -1,0 +1,30 @@
+# Mise à jour pour JDK 26 avec optimisations - IUT Rodez 2025-2026
+\!/=
+
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.compliance=26
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.source=26
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.codegen.targetPlatform=26
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.release=enabled
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.enablePreviewFeatures=disabled
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.invalidJavadoc=warning
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.missingJavadocComments=error
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.methodWithConstructorName=error
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.parameterAssignment=info
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.reportMethodCanBeStatic=info
+/instance/org.eclipse.jdt.ui/editor_save_actions_reorganize_imports=true
+/instance/org.eclipse.jdt.ui/editor_save_actions_format_source=true
+/instance/org.eclipse.jdt.ui/editor_save_actions_trim_whitespace=true
+/instance/org.eclipse.jdt.ui/sp_cleanup.format_source=true
+/instance/org.eclipse.jdt.ui/sp_cleanup.organize_imports=true
+/instance/org.eclipse.jdt.ui/content_assist_autoactivation_delay=40
+/instance/org.eclipse.jdt.ui/content_assist_autoactivation_triggers_java=.(abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_
+/instance/org.eclipse.ui.editors/lineNumberDecoration=true
+/instance/org.eclipse.ui.editors/printMargin=true
+/instance/org.eclipse.ui.editors/printMarginColumn=120
+/instance/org.eclipse.ui.editors/showWhitespaces=true
+/instance/org.eclipse.ui.editors/spellingEnabled=false
+/instance/org.eclipse.jdt.launching/org.eclipse.jdt.launching.PREF_VM_XML=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\n<vmSettings defaultVM\="57,org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType,jdk26_id" defaultVMConnector\="">\n    <vmType id\="org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType">\n        <vm id\="jdk26_id" name\="jdk-26" path\="/usr/lib/jvm/jdk-26"/>\n    </vmType>\n</vmSettings>\n
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.indentation.size=8
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.tabulation.char=space
+/instance/org.eclipse.jdt.ui/formatter_profile=_java conventions with space (no tabs)
+/instance/org.eclipse.jdt.ui/org.eclipse.jdt.ui.exception.name=e
