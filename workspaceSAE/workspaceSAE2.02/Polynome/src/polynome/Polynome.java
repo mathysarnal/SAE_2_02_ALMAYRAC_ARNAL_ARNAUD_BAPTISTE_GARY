@@ -1,121 +1,246 @@
 package polynome;
 import java.util.Scanner;
-
+import java.util.ArrayList;
+import java.util.List;
 /**
- * 
- * TODO commenter la responsabilité de cette classe (SRP)
- */
+* Représente un polynôme à une variable réelle (x).
+*
+* La classe stocke les coefficients du polynôme dans une liste,
+* où l'indice correspond au degré du monôme.
+*
+* Exemple : Polynome(3,4,2) représente P(x) = 3 + 4x + 2x²
+*
+* Responsabilité (SRP) :
+* - Stocker un polynôme
+* - Fournir des opérations mathématiques sur ce polynôme
+*/
 public class Polynome {
-
-    private List<Integer> degres;
-
-    /**
-     * TODO commenter le rôle de la méthode (SRP)
-     * @param degres
-     * @return addition des deux polynômes
-     */
-    public Polynome(List<Integer> degres) {
-        this.degres = degres;
-    }
-
-    public void afficher() {
-        System.out.println(degres);
-    }
-    
-	/**
-	 * TODO commenter le rôle de la méthode (SRP)
-	 * @param monome
-	 * @return degrés du polynôme
-	 */
-	public getDegre(monome) {
-		return int degre;
-	}
-	
-	/**
-	 * TODO commenter le rôle de la méthode (SRP)
-	 * @param degre
-	 * @return coefficient du polynôme
-	 */
-	public getCoefficient(int degre) {
-		return double;
-	}
-	
-	/**
-	 * TODO commenter le rôle de la méthode (SRP)
-	 * @return true si le polynome est nul et false sinon
-	 */
-	public estNul() {
-		boolean estNul = false;
-		if (this.length == 0) {
-			estNul = true;
+   private List<Integer> degres;
+   /**
+    * Construit un polynôme à partir d'une liste de coefficients.
+    *
+    * Chaque argument correspond au coefficient du monôme de degré égal à son index.
+    *
+    * Exemple : new Polynome(3,4,2) => P(x) = 3 + 4x + 2x²
+    *
+    * @param degres coefficients du polynôme (du degré 0 au plus grand)
+    */
+   public Polynome(int... degres) {
+       this.degres = new ArrayList<>();
+       for (int d : degres) {
+           this.degres.add(d);
+       }
+   }
+  
+   /**
+    * Affiche les coefficients du polynôme.
+    */
+   public void afficher() {
+       System.out.println(degres);
+   }
+  
+   /**
+    * Retourne le degré d'un monôme donné.
+    *
+    * @return degré du polynôme
+    */
+	public int getDegre() {
+		for (int degre = degres.size() - 1; degre >= 0; degre--) {
+		    if (degres.get(degre) != 0) {
+		        return degre;
+		    }
 		}
-		return estNul;
+		return 0;
 	}
 	
 	/**
-	 * TODO commenter le rôle de la méthode (SRP)
-	 * @param x
-	 * @return true si le polynome est nul et false sinon
-	 */
-	public evaluer(double x) {
-		return double;
+     * Retourne le coefficient associé à un degré donné.
+     *
+     * @param degre degré du monôme
+     * @return coefficient correspondant
+     */
+	public getCoefficient(int degre) {
+		return degres.get(degre);
 	}
+	
+	/**
+	 * Retourne la limite en plus l'infini associé au degré du polynôme.
+	 *
+	 * @return limite du polynôme en plus l'infini
+	 */
+	public double getLimitePlusInfini() {
+	    int degre = getDegre();
+	    double coef = degres.get(degre);
+
+	    if (coef > 0) {
+	    	return Double.POSITIVE_INFINITY;
+	    } else if (coef < 0) {
+	    	return Double.NEGATIVE_INFINITY;
+	    }
+	    return 0;
+	}
+	
+	/**
+	 * Retourne la limite en moins l'infini associé au degré du polynôme.
+	 *
+	 * @return limite du polynôme en moins l'infini
+	 */
+	public double getLimiteMoinsInfini() {
+	    int degre = getDegre();
+	    double coef = degres.get(degre);
+
+	    if (degre % 2 == 0) {
+	        // degré pair
+	        if (coef > 0) {
+	            return Double.POSITIVE_INFINITY;
+	        } else {
+	            return Double.NEGATIVE_INFINITY;
+	        }
+	    } else {
+	        // degré impair
+	        if (coef > 0) {
+	            return Double.POSITIVE_INFINITY;
+	        } else {
+	            return Double.NEGATIVE_INFINITY;
+	        }
+	    }
+	}
+	
+	/**
+	 * Retourne la limite en plus l'infini associé au degré du polynôme.
+	 *
+	 * @return limite du polynôme en plus l'infini
+	 */
+	public double getRacinesReelles() {
+	    // TODO faire
+	}
+	
+	/**
+    * Indique si le polynôme est nul (tous les coefficients sont nuls).
+    *
+    * Responsabilité :
+    * Vérifier si le polynôme représente la fonction nulle.
+    *
+    * @return true si tous les coefficients sont nuls, false sinon
+    */
+	public boolean estNul() {
+       for (int coef : degres) {
+           if (coef != 0) {
+               return false;
+           }
+       }
+       return true;
+   }
+	
+	/**
+    * Évalue le polynôme pour une valeur donnée de x.
+    *
+    * Responsabilité :
+    * Calculer P(x) en utilisant les coefficients stockés.
+    *
+    * @param x valeur pour laquelle on évalue le polynôme
+    * @return résultat de l'évaluation
+    */
+	public double evaluer(double x) {
+       double resultat = 0;
+       for (int i = 0; i < degres.size(); i++) {
+           resultat += degres.get(i) * Math.pow(x, i);
+       }
+       return resultat;
+   }
 		
-    /**
-     * TODO commenter le rôle de la méthode (SRP)
-     * @param polynome1
-     * @param polynome2
-     * @return addition des deux polynômes
-     */
-    public String additionner(String polynome1, String polynome2) {
-        return polynomeFinal;
-    }
-    
-    /**
-     * TODO commenter le rôle de la méthode (SRP)
-     * @param polynome
-     * @param scalaire
-     * @return multiplication du polynôme donné par un scalaire réel
-     */
-    public String multiplier(String polynome, double scalaire) {
-        return polynomeFinal;
-    }
-    
-    /**
-     * TODO commenter le rôle de la méthode (SRP)
-     * @param polynome1
-     * @param polynome2
-     * @return produit de deux polynômes
-     */
-    public String multiplier(String polynome1, String polynome2) {
-        return polynomeFinal;
-    }
-    
-    /**
-     * TODO commenter le rôle de la méthode (SRP)
-     * @param polynome1
-     * @param polynome2
-     * @return division euclidienne de deux polynômes
-     */
-    public String diviser(String polynome1, String polynome2) {
-        return polynomeFinal;
-    }
-    
-    /**
-     * TODO commenter le rôle de la méthode (SRP)
-     * @param polynome
-     * @return dérivation du polynôme donné
-     */
-    public String deriver(String polynome) {
-        return polynomeFinal;
-    }
-    
-    /**
-     * TODO commenter le rôle de la méthode (SRP)
-     * @param polynome
-     * @return intégration du polynôme donné
-     */
-    public String integrer(String polynome) {
-        return polynomeFinal;
-    }
+	/**
+    * Additionne deux polynômes.
+    *
+    * Responsabilité :
+    * Calculer la somme de deux polynômes.
+    *
+    * @param polynome1 premier polynôme
+    * @param polynome2 second polynôme
+    * @return polynôme résultant de l'addition
+    */
+   public Polynome additionner(Polynome polynome1, Polynome polynome2) {
+       return polynomeFinal;
+   }
+  
+   /**
+    * Multiplie un polynôme par un scalaire.
+    *
+    * Responsabilité :
+    * Appliquer une multiplication de chaque coefficient par un réel.
+    *
+    * @param polynome polynôme à multiplier
+    * @param scalaire valeur réelle
+    * @return polynôme résultant de la multiplication
+    */
+   public Polynome multiplier(Polynome polynome, double sclaire) {
+       return polynomeFinal;
+   }
+  
+   /**
+    * Multiplie deux polynômes.
+    *
+    * Responsabilité :
+    * Calculer le produit de deux polynômes.
+    *
+    * @param polynome1 premier polynôme
+    * @param polynome2 second polynôme
+    * @return polynôme résultant de la multiplication
+    */
+   public Polynome multiplier(Polynome polynome1, Polynome polynome2) {
+       return polynomeFinal;
+   }
+  
+   /**
+    * Effectue la division euclidienne de deux polynômes.
+    *
+    * Responsabilité :
+    * Calculer le quotient et le reste de la division.
+    *
+    * @param polynome1 dividende
+    * @param polynome2 diviseur
+    * @return résultat de la division
+    */
+   public Polynome diviser(Polynome polynome1, Polynome polynome2) {
+       return polynomeFinal;
+   }
+  
+   /**
+    * Calcule la dérivée d'un polynôme.
+    *
+    * Responsabilité :
+    * Appliquer la règle de dérivation terme à terme.
+    *
+    * @param polynome polynôme à dériver
+    * @return polynôme dérivé
+    */
+   public Polynome deriver(Polynome polynome) {
+       return polynomeFinal;
+   }
+  
+   /**
+    * Calcule une primitive (intégrale) du polynôme.
+    *
+    * Responsabilité :
+    * Calculer l'intégrale terme à terme.
+    *
+    * @param polynome polynôme à intégrer
+    * @return polynôme résultant
+    */
+   public Polynome integrer(Polynome polynome) {
+       return polynomeFinal;
+   }
+
+   /**
+    * Calcule la valeur moyenne de la fonction polynômiale associée.
+    *
+    * Responsabilité :
+    * Calculer la moyenne.
+    *
+    * @param polynome polynôme à intégrer
+    * @return moyenne du polynome
+    */
+   public Polynome moyenne(Polynome polynome) {
+       return polynomeFinal;
+   }
 }
