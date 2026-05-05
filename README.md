@@ -7,4 +7,4 @@ Répartition des rôles et mise en place des outils d'organisation : **Google Dr
   --> Création d'un Google Drive partagé pour les ressources  
 
 Mise en commun de la version et configuration des outils techniques : **Eclipse JEE 2026-03** (disponible sur le support de l'IUT)  
-  --> JDK-25 sur tous les postes  
+  --> JDK-26 sur tous les postes  
