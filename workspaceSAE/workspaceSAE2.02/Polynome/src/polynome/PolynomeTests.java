@@ -1,43 +1,77 @@
 package polynome;
 
-import java.util.HashMap;
-import java.util.Map;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 public class PolynomeTest {
 
-    public static void main(String[] args) {
+	private static final double PRECISION = 1e-6;
+	
+	@Test
+	void testCreationEtDregre() {
+        Polynome p = new Polynome(3, 4, 2); // 3 + 4x + 2X^2
+        
+        assertEquals(2, p.getDegre(), "Le degré devrait être de 2");
+	}
+	
+	@Test
+	void testGetCoefficient() {
+		Polynome p = new Polynome(1, 0, 5); // 1 + 5x^2 
+		assertEquals(1.0, p.getCoefficient(0), PRECISION);
+		assertEquals(0.0, p.getCoefficient(1), PRECISION);
+		assertEquals(5.0, p.getCoefficient(2), PRECISION);
+	}
+	
+	@Test
+	void testEvaluerSimple() {
+		// P(X)= 2 + 3X => P(2) = 3x2 + 2 = 8
+		Polynome p = new Polynome(2, 3);
+		
+		assertEquals(8.0,p.evaluer(2.0), PRECISION);
+	}
 
-        // 🔹 Test 1 : constructeur avec varargs
-        Polynome p1 = new Polynome(3, 4, 2); // 3 + 4x + 2x²
-        System.out.println("p1 :");
-        p1.afficher();
+	@Test 
+	void testPolynomeNul() {
+		Polynome pNul = new Polynome(0, 0, 0);
+		assertTrue(pNul.estNul(), "Le polynôme devrait être nul.");
+		
+		Polynome pNonNul = new Polynome(0, 1, 0);
+		
+		assertFalse(pNonNul.estNul(), "Le polynôme ne devrait pas être nul.");
+	}
 
-        // 🔹 Test 2 : constructeur avec Map (grands degrés)
-        Map<Integer, Integer> termes = new HashMap<>();
-        termes.put(0, 3);
-        termes.put(12, 4);
-        termes.put(10, 2);
-
-        Polynome p2 = new Polynome(termes); // 3 + 4x^12 + 2x^10
-        System.out.println("\np2 :");
-        p2.afficher();
-
-        // 🔹 Test 3 : évaluation
-        double valeur = p1.evaluer(2);
-        System.out.println("\np1(2) = " + valeur);
-
-        // 🔹 Test 4 : estNul
-        Polynome pNul = new Polynome(0, 0, 0);
-        System.out.println("\npNul est nul ? " + pNul.estNul());
-
-        // 🔹 Test 5 : addition
-        Polynome somme = p1.additionner(p1);
-        System.out.println("\np1 + p1 :");
-        somme.afficher();
-
-        // 🔹 Test 6 : multiplication par scalaire
-        Polynome pMult = p1.multiplier(2);
-        System.out.println("\np1 * 2 :");
-        pMult.afficher();
-    }
+	@Test
+	void testToString() {
+		Polynome p = new Polynome(2, 4, 3);
+		assertEquals("2 + 4X + 3X^2", p.toString());
+	}
+    
+	@Test
+	void testAdditionner() {
+		Polynome p1 = new Polynome(2, 1);
+		Polynome p2 = new Polynome(1, 3);
+		Polynome resultat = p1.additionner(p2);
+		
+		assertEquals(3.0, resultat.getCoefficient(0), PRECISION);
+		assertEquals(4.0, resultat.getCoefficient(1), PRECISION);
+	}
+	
+	@Test
+	void testMultiplierScalaire() {
+		Polynome p = new Polynome(3, 4);
+		Polynome resultat = p.multiplier(2.0);
+		
+		assertEquals(6.0, resultat.getCoefficient(0), PRECISION);
+		assertEquals(8.0, resultat.getCoefficient(1), PRECISION);
+	}
+	
+	@Test
+	void testDeriver() {
+		Polynome p = new Polynome(2, 4, 3);
+		Polynome derivee = p.deriver();
+		
+		assertEquals(4.0, derivee.getCoefficient(0), PRECISION);
+		assertEquals(6.0, derivee.getCoefficient(1), PRECISION);
+		assertEquals(1, derivee.getDegre());
+	}
 }
