@@ -1,15 +1,19 @@
+/*
+ * Polynome.java                                        05 mai 2026
+ * IUT de Rodez, Info1 2025-2026, pas de copyright
+ */
 package polynome;
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Représente un polynôme à une variable réelle (x).
  *
- * La classe stocke les coefficients du polynôme dans une liste,
- * où l'indice correspond au degré du monôme.
+ * La classe stocke les coefficients du polynôme dans deux tableaux parallèles :
+ * - coefficients[i] : la valeur du i-ème monôme non nul
+ * - degres[i]       : le degré du i-ème monôme non nul
  *
- * Exemple : Polynome(3,4,2) représente P(x) = 3 + 4x + 2x²
+ * Exemple : 2x^120 + 42x + 4 se stocke ainsi :
+ *   coefficients = {2.0, 42.0, 4.0}
+ *   degres       = {120,   1,   0}
  *
  * Responsabilité (SRP) :
  * - Stocker un polynôme
@@ -17,231 +21,323 @@ import java.util.List;
  */
 public class Polynome {
 
-    private List<Integer> degres;
+    /** valeurs des monômes non nuls du polynôme */
+    private double[] coefficients;
+
+    /** degrés des monômes non nuls du polynôme, parallèle à coefficients */
+    private int[] degres;
 
     /**
-     * Construit un polynôme à partir d'une liste de coefficients.
+     * Construit un polynôme à partir de deux tableaux parallèles
+     * donnant les coefficients et les degrés des monômes non nuls.
      *
-     * Chaque argument correspond au coefficient du monôme de degré égal à son index.
+     * Exemple : new Polynome(new double[]{2.0, 42.0, 4.0}, new int[]{120, 1, 0})
+     *           représente P(x) = 2x^120 + 42x + 4
      *
-     * Exemple : new Polynome(3,4,2) => P(x) = 3 + 4x + 2x²
+     * Exemple : new Polynome(new double[]{3.0, 4.0, 2.0}, new int[]{0, 1, 2})
+     *           représente P(x) = 3 + 4x + 2x²
      *
-     * @param degres coefficients du polynôme (du degré 0 au plus grand)
+     * @param coefficients valeurs des monômes non nuls
+     * @param degres       degrés correspondants (même longueur que coefficients)
+     * @throws IllegalArgumentException si les tableaux sont vides
+     *         ou n'ont pas la même longueur
      */
-    public Polynome(int... degres) {
-        this.degres = new ArrayList<>();
-        for (int d : degres) {
-            this.degres.add(d);
+    public Polynome(double[] coefficients, int[] degres) {
+        if (coefficients.length == 0 || degres.length == 0) {
+            throw new IllegalArgumentException(
+                "un polynôme doit avoir au moins un monôme");
+        }
+        if (coefficients.length != degres.length) {
+            throw new IllegalArgumentException(
+                "les tableaux coefficients et degres doivent avoir la même longueur");
+        }
+        this.coefficients = new double[coefficients.length];
+        this.degres = new int[degres.length];
+        for (int i = 0; i < coefficients.length; i++) {
+            this.coefficients[i] = coefficients[i];
+            this.degres[i] = degres[i];
         }
     }
 
     /**
-     * Retourne le degré du polynôme
+     * Construit un polynôme à partir de ses racines réelles, de leurs ordres
+     * de multiplicité et du coefficient du monôme de plus haut degré.
+     *
+     * L'algorithme part du coefficient dominant puis multiplie successivement
+     * par chaque facteur (X - r) répété selon l'ordre de multiplicité.
+     *
+     * Exemple : new Polynome(new double[]{3.0, -1.0}, new int[]{2, 1}, 2.0)
+     *           représente P(x) = 2(x-3)²(x+1) = 2x³ - 16x² + 18
+     *
+     * @param racines        tableau des racines réelles du polynôme
+     * @param ordres         ordres de multiplicité correspondants
+     * @param coeffDominant  coefficient du monôme de plus haut degré
+     * @throws IllegalArgumentException si les tableaux sont vides,
+     *         n'ont pas la même longueur, ou si coeffDominant est nul
+     */
+    public Polynome(double[] racines, int[] ordres, double coeffDominant) {
+        if (racines.length == 0 || ordres.length == 0) {
+            throw new IllegalArgumentException(
+                "il faut au moins une racine");
+        }
+        if (racines.length != ordres.length) {
+            throw new IllegalArgumentException(
+                "les tableaux racines et ordres doivent avoir la même longueur");
+        }
+        if (coeffDominant == 0) {
+            throw new IllegalArgumentException(
+                "le coefficient dominant ne peut pas être nul");
+        }
+
+        /* calcul du degré total = somme des ordres de multiplicité */
+        int degreFinal = 0;
+        for (int i = 0; i < ordres.length; i++) {
+            degreFinal += ordres[i];
+        }
+
+        /*
+         * Tableau dense temporaire de taille degreFinal + 1 pour les calculs.
+         * L'indice d correspond au coefficient du monôme de degré d.
+         * On convertira en tableaux parallèles à la fin.
+         */
+        double[] temp = new double[degreFinal + 1];
+
+        /* on démarre avec juste le coefficient dominant : P = coeffDominant */
+        temp[0] = coeffDominant;
+        int degreActuel = 0;
+
+        /* pour chaque racine, on multiplie par (X - racine) autant de fois
+           que son ordre de multiplicité */
+        for (int i = 0; i < racines.length; i++) {
+            for (int ordre = 0; ordre < ordres[i]; ordre++) {
+
+                /* multiplication de temp par (X - racines[i]) :
+                   on parcourt de droite à gauche pour ne pas écraser
+                   les valeurs dont on a encore besoin */
+                for (int d = degreActuel; d >= 0; d--) {
+                    temp[d + 1] += temp[d];          /* terme en X */
+                    temp[d]     *= -racines[i];       /* terme constant */
+                }
+                degreActuel++;
+            }
+        }
+
+        /* comptage des monômes non nuls pour dimensionner les tableaux finaux */
+        int nbNonNuls = 0;
+        for (int d = 0; d <= degreFinal; d++) {
+            if (temp[d] != 0) {
+                nbNonNuls++;
+            }
+        }
+
+        /* cas dégénéré : polynôme entièrement nul, on garde au moins un terme */
+        if (nbNonNuls == 0) {
+            nbNonNuls = 1;
+        }
+
+        /* remplissage des tableaux parallèles finaux */
+        this.coefficients = new double[nbNonNuls];
+        this.degres = new int[nbNonNuls];
+        int index = 0;
+        for (int d = 0; d <= degreFinal; d++) {
+            if (temp[d] != 0) {
+                this.coefficients[index] = temp[d];
+                this.degres[index] = d;
+                index++;
+            }
+        }
+    }
+
+    /**
+     * Affiche les monômes non nuls du polynôme.
+     */
+    public void afficher() {
+        for (int i = 0; i < coefficients.length; i++) {
+            System.out.println("coefficient degré " + degres[i]
+                               + " : " + coefficients[i]);
+        }
+    }
+
+    /**
+     * Retourne le degré du polynôme,
+     * c'est-à-dire le plus grand degré parmi les monômes stockés.
      *
      * @return degré du polynôme
      */
-	public int getDegre() {
-		for (int degre = degres.size() - 1; degre >= 0; degre--) {
-		    if (degres.get(degre) != 0) {
-		        return degre;
-		    }
-		}
-		return 0;
-	}
-	
-	/**
+    public int getDegre() {
+        int max = degres[0];
+        for (int i = 1; i < degres.length; i++) {
+            if (degres[i] > max) {
+                max = degres[i];
+            }
+        }
+        return max;
+    }
+
+    /**
      * Retourne le coefficient associé à un degré donné.
      *
-     * @param degre degré du monôme
-     * @return coefficient correspondant
+     * @param degre degré du monôme souhaité
+     * @return coefficient correspondant, 0.0 si ce degré n'est pas stocké
+     * @throws IllegalArgumentException si degre est négatif
      */
-	public getCoefficient(int degre) {
-		return degres.get(degre);
-	}
-	
-	/**
-	 * Retourne la limite en plus l'infini du polynôme
-	 *
-	 * @return limite du polynôme en plus l'infini
-	 */
-	public double getLimitePlusInfini() {
-	    int degre = getDegre();
-	    double coef = getCoefficient(degre);
+    public double getCoefficient(int degre) {
+        if (degre < 0) {
+            throw new IllegalArgumentException(
+                "le degré ne peut pas être négatif");
+        }
+        for (int i = 0; i < degres.length; i++) {
+            if (degres[i] == degre) {
+                return coefficients[i];
+            }
+        }
+        return 0.0;
+    }
 
-	    if (coef > 0) {
-	    	return Double.POSITIVE_INFINITY;
-	    } else if (coef < 0) {
-	    	return Double.NEGATIVE_INFINITY;
-	    }
-	    return 0;
-	}
-	
-	/**
-	 * Retourne la limite en moins l'infini du polynôme
-	 *
-	 * @return limite du polynôme en moins l'infini
-	 */
-	public double getLimiteMoinsInfini() {
-	    int degre = getDegre();
-	    double coef = getCoefficient(degre);
-
-	    if (degre % 2 == 0) {
-	        if (coef > 0) {
-	            return Double.POSITIVE_INFINITY;
-	        } else {
-	            return Double.NEGATIVE_INFINITY;
-	        }
-	    } else {
-	        if (coef > 0) {
-	            return Double.POSITIVE_INFINITY;
-	        } else {
-	            return Double.NEGATIVE_INFINITY;
-	        }
-	    }
-	}
-	
-	/**
-	 * Retourne la limite en plus l'infini associé au degré du polynôme.
-	 *
-	 * @return limite du polynôme en plus l'infini
-	 */
-	public double getRacinesReelles() {
-	    // TODO faire
-	}
-	
-	/**
-     * Indique si le polynôme est nul (tous les coefficients sont nuls).
+    /**
+     * Retourne la limite de la fonction polynômiale associée en +infini.
      *
-     * Responsabilité :
-     * Vérifier si le polynôme représente la fonction nulle.
+     * @return limite du polynôme en +infini
+     */
+    public double getLimitePlusInfini() {
+        double coef = getCoefficient(getDegre());
+
+        if (coef > 0) {
+            return Double.POSITIVE_INFINITY;
+        } else if (coef < 0) {
+            return Double.NEGATIVE_INFINITY;
+        }
+        return 0;
+    }
+
+    /**
+     * Retourne la limite de la fonction polynômiale associée en -infini.
+     *
+     * @return limite du polynôme en -infini
+     */
+    public double getLimiteMoinsInfini() {
+        int degre = getDegre();
+        double coef = getCoefficient(degre);
+
+        if (degre % 2 == 0) {
+            /* degré pair : même limite qu'en +infini */
+            if (coef > 0) {
+                return Double.POSITIVE_INFINITY;
+            } else {
+                return Double.NEGATIVE_INFINITY;
+            }
+        } else {
+            /* degré impair : limite opposée à celle en +infini */
+            if (coef > 0) {
+                return Double.NEGATIVE_INFINITY;
+            } else {
+                return Double.POSITIVE_INFINITY;
+            }
+        }
+    }
+
+    /**
+     * Indique si le polynôme est nul (tous les coefficients sont nuls).
      *
      * @return true si tous les coefficients sont nuls, false sinon
      */
-	public boolean estNul() {
-        for (int coef : degres) {
-            if (coef != 0) {
+    public boolean estNul() {
+        for (int i = 0; i < coefficients.length; i++) {
+            if (coefficients[i] != 0) {
                 return false;
             }
         }
         return true;
     }
-	
-	/**
+
+    /**
      * Évalue le polynôme pour une valeur donnée de x.
      *
-     * Responsabilité :
-     * Calculer P(x) en utilisant les coefficients stockés.
-     *
      * @param x valeur pour laquelle on évalue le polynôme
-     * @return résultat de l'évaluation
+     * @return résultat de l'évaluation P(x)
      */
-	public double evaluer(double x) {
+    public double evaluer(double x) {
         double resultat = 0;
-        for (int i = 0; i < degres.size(); i++) {
-            resultat += degres.get(i) * Math.pow(x, i);
+        for (int i = 0; i < coefficients.length; i++) {
+            resultat += coefficients[i] * Math.pow(x, degres[i]);
         }
         return resultat;
     }
-		
-	/**
-     * Additionne deux polynômes.
+
+    /**
+     * Additionne ce polynôme avec un autre polynôme.
      *
-     * Responsabilité :
-     * Calculer la somme de deux polynômes.
-     *
-     * @param polynome1 premier polynôme
-     * @param polynome2 second polynôme
+     * @param autrePolynome polynôme à additionner
      * @return polynôme résultant de l'addition
      */
-    public Polynome additionner(Polynome polynome1, Polynome polynome2) {
-        int degreP1 = polynome1.getDegre(); // TODO ajuster pour tous les degrés
-        int coefP1 = polynome1.getCoefficient(degreP1);
-        int degreP2 = polynome2.getDegre();
-        int coefP2 = polynome2.getCoefficient(degreP2);
-
-
-
-        return polynomeFinal;
+    public Polynome additionner(Polynome autrePolynome) {
+        // TODO faire
+        return null;
     }
-  
+
     /**
-     * Multiplie un polynôme par un scalaire.
+     * Multiplie ce polynôme par un scalaire réel.
      *
-     * Responsabilité :
-     * Appliquer une multiplication de chaque coefficient par un réel.
-     *
-     * @param polynome polynôme à multiplier
-     * @param scalaire valeur réelle
+     * @param scalaire valeur réelle par laquelle multiplier
      * @return polynôme résultant de la multiplication
      */
-    public Polynome multiplier(Polynome polynome, double sclaire) {
-        return polynomeFinal;
+    public Polynome multiplier(double scalaire) {
+        // TODO faire
+        return null;
     }
-  
+
     /**
-     * Multiplie deux polynômes.
+     * Multiplie ce polynôme par un autre polynôme.
      *
-     * Responsabilité :
-     * Calculer le produit de deux polynômes.
-     *
-     * @param polynome1 premier polynôme
-     * @param polynome2 second polynôme
+     * @param autrePolynome polynôme multiplicateur
      * @return polynôme résultant de la multiplication
      */
-    public Polynome multiplier(Polynome polynome1, Polynome polynome2) {
-        return polynomeFinal;
+    public Polynome multiplier(Polynome autrePolynome) {
+        // TODO faire
+        return null;
     }
-  
+
     /**
-     * Effectue la division euclidienne de deux polynômes.
+     * Effectue la division euclidienne de ce polynôme par un autre.
      *
-     * Responsabilité :
-     * Calculer le quotient et le reste de la division.
-     *
-     * @param polynome1 dividende
-     * @param polynome2 diviseur
-     * @return résultat de la division
+     * @param diviseur polynôme diviseur
+     * @return quotient de la division euclidienne
      */
-    public Polynome diviser(Polynome polynome1, Polynome polynome2) {
-        return polynomeFinal;
+    public Polynome diviser(Polynome diviseur) {
+        // TODO faire
+        return null;
     }
-  
+
     /**
-     * Calcule la dérivée d'un polynôme.
+     * Calcule la dérivée de ce polynôme.
      *
-     * Responsabilité :
-     * Appliquer la règle de dérivation terme à terme.
-     *
-     * @param polynome polynôme à dériver
      * @return polynôme dérivé
      */
-    public Polynome deriver(Polynome polynome) {
-        return polynomeFinal;
-    }
-  
-    /**
-     * Calcule une primitive (intégrale) du polynôme.
-     *
-     * Responsabilité :
-     * Calculer l'intégrale terme à terme.
-     *
-     * @param polynome polynôme à intégrer
-     * @return polynôme résultant
-     */
-    public Polynome integrer(Polynome polynome) {
-        return polynomeFinal;
+    public Polynome deriver() {
+        // TODO faire
+        return null;
     }
 
     /**
-     * Calcule la valeur moyenne de la fonction polynômiale associée.
+     * Calcule une primitive de ce polynôme (constante additive nulle).
      *
-     * Responsabilité :
-     * Calculer la moyenne.
-     *
-     * @param polynome polynôme à intégrer
-     * @return moyenne du polynome
+     * @return polynôme primitif (constante d'intégration = 0)
      */
-    public Polynome moyenne(Polynome polynome) {
-        return polynomeFinal;
+    public Polynome integrer() {
+        // TODO faire
+        return null;
+    }
+
+    /**
+     * Calcule la valeur moyenne de la fonction polynômiale associée
+     * sur un intervalle donné.
+     *
+     * @param a borne inférieure de l'intervalle
+     * @param b borne supérieure de l'intervalle
+     * @return valeur moyenne de P sur [a, b]
+     */
+    public double moyenne(double a, double b) {
+        // TODO faire
+        return 0;
     }
 }
