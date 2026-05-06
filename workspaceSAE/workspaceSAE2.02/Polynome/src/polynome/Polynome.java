@@ -6,37 +6,39 @@ package polynome;
 
 /**
  * Représente un polynôme à une variable réelle (x).
- *
  * La classe stocke les coefficients du polynôme dans deux tableaux parallèles :
  * - coefficients[i] : la valeur du i-ème monôme non nul
  * - degres[i]       : le degré du i-ème monôme non nul
- *
+ * <p>
  * Exemple : 2x^120 + 42x + 4 se stocke ainsi :
  *   coefficients = {2.0, 42.0, 4.0}
  *   degres       = {120,   1,   0}
- *
+ * </p>
+ * <p>
  * Responsabilité (SRP) :
  * - Stocker un polynôme
  * - Fournir des opérations mathématiques sur ce polynôme
+ * </p>
  */
 public class Polynome {
 
-    /** valeurs des monômes non nuls du polynôme */
+    /** Valeurs des monômes non nuls du polynôme */
     private double[] coefficients;
 
-    /** degrés des monômes non nuls du polynôme, parallèle à coefficients */
+    /** Degrés des monômes non nuls du polynôme, parallèle à coefficients */
     private int[] degres;
 
     /**
      * Construit un polynôme à partir de deux tableaux parallèles
      * donnant les coefficients et les degrés des monômes non nuls.
-     *
+     * <p>
      * Exemple : new Polynome(new double[]{2.0, 42.0, 4.0}, new int[]{120, 1, 0})
      *           représente P(x) = 2x^120 + 42x + 4
-     *
+     * </p>
+     * <p>
      * Exemple : new Polynome(new double[]{3.0, 4.0, 2.0}, new int[]{0, 1, 2})
      *           représente P(x) = 3 + 4x + 2x²
-     *
+     * </p>
      * @param coefficients valeurs des monômes non nuls
      * @param degres       degrés correspondants (même longueur que coefficients)
      * @throws IllegalArgumentException si les tableaux sont vides
@@ -60,60 +62,61 @@ public class Polynome {
     }
 
     /**
-     * Construit un polynôme à partir de ses racines réelles, de leurs ordres
+     * Construit un polynôme à partir de ses racines réelles, de leur ordre
      * de multiplicité et du coefficient du monôme de plus haut degré.
-     *
      * L'algorithme part du coefficient dominant puis multiplie successivement
      * par chaque facteur (X - r) répété selon l'ordre de multiplicité.
-     *
+     * <p>
      * Exemple : new Polynome(new double[]{3.0, -1.0}, new int[]{2, 1}, 2.0)
      *           représente P(x) = 2(x-3)²(x+1) = 2x³ - 16x² + 18
-     *
-     * @param racines        tableau des racines réelles du polynôme
-     * @param ordres         ordres de multiplicité correspondants
-     * @param coeffDominant  coefficient du monôme de plus haut degré
+     * </p>
+     * @param racines 		tableau des racines réelles du polynôme
+     * @param ordres        ordres de multiplicité correspondants
+     * @param coeffDominant coefficient du monôme de plus haut degré
      * @throws IllegalArgumentException si les tableaux sont vides,
      *         n'ont pas la même longueur, ou si coeffDominant est nul
      */
     public Polynome(double[] racines, int[] ordres, double coeffDominant) {
         if (racines.length == 0 || ordres.length == 0) {
             throw new IllegalArgumentException(
-                "il faut au moins une racine");
+                "Il faut que lepolynôme ait au moins une racine");
         }
         if (racines.length != ordres.length) {
             throw new IllegalArgumentException(
-                "les tableaux racines et ordres doivent avoir la même longueur");
+                "Les tableaux racines et ordres doivent avoir la même longueur.");
         }
         if (coeffDominant == 0) {
             throw new IllegalArgumentException(
-                "le coefficient dominant ne peut pas être nul");
+                "Le coefficient dominant ne peut pas être nul.");
         }
 
-        /* calcul du degré total = somme des ordres de multiplicité */
+        /* Calcul du degré total => somme des ordres de multiplicité */
         int degreFinal = 0;
         for (int i = 0; i < ordres.length; i++) {
             degreFinal += ordres[i];
         }
 
         /*
-         * Tableau dense temporaire de taille degreFinal + 1 pour les calculs.
+         * Tableau temporaire de taille degreFinal + 1 pour les calculs.
          * L'indice d correspond au coefficient du monôme de degré d.
          * On convertira en tableaux parallèles à la fin.
          */
         double[] temp = new double[degreFinal + 1];
 
-        /* on démarre avec juste le coefficient dominant : P = coeffDominant */
+        /* On démarre avec juste le coefficient dominant : P = coeffDominant */
         temp[0] = coeffDominant;
         int degreActuel = 0;
 
-        /* pour chaque racine, on multiplie par (X - racine) autant de fois
-           que son ordre de multiplicité */
+        /* Pour chaque racine, on multiplie par (X - racine) autant de fois
+         * que son ordre de multiplicité.
+         */ 
         for (int i = 0; i < racines.length; i++) {
             for (int ordre = 0; ordre < ordres[i]; ordre++) {
 
-                /* multiplication de temp par (X - racines[i]) :
-                   on parcourt de droite à gauche pour ne pas écraser
-                   les valeurs dont on a encore besoin */
+                /* Multiplication de temp temporaire par (X - racines[i]) :
+                 * on parcourt de droite à gauche pour ne pas écraser
+                 * les valeurs dont on a encore besoin.
+                 */
                 for (int d = degreActuel; d >= 0; d--) {
                     temp[d + 1] += temp[d];          /* terme en X */
                     temp[d]     *= -racines[i];       /* terme constant */
@@ -122,7 +125,7 @@ public class Polynome {
             }
         }
 
-        /* comptage des monômes non nuls pour dimensionner les tableaux finaux */
+        /* Comptage des monômes non nuls pour dimensionner les tableaux finaux */
         int nbNonNuls = 0;
         for (int d = 0; d <= degreFinal; d++) {
             if (temp[d] != 0) {
@@ -130,12 +133,12 @@ public class Polynome {
             }
         }
 
-        /* cas dégénéré : polynôme entièrement nul, on garde au moins un terme */
+        /* Cas dégénéré : polynôme entièrement nul, on garde au moins un terme */
         if (nbNonNuls == 0) {
             nbNonNuls = 1;
         }
 
-        /* remplissage des tableaux parallèles finaux */
+        /* Remplissage des tableaux parallèles finaux */
         this.coefficients = new double[nbNonNuls];
         this.degres = new int[nbNonNuls];
         int index = 0;
@@ -220,14 +223,14 @@ public class Polynome {
         double coef = getCoefficient(degre);
 
         if (degre % 2 == 0) {
-            /* degré pair : même limite qu'en +infini */
+            /* Degré pair : même limite qu'en +infini */
             if (coef > 0) {
                 return Double.POSITIVE_INFINITY;
             } else {
                 return Double.NEGATIVE_INFINITY;
             }
         } else {
-            /* degré impair : limite opposée à celle en +infini */
+            /* Degré impair : limite opposée à celle en +infini */
             if (coef > 0) {
                 return Double.NEGATIVE_INFINITY;
             } else {
