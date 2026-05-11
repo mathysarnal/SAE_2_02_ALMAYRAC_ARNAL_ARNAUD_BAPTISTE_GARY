@@ -6,4 +6,7 @@
  * 
  */
 module Polynome {
+    requires org.junit.jupiter.api;
+
+       opens polynome to org.junit.platform.commons;
 }
