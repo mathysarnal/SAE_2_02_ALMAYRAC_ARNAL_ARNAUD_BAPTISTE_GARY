@@ -1,6 +1,10 @@
 package polynome;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class PolynomeTest {
@@ -9,16 +13,53 @@ public class PolynomeTest {
      * Vérifie que le degré du polynôme est correctement calculé 
      * lors de la création à partir de tableaux parallèles.
      */
-
+	
+	private Polynome polynomeUn;
+	private Polynome polynomeDeux;
+	private Polynome polynomeTrois;
+	private Polynome polynomeQuatre;
+	private Polynome polynomeCinq;
+	
+	@BeforeEach
+	void setUp() {
+		// Premier polynome 0.0
+		double[] coefficientsUn = new double[] { 0.0 };
+		int[] degresUn =  new int[] { 0 };
+		
+		polynomeUn = new Polynome(coefficientsUn, degresUn);
+		
+		// Deuxième polynome 2 + 3x^100
+		double[] coefficientsDeux = new double[] { 2.0, 3.0 };
+		int[] degresDeux = new int[] {0, 100};
+		polynomeDeux = new Polynome(coefficientsDeux, degresDeux);
+		
+		// Troisième polynome 2 + 4x + 5x^2
+		double[] coefficientsTrois = new double[] { 2.0, 4.0, 5.0 };
+		int[] degresTrois = new int[] {0, 1, 2};
+		polynomeTrois = new Polynome(coefficientsTrois, degresTrois);
+		
+		// Quatrième polynome -3 - 2x
+		double[] coefficientsQuatre = new double[] { -3.0, -2.0 };
+		int[] degresQuatre = new int[] { 0, 1 };
+		polynomeQuatre = new Polynome(coefficientsQuatre, degresQuatre);
+		
+		// Cinquième polynome 5.0
+		double[] coefficientsCinq = new double[] { 5.0 };
+		int[] degresCinq = new int[] { 0 };
+		polynomeCinq = new Polynome(coefficientsCinq, degresCinq);
+		
+	}
+	
+	
+	
 	@Test
 	void testCreationEtDegre() {
-        // pour P(x) = 3 + 4X +2X^2
-		double[] coefficient = {3.0, 4.0, 2.0};
-		int[] degres = {0, 1, 2};
-		
-		Polynome polynome = new Polynome(coefficient, degres);
-        
-        assertEquals(2, polynome.getDegre(), "Le degré devrait être de 2");
+        assertEquals(0, polynomeUn.getDegre(), "Le degré devrait être de 0.");
+        assertEquals(100, polynomeDeux.getDegre(), "Le degré devrait être de 100.");
+        assertEquals(2, polynomeTrois.getDegre(), "Le degré devrait être de 2.");
+        assertEquals(1, polynomeQuatre.getDegre(), "Le degré devrait être de 1");
+        assertEquals(0, polynomeCinq.getDegre(), "Le degré devrait être de 0.");
+	
 	}
 	
 	/**
@@ -28,17 +69,22 @@ public class PolynomeTest {
 	
 	@Test
 	void testGetCoefficient() {
+		assertEquals(0.0, polynomeUn.getCoefficient(0));
+	
+		assertEquals(2.0, polynomeDeux.getCoefficient(0));
+		assertEquals(0.0, polynomeDeux.getCoefficient(1));
+		assertEquals(3.0, polynomeDeux.getCoefficient(100));
 		
-		double[] coefficient = {1.0, 0.0, 5.0};
-		int[] degres = {0, 1, 2 };
+		assertEquals(2.0, polynomeTrois.getCoefficient(0));
+		assertEquals(4.0, polynomeTrois.getCoefficient(1));
+		assertEquals(5.0, polynomeTrois.getCoefficient(2));
 		
-		Polynome polynome = new Polynome(coefficient, degres); 
+		assertEquals(-3.0, polynomeQuatre.getCoefficient(0));
+		assertEquals(-2.0, polynomeQuatre.getCoefficient(1));
 		
-		assertEquals(1.0, polynome.getCoefficient(0));
-		assertEquals(0.0, polynome.getCoefficient(1));
-		assertEquals(5.0, polynome.getCoefficient(2));
+		assertEquals(5.0, polynomeCinq.getCoefficient(0));
+		assertEquals(0.0, polynomeCinq.getCoefficient(1));
 		
-		// TODO vérifier que ça marche si on ne stocke pas le 0.0
 	}
 	
 	/**
@@ -47,13 +93,16 @@ public class PolynomeTest {
 	
 	@Test
 	void testEvaluerSimple() {
+			
+		assertEquals(0.0,polynomeUn.evaluer(2.0));
 		
-		double[] coefficient = {2.0, 3.0};
-		int[] degres = {0, 1};
+		assertEquals(5.0,polynomeDeux.evaluer(1.0));
 		
-		Polynome polynome = new Polynome(coefficient, degres);
+		assertEquals(59.0,polynomeTrois.evaluer(3.0));
 		
-		assertEquals(8.0,polynome.evaluer(2.0));
+		assertEquals(-19.0,polynomeQuatre.evaluer(8.0));
+		
+		assertEquals(5.0,polynomeCinq.evaluer(6.0));
 	}
 
 	/**
@@ -63,31 +112,19 @@ public class PolynomeTest {
 	
 	@Test 
 	void testPolynomeNul() {
+				
+		assertTrue(polynomeUn.estNul(), "Le polynôme devrait être nul.");
 		
-		double[] coefficient = {0.0, 0.0, 0.0 };
-		int[] degres = {0, 1, 2};
+		assertFalse(polynomeDeux.estNul(), "Le polynôme ne devrait pas être nul.");
 		
-		Polynome polynomeNul = new Polynome(coefficient, degres);
+		assertFalse(polynomeTrois.estNul(), "Le polynôme ne devrait pas être nul.");
 		
-		assertTrue(polynomeNul.estNul(), "Le polynôme devrait être nul.");
+		assertFalse(polynomeQuatre.estNul(), "Le polynôme ne devrait pas être nul.");
+		
+		assertFalse(polynomeCinq.estNul(), "Le polynôme ,ne devrait pas être nul.");
 	}
 	
-	/**
-     * Vérifie que la méthode estNul() retourne false lorsqu'au 
-     * moins un coefficient est non nul.
-     */
 	
-	@Test
-	void testPolynomeNonNul() {
-		
-		double[] coefficient = {0.0, 1.0, 0.0};
-		int[] degres = {0, 1, 2};
-		
-		Polynome polynomeNonNul = new Polynome(coefficient, degres);
-		
-		assertFalse(polynomeNonNul.estNul(), "Le polynôme ne devrait pas être nul.");
-	}
-
 	/**
      * Vérifie la représentation textuelle du polynôme.
      * Attend une chaîne comprenant un format avec les puissances de X.
@@ -95,12 +132,11 @@ public class PolynomeTest {
 	
 	@Test
 	void testToString() {
-		
-		double[] coefficient = {2.0, 4.0, 3.0};
-		int [] degres = {0, 1, 2 };
-		
-		Polynome polynome = new Polynome(coefficient, degres);
-		assertEquals("2 + 4X + 3X^2", polynome.toString());
+		assertEquals("0.0", polynomeUn.toString());
+		assertEquals("2 + 3x^100", polynomeDeux.toString());
+		assertEquals("2 + 4x + 5x^2", polynomeTrois.toString());
+		assertEquals("-3 - 2x", polynomeQuatre.toString());
+		assertEquals("5.0", polynomeCinq.toString());
 	}
 	
 	/**
@@ -111,18 +147,15 @@ public class PolynomeTest {
 	@Test
 	void testAdditionner() {
 		
-		double[] premierCoefficient = {2.0, 1.0};
-		int[] premierDegres = {0, 1};
-		
-		double[] deuxiemeCoefficient = {1.0, 3.0};
-		int[] deuxiemeDegres = {0, 1};
-		
-		Polynome premierPolynome = new Polynome(premierCoefficient, premierDegres);
-		Polynome deuxiemePolynome = new Polynome(deuxiemeCoefficient, deuxiemeDegres);
-		Polynome resultat = premierPolynome.additionner(deuxiemePolynome);
-		
-		assertEquals(3.0, resultat.getCoefficient(0));
-		assertEquals(4.0, resultat.getCoefficient(1));
+		Polynome resultat1 = polynomeTrois.additionner(polynomeUn);
+        assertEquals(2.0, resultat1.getCoefficient(0));
+        assertEquals(4.0, resultat1.getCoefficient(1));
+        assertEquals(5.0, resultat1.getCoefficient(2));
+
+        Polynome resultat2 = polynomeQuatre.additionner(polynomeQuatre);
+        assertEquals(- 6.0, resultat2.getCoefficient(0));
+        assertEquals(-4.0, resultat2.getCoefficient(1));
+  
 	}
 	
 	/**
@@ -131,15 +164,26 @@ public class PolynomeTest {
 	
 	@Test
 	void testMultiplierScalaire() {
+				
+		Polynome resultat1 = polynomeUn.multiplier(3.0);
+		assertEquals(0.0, resultat1.getCoefficient(0));
 		
-		double[] coefficient = {3.0, 4.0};
-		int[] degres = {0, 1};
+		Polynome resultat2 = polynomeDeux.multiplier(3.0);
+        assertEquals(6.0, resultat2.getCoefficient(0));
+        assertEquals(9.0, resultat2.getCoefficient(100));
 		
-		Polynome polynome = new Polynome(coefficient, degres);
-		Polynome resultat = polynome.multiplier(2.0);
 		
-		assertEquals(6.0, resultat.getCoefficient(0));
-		assertEquals(8.0, resultat.getCoefficient(1));
+		Polynome resultat3 = polynomeTrois.multiplier(3.0);
+        assertEquals(6.0, resultat3.getCoefficient(0));
+        assertEquals(12.0, resultat3.getCoefficient(1));
+        assertEquals(15.0, resultat3.getCoefficient(2));
+        
+        Polynome resultat4 = polynomeQuatre.multiplier(3.0);
+        assertEquals(-9.0, resultat4.getCoefficient(0));
+        assertEquals(-6.0, resultat4.getCoefficient(1));
+        
+        Polynome resultat5 = polynomeCinq.multiplier(3.0);
+        assertEquals(15.0, resultat5.getCoefficient(0));
 	}
 	
 	/**
@@ -149,14 +193,24 @@ public class PolynomeTest {
 	@Test
 	void testDeriver() {
 		
-		double[] coefficient = {2.0, 4.0, 3.0};
-		int[] degres = {0, 1, 2};
-		
-		Polynome polynome = new Polynome(coefficient, degres);
-		Polynome derivee = polynome.deriver();
-		
-		assertEquals(4.0, derivee.getCoefficient(0));
-		assertEquals(6.0, derivee.getCoefficient(1));
-		assertEquals(1, derivee.getDegre());
+        assertTrue(polynomeUn.deriver().estNul());
+        
+        Polynome deriveeDeux = polynomeDeux.deriver();
+        assertEquals(99, deriveeDeux.getDegre());
+        assertEquals(0.0,deriveeDeux.getCoefficient(0));
+        assertEquals(300,deriveeDeux.getCoefficient(99));
+	
+		Polynome deriveeTrois = polynomeTrois.deriver();
+        assertEquals(1, deriveeTrois.getDegre());
+        assertEquals(4.0, deriveeTrois.getCoefficient(0));
+        assertEquals(10.0, deriveeTrois.getCoefficient(1));
+        
+        Polynome deriveeQuatre = polynomeQuatre.deriver();
+        assertEquals(0, deriveeQuatre.getDegre());
+        assertEquals(-2.0, deriveeQuatre.getCoefficient(0));
+        
+        Polynome deriveeCinq = polynomeCinq.deriver();
+        assertEquals(0, deriveeCinq.getDegre());
+        assertEquals(0.0, deriveeCinq.getCoefficient(0));
 	}
 }

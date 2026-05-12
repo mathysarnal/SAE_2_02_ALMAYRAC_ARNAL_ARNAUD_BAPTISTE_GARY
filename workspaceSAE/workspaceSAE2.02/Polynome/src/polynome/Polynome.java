@@ -168,13 +168,14 @@ public class Polynome {
      * @return degré du polynôme
      */
     public int getDegre() {
-        int max = degres[0];
-        for (int i = 1; i < degres.length; i++) {
-            if (degres[i] > max) {
-                max = degres[i];
+        int degreMax = 0;
+        
+        for (int indice = 0; indice < degres.length; indice++) {
+            if (degres[indice] > degreMax) {
+                degreMax = degres[indice];
             }
         }
-        return max;
+        return degreMax;
     }
 
     /**
@@ -184,15 +185,11 @@ public class Polynome {
      * @return coefficient correspondant, 0.0 si ce degré n'est pas stocké
      * @throws IllegalArgumentException si degre est négatif
      */
-    public double getCoefficient(int degre) {
-        if (degre < 0) {
-            throw new IllegalArgumentException(
-                "le degré ne peut pas être négatif");
-        }
-        for (int i = 0; i < degres.length; i++) {
-            if (degres[i] == degre) {
-                return coefficients[i];
-            }
+    public double getCoefficient(int degreRecherche) {
+        for(int indice = 0; indice < degres.length; indice++) {
+        	if (degres[indice] == degreRecherche) {
+        		return coefficients[indice];
+        	}
         }
         return 0.0;
     }
@@ -260,11 +257,15 @@ public class Polynome {
      * @return résultat de l'évaluation P(x)
      */
     public double evaluer(double x) {
-        double resultat = 0;
-        for (int i = 0; i < coefficients.length; i++) {
-            resultat += coefficients[i] * Math.pow(x, degres[i]);
+        double total = 0;
+        for (int indice = 0; indice < coefficients.length; indice++) {
+        	
+        	double coeffActuel = coefficients[indice];
+        	int puissanceActuel = degres[indice];
+        	
+            total += coeffActuel * Math.pow(x, puissanceActuel);
         }
-        return resultat;
+        return total;
     }
 
     /**
