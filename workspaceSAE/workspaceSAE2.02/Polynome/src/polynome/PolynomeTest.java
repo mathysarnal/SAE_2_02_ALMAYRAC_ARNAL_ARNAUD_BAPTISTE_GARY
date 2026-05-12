@@ -73,7 +73,7 @@ public class PolynomeTest {
 	
 		assertEquals(2.0, polynomeDeux.getCoefficient(0));
 		assertEquals(0.0, polynomeDeux.getCoefficient(1));
-		assertEquals(2.0, polynomeDeux.getCoefficient(100));
+		assertEquals(3.0, polynomeDeux.getCoefficient(100));
 		
 		assertEquals(2.0, polynomeTrois.getCoefficient(0));
 		assertEquals(4.0, polynomeTrois.getCoefficient(1));
@@ -182,7 +182,7 @@ public class PolynomeTest {
         assertEquals(-9.0, resultat4.getCoefficient(0));
         assertEquals(-6.0, resultat4.getCoefficient(1));
         
-        Polynome resultat5 = polynomeTrois.multiplier(3.0);
+        Polynome resultat5 = polynomeCinq.multiplier(3.0);
         assertEquals(15.0, resultat5.getCoefficient(0));
 	}
 	
@@ -205,11 +205,11 @@ public class PolynomeTest {
         assertEquals(4.0, deriveeTrois.getCoefficient(0));
         assertEquals(10.0, deriveeTrois.getCoefficient(1));
         
-        Polynome deriveeQuatre = polynomeTrois.deriver();
+        Polynome deriveeQuatre = polynomeQuatre.deriver();
         assertEquals(0, deriveeQuatre.getDegre());
         assertEquals(-2.0, deriveeQuatre.getCoefficient(0));
         
-        Polynome deriveeCinq = polynomeTrois.deriver();
+        Polynome deriveeCinq = polynomeCinq.deriver();
         assertEquals(0, deriveeCinq.getDegre());
         assertEquals(0.0, deriveeCinq.getCoefficient(0));
 	}

@@ -254,13 +254,15 @@ public class Polynome {
      * @return résultat de l'évaluation P(x)
      */
     public double evaluer(double x) {
-        double resultat = 0;
-        int nombreDeMonomes = coefficients.length;
-
-        for (int indiceMonome = 0; indiceMonome < nombreDeMonomes; indiceMonome++) {
-            resultat += coefficients[indiceMonome] * Math.pow(x, degres[indiceMonome]);
+        double total = 0;
+        for (int indice = 0; indice < coefficients.length; indice++) {
+        	
+        	double coeffActuel = coefficients[indice];
+        	int puissanceActuel = degres[indice];
+        	
+            total += coeffActuel * Math.pow(x, puissanceActuel);
         }
-        return resultat;
+        return total;
     }
 
     /**
