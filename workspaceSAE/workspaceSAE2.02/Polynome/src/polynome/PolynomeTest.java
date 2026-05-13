@@ -190,6 +190,89 @@ public class PolynomeTest {
      * Vérifie le calcul de la dérivée du polynôme.
      */
 	
+	
+	@Test 
+	void testMultiplierDeuxPolynomes() {
+		Polynome produitUn = polynomeUn.multiplier(polynomeDeux);
+		
+		assertEquals(0.0, produitUn.getCoefficient(0));
+		assertEquals(0.0, produitUn.getCoefficient(1));
+		
+		Polynome produitDeux = polynomeDeux.multiplier(polynomeTrois);
+		
+		assertEquals(4.0, produitDeux.getCoefficient(0));
+		assertEquals(8.0, produitDeux.getCoefficient(1));
+		assertEquals(10.0, produitDeux.getCoefficient(2));
+		assertEquals(6.0, produitDeux.getCoefficient(100));
+		assertEquals(12.0, produitDeux.getCoefficient(101));
+		assertEquals(15.0, produitDeux.getCoefficient(102));
+		
+		Polynome produitTrois = polynomeTrois.multiplier(polynomeQuatre);
+		
+		assertEquals(-6.0, produitTrois.getCoefficient(0));
+		assertEquals(-16.0, produitTrois.getCoefficient(1));
+		assertEquals(-23.0, produitTrois.getCoefficient(2));
+		assertEquals(-10.0, produitTrois.getCoefficient(3));
+		
+		Polynome produitQuatre = polynomeQuatre.multiplier(polynomeCinq);
+		
+		assertEquals(-15.0, produitQuatre.getCoefficient(0));
+		assertEquals(-10.0, produitQuatre.getCoefficient(1));
+		
+		Polynome produitCinq = polynomeCinq.multiplier(polynomeUn);
+		
+		assertEquals(0.0, produitCinq.getCoefficient(0));
+		assertEquals(0.0, produitCinq.getCoefficient(1));
+		
+		Polynome produitSix = polynomeTrois.multiplier(polynomeTrois);
+		
+		assertEquals(4.0, produitSix.getCoefficient(0));
+		assertEquals(16.0, produitSix.getCoefficient(1));
+		assertEquals(36.0, produitSix.getCoefficient(2));
+		assertEquals(40.0, produitSix.getCoefficient(3));
+		assertEquals(25.0, produitSix.getCoefficient(4));
+		
+	}
+	
+	@Test
+	void testDiviser() {
+		Polynome quotientUn = polynomeUn.diviser(polynomeDeux);
+		
+		assertEquals(0.0, quotientUn.getCoefficient(0));
+		assertEquals(0, quotientUn.getDegre());
+		
+		
+		Polynome quotientDeux = polynomeTrois.diviser(polynomeCinq);
+		
+		assertEquals(0.4, quotientDeux.getCoefficient(0));
+		assertEquals(0.8, quotientDeux.getCoefficient(1));
+		assertEquals(1.0, quotientDeux.getCoefficient(2));
+		assertEquals(2, quotientDeux.getDegre());
+		
+		Polynome quotientTrois = polynomeQuatre.diviser(polynomeTrois);
+		
+		assertEquals(0.0, quotientTrois.getCoefficient(0));
+		assertEquals(0, quotientTrois.getDegre());
+		
+		Polynome quotientQuatre = polynomeTrois.diviser(polynomeTrois);
+		
+		assertEquals(1.0, quotientQuatre.getCoefficient(0));
+		assertEquals(0, quotientQuatre.getDegre());
+		
+		Polynome quotientCinq = polynomeTrois.diviser(polynomeQuatre);
+		
+		assertEquals(-2.5, quotientCinq.getCoefficient(0));
+		assertEquals(1.75, quotientCinq.getCoefficient(1));
+		assertEquals(1, quotientCinq.getDegre());
+		
+	}
+	
+	@Test 
+	void testIntegrer() {
+		
+	}
+	
+	
 	@Test
 	void testDeriver() {
 		
