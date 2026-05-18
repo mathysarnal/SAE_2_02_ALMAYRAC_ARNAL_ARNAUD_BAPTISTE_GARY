@@ -154,7 +154,7 @@ public class Polynome {
     /**
      * Affiche les monômes non nuls du polynôme.
      */
-    public void afficher() {
+    public void afficher() { // TODO changer le nom de l'incrément en qqchose d'explicite
         for (int i = 0; i < coefficients.length; i++) {
             System.out.println("coefficient degré " + degres[i]
                                + " : " + coefficients[i]);
@@ -476,15 +476,50 @@ public class Polynome {
     }
     
     /**
-     * affichage du polynome 
+     * affichage du polynôme en chaîne de caractères
      * 
-     * @return le polynome
+     * @return polynome en String
      * @Override
      */
     @Override
     public String toString() {
-        // TODO faire
-        return "";
+        String resultat = "";
+
+        for (int i = 0; i < coefficients.length; i++) {
+
+            if (coefficients[i] == 0) {
+                continue;
+            }
+
+            // Signe
+            if (!resultat.isEmpty() && coefficients[i] > 0) {
+                resultat += " + ";
+            } else if (coefficients[i] < 0) {
+                resultat += " - ";
+            }
+
+            double coeff = Math.abs(coefficients[i]);
+
+            // Coefficient
+            if (!(coeff == 1 && degres[i] != 0)) {
+                resultat += coeff;
+            }
+
+            // x et puissance
+            if (degres[i] > 0) {
+                resultat += "x";
+
+                if (degres[i] > 1) {
+                    resultat += "^" + degres[i];
+                }
+            }
+        }
+
+        if (resultat.isEmpty()) {
+            return "0";
+        }
+
+        return resultat;
     }
     
     

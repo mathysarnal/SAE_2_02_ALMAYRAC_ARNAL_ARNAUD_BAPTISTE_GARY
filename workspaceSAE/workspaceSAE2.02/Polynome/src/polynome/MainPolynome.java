@@ -14,8 +14,8 @@ public class MainPolynome {
         double[] coefficients = new double[nbMonomes];
         int[] degres = new int[nbMonomes];
 
-        for (int i = 0; i < nbMonomes; i++) {
-            System.out.println("Monôme " + (i + 1));
+        for (int i = 0; i < nbMonomes; i++) { // TODO changer le nom de l'incrément en qqchose d'explicite
+            System.out.println("Monôme " + (i + 1) + " : ");
             System.out.print("  Coefficient : ");
             coefficients[i] = analyseurEntree.nextDouble();
             System.out.print("  Degré : ");
@@ -26,7 +26,18 @@ public class MainPolynome {
         Polynome p1 = new Polynome(coefficients, degres);
 
         System.out.println("\n=== POLYNOME SAISI ===");
-        p1.afficher();
+        System.out.println(p1.toString());
+
+        System.out.println("\n=== DEMONSTRATION DES GETTERS ===");
+
+        System.out.print("getDegre() : ");
+        System.out.println(p1.getDegre());
+        System.out.print("getCoefficient(p1.getDegre()) : ");
+        System.out.println(p1.getCoefficient(p1.getDegre()));
+        System.out.print("getLimitePlusInfini() : ");
+        System.out.println(p1.getLimitePlusInfini());
+        System.out.print("getLimiteMoinsInfini() : ");
+        System.out.println(p1.getLimiteMoinsInfini());
 
         System.out.println("\n=== DEMONSTRATION DES METHODES ===");
         
@@ -38,12 +49,12 @@ public class MainPolynome {
         // 2. Dérivation
         Polynome derivee = p1.deriver();
         System.out.println("\n-> Polynôme Dérivé (Fiche d'identité) :");
-        derivee.afficher();
+        System.out.print(derivee.toString());
 
         // 3. Intégration
         Polynome primitive = p1.integrer();
         System.out.println("\n-> Polynôme Intégré / Primitive (Fiche d'identité) :");
-        primitive.afficher();
+        System.out.print(primitive.toString());
 
         // 4. Valeur Moyenne
         System.out.println("\nCalcul de la valeur moyenne sur un intervalle [a, b] :");
@@ -63,8 +74,10 @@ public class MainPolynome {
         System.out.println("On ajoute le polynôme (3.0x^2) à votre polynôme...");
         Polynome aAjouter = new Polynome(new double[]{3.0}, new int[]{2});
         Polynome somme = p1.additionner(aAjouter);
-        somme.afficher();
+        System.out.print(somme.toString());
 
+        // TODO ajouter les autres méthodes
+        
         analyseurEntree.close();
         System.out.println("\nFin du polynome");
     }
