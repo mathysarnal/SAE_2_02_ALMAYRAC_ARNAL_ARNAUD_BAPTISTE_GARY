@@ -274,9 +274,43 @@ public class Polynome {
      * @param autrePolynome polynôme à additionner
      * @return polynôme résultant de l'addition
      */
+    
     public Polynome additionner(Polynome autrePolynome) {
-        // TODO faire
-        return null;
+        int degreMax = Math.max(this.getDegre(),
+                                autrePolynome.getDegre());
+        
+        double[] coefficients = new double[degreMax + 1];        
+        for (int degre = 0; degre <= degreMax; degre++) {
+            coefficients[degre] = this.getCoefficient(degre) + autrePolynome.getCoefficient(degre);
+        }
+        int nbMonomesNonNuls = 0;
+        for(int degre = 0; degre <= degreMax; degre++) {
+        	if(coefficients[degre] != 0.0)
+            nbMonomesNonNuls++;
+        }
+        
+        if(nbMonomesNonNuls == 0) {
+        	double[] coefNul = new double[] { 0.0 };
+    		int[] degNul =  new int[] { 0 };
+    		
+        	Polynome pNul = new Polynome(coefNul, degNul);
+        	
+        	return pNul;
+        }
+        
+        double[] nouveauxCoefs = new double[nbMonomesNonNuls];
+        int[] nouveauxDegres = new int[nbMonomesNonNuls];
+        
+        int insertion = 0;
+        for(int degre = degreMax; degre >= 0; degre--) {
+        	if (coefficients[degre] != 0.0) {
+        		nouveauxCoefs[insertion] = coefficients[degre];
+        		nouveauxDegres[insertion] = degre;
+        		insertion++;
+        	}
+        }
+        
+        return new Polynome(nouveauxCoefs, nouveauxDegres);
     }
 
     /**
@@ -285,9 +319,14 @@ public class Polynome {
      * @param scalaire valeur réelle par laquelle multiplier
      * @return polynôme résultant de la multiplication
      */
-    public Polynome multiplier(double scalaire) {
-        // TODO faire
-        return null;
+    public Polynome multiplierScalaire(double scalaire) {
+        double[] nouveauxCoefs = new double[this.coefficients.length];
+
+        for (int indice = 0; indice < this.coefficients.length; indice++) {
+            nouveauxCoefs[indice] = this.coefficients[indice] * scalaire;
+        }
+
+        return new Polynome(nouveauxCoefs, this.degres);
     }
 
     /**
@@ -296,9 +335,57 @@ public class Polynome {
      * @param autrePolynome polynôme multiplicateur
      * @return polynôme résultant de la multiplication
      */
-    public Polynome multiplier(Polynome autrePolynome) {
-        // TODO faire
-        return null;
+    public Polynome multiplierPolynome(Polynome autrePolynome) {
+        int degMax1 = this.getDegre();
+        int degMax2 = autrePolynome.getDegre();
+        int degMaxResultat = degMax1 + degMax2;
+
+        double[] resultat = new double[degMaxResultat + 1];
+       
+        for (int monomep1 = 0; monomep1 < this.coefficients.length; monomep1++) {
+        	double coef1 = this.coefficients[monomep1];
+        	int deg1 = this.degres[monomep1];
+        	
+        	for(int monomep2 = 0; monomep2 < autrePolynome.coefficients.length; monomep2++) {
+        		double coef2 = autrePolynome.coefficients[monomep2];
+        		int deg2 = autrePolynome.degres[monomep2];
+        		
+        		int degreFinal = deg1 + deg2;
+        		double coefFinal = coef1 * coef2;
+        		
+        		resultat[degreFinal] += coefFinal;
+        	}
+        }
+        
+        int nbMonomesNonNul = 0;
+        for(int nbCaseNul = 0; nbCaseNul <= degMaxResultat; nbCaseNul++) {
+        	if(resultat[nbCaseNul] != 0.0) {
+        		nbMonomesNonNul++;
+        	}
+        }
+        
+        if(nbMonomesNonNul == 0) {
+        	double[] coefNul = new double[] { 0.0 };
+    		int[] degNul =  new int[] { 0 };
+    		
+        	Polynome pNul = new Polynome(coefNul, degNul);
+        	
+        	return pNul;
+        }
+        
+        double[] coefficientsFinaux = new double[nbMonomesNonNul];
+        int[] degresFinaux = new int[nbMonomesNonNul];
+        
+        int insertion = 0;
+        for(int degres = degMaxResultat; degres >= 0; degres--) {
+        	if(resultat[degres] != 0.0) {
+        		coefficientsFinaux[insertion] = resultat[degres];
+        		degresFinaux[insertion] = degres;
+        		insertion++;
+        	}
+        }
+        
+        return new Polynome(coefficientsFinaux, degresFinaux);
     }
 
     /**
@@ -318,20 +405,57 @@ public class Polynome {
      * @return polynôme dérivé
      */
     public Polynome deriver() {
-        // TODO faire
-        return null;
-    }
+    	
+    	int nbMonomesNonNuls = 0;
+    	for(int monomesNul = 0; monomesNul < this.degres.length; monomesNul++) {
+    		if(this.degres[monomesNul] > 0 && this.coefficients[monomesNul] != 0.0) {
+    			nbMonomesNonNuls++;
+    		}
+    	}
+    	
+    	if (nbMonomesNonNuls == 0) {
+    		double[] coefNul = new double[] { 0.0 };
+    		int[] degNul =  new int[] { 0 };
+    		
+        	Polynome pNul = new Polynome(coefNul, degNul);
+        	
+        	return pNul;
+    	}
 
+        double[] nouveauxCoefs = new double[this.coefficients.length];
+        int[] nouveauxDegres = new int[this.degres.length];
+        int insertion = 0;
+
+        for (int i = 0; i < this.degres.length; i++) {
+            if (this.degres[i] > 0) {
+                double nouveauCoef = this.coefficients[i] * this.degres[i];
+                if (nouveauCoef != 0.0) {
+                    nouveauxCoefs[insertion] = nouveauCoef;
+                    nouveauxDegres[insertion] = this.degres[i] - 1;
+                    insertion++;
+                }
+            }
+        }
+
+        return new Polynome(nouveauxCoefs, nouveauxDegres);
+    }
+    
     /**
-     * Calcule une primitive de ce polynôme (constante additive nulle).
+     * Calcule l'intégrale de ce polynôme.
      *
-     * @return polynôme primitif (constante d'intégration = 0)
+     * @return polynôme intégré
      */
     public Polynome integrer() {
-        // TODO faire
-        return null;
+    	double[] nouveauxCoefs = new double[this.coefficients.length];
+        int[] nouveauxDegres = new int[this.degres.length];
+    
+        for (int i = 0; i < this.coefficients.length; i++) {
+            nouveauxDegres[i] = this.degres[i] + 1;
+            nouveauxCoefs[i] = this.coefficients[i] / nouveauxDegres[i];
+        }
+    
+        return new Polynome(nouveauxCoefs, nouveauxDegres);
     }
-
     /**
      * Calcule la valeur moyenne de la fonction polynômiale associée
      * sur un intervalle donné.
@@ -339,9 +463,29 @@ public class Polynome {
      * @param a borne inférieure de l'intervalle
      * @param b borne supérieure de l'intervalle
      * @return valeur moyenne de P sur [a, b]
+     * @throws IllegalArgumentException si a == b (intervalle de longueur nulle)
      */
-    public double moyenne(double a, double b) {
-        // TODO faire
-        return 0;
+    public double moyenne(double a, double b) {  
+    	if (a == b) {
+    	    throw new IllegalArgumentException("Impossible de calculer une moyenne sur un intervalle de longueur nulle.");
+    	}
+    	Polynome primitive = this.integrer();
+    	double integrale = primitive.evaluer(b) - primitive.evaluer(a);
+    	
+    	return integrale / (b - a);
     }
+    
+    /**
+     * affichage du polynome 
+     * 
+     * @return le polynome
+     * @Override
+     */
+    @Override
+    public String toString() {
+        // TODO faire
+        return "";
+    }
+    
+    
 }
