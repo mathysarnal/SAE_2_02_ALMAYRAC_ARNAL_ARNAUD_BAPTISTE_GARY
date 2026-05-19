@@ -34,10 +34,7 @@ public class MainPolynome {
         System.out.println(p1.getDegre());
         System.out.print("getCoefficient(p1.getDegre()) : ");
         System.out.println(p1.getCoefficient(p1.getDegre()));
-        System.out.print("getLimitePlusInfini() : ");
-        System.out.println(p1.getLimitePlusInfini());
-        System.out.print("getLimiteMoinsInfini() : ");
-        System.out.println(p1.getLimiteMoinsInfini());
+        // TODO ajouter les getters des limites une fois les tests faits
 
         System.out.println("\n=== DEMONSTRATION DES METHODES ===");
         
