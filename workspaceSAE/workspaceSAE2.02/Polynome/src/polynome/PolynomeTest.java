@@ -265,6 +265,22 @@ public class PolynomeTest {
 		assertEquals(1.75, quotientCinq.getCoefficient(1));
 		assertEquals(1, quotientCinq.getDegre());
 		
+		// cas particulier de division par 0
+		
+		// Cas 1 : Division d'un polynôme de degré 2 par 0
+        assertThrows(ArithmeticException.class, () -> {
+            polynomeTrois.diviser(polynomeUn);
+        });
+
+        // Cas 2 : Division du polynôme nul par lui-même (0 / 0)
+        assertThrows(ArithmeticException.class, () -> {
+            polynomeUn.diviser(polynomeUn);
+        });
+
+        // Cas 3 : Division d'un polynôme constant non nul par 0 (5.0 / 0)
+        assertThrows(ArithmeticException.class, () -> {
+            polynomeCinq.diviser(polynomeUn);
+        });
 	}
 	
 	@Test 
@@ -341,5 +357,23 @@ public class PolynomeTest {
 		assertEquals("2.0 + 4.0x + 5.0x^2", polynomeTrois.toString());
 		assertEquals(" - 3.0 - 2.0x", polynomeQuatre.toString());
 		assertEquals("5.0", polynomeCinq.toString());
+	}
+	
+	@Test 
+	void testLimitesMoinsInfini() {
+	    assertEquals(Double.NEGATIVE_INFINITY, polynomeUn.getLimiteMoinsInfini());
+	    assertEquals(Double.POSITIVE_INFINITY, polynomeDeux.getLimiteMoinsInfini());
+	    assertEquals(Double.POSITIVE_INFINITY, polynomeTrois.getLimiteMoinsInfini());
+	    assertEquals(Double.POSITIVE_INFINITY, polynomeQuatre.getLimiteMoinsInfini());
+	    assertEquals(Double.POSITIVE_INFINITY, polynomeCinq.getLimiteMoinsInfini());
+	}
+
+	@Test 
+	void testLimitesPlusInfini() {
+	    assertEquals(0.0, polynomeUn.getLimitePlusInfini(), precision);
+	    assertEquals(Double.POSITIVE_INFINITY, polynomeDeux.getLimitePlusInfini());
+	    assertEquals(Double.POSITIVE_INFINITY, polynomeTrois.getLimitePlusInfini());
+	    assertEquals(Double.NEGATIVE_INFINITY, polynomeQuatre.getLimitePlusInfini());
+	    assertEquals(Double.POSITIVE_INFINITY, polynomeCinq.getLimitePlusInfini());
 	}
 }
