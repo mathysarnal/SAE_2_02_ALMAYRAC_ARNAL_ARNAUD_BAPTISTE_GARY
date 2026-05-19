@@ -108,7 +108,24 @@ public class PolynomeTest {
 		
 		assertEquals(5.0,polynomeCinq.evaluer(6.0), precision);
 	}
+	
+	/**
+	 * Vérifie l'évaluation d'un polynome pour une valeur x donnée selon la méthode de horner.
+	 */
 
+	@Test
+	void testEvaluerHorner() {
+		assertEquals(0.0,polynomeUn.evaluerHorner(2.0), precision);
+		
+		assertEquals(5.0,polynomeDeux.evaluerHorner(1.0), precision);
+		
+		assertEquals(59.0,polynomeTrois.evaluerHorner(3.0), precision);
+		
+		assertEquals(-19.0,polynomeQuatre.evaluerHorner(8.0), precision);
+		
+		assertEquals(5.0,polynomeCinq.evaluerHorner(6.0), precision);
+	}
+	
 	/**
      * Vérifie que la méthode estNul() retourne true lorsque 
      * tous les coefficients du polynôme sont à zéro.

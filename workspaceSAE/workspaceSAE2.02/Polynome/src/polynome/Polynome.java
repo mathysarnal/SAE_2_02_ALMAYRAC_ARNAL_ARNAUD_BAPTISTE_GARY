@@ -267,6 +267,23 @@ public class Polynome {
         }
         return total;
     }
+    
+    public double evaluerHorner(double x) {
+    	if(this.coefficients.length == 0 || (this.getDegre() == 0 && this.coefficients[0] == 0.0)) {
+    		return 0.0;
+    	}
+    	
+    	int degreMax = this.getDegre();
+    	double resultat = 0.0;
+    	
+    	for(int degre = degreMax; degre >= 0; degre--) {
+    		resultat = resultat * x + this.getCoefficient(degre);
+    	}
+    	return resultat;
+    }
+    
+    
+    
 
     /**
      * Additionne ce polynôme avec un autre polynôme.
@@ -275,6 +292,7 @@ public class Polynome {
      * @return polynôme résultant de l'addition
      */
     
+   
     public Polynome additionner(Polynome autrePolynome) {
         int degreMax = Math.max(this.getDegre(),
                                 autrePolynome.getDegre());
