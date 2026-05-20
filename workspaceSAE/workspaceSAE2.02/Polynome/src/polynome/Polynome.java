@@ -152,16 +152,6 @@ public class Polynome {
     }
 
     /**
-     * Affiche les monômes non nuls du polynôme.
-     */
-    public void afficher() { // TODO changer le nom de l'incrément en qqchose d'explicite
-        for (int i = 0; i < coefficients.length; i++) {
-            System.out.println("coefficient degré " + degres[i]
-                               + " : " + coefficients[i]);
-        }
-    }
-
-    /**
      * Retourne le degré du polynôme,
      * c'est-à-dire le plus grand degré parmi les monômes stockés.
      *

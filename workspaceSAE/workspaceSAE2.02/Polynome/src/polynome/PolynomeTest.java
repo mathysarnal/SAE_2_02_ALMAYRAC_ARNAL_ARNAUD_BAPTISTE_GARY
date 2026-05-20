@@ -336,10 +336,10 @@ public class PolynomeTest {
 	
 	@Test
 	void testToString() {
-		assertEquals("0.0", polynomeUn.toString());
-		assertEquals("3.0x^100 + 2", polynomeDeux.toString());
-		assertEquals("5.0x^2 + 4.0x + 2.0", polynomeTrois.toString());
-		assertEquals("-2.0x - 3.0", polynomeQuatre.toString());
+		assertEquals("0", polynomeUn.toString());
+		assertEquals("2.0 + 3.0x^100", polynomeDeux.toString());
+		assertEquals("2.0 + 4.0x + 5.0x^2", polynomeTrois.toString());
+		assertEquals(" - 3.0 - 2.0x", polynomeQuatre.toString());
 		assertEquals("5.0", polynomeCinq.toString());
 	}
 }
