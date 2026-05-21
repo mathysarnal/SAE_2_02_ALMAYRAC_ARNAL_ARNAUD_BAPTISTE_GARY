@@ -52,8 +52,37 @@ public class PolynomeTest {
 		int[] degresCinq = new int[] { 0 };
 		polynomeCinq = new Polynome(coefficientsCinq, degresCinq);
 		
+		// Premier polynôme par racines : Racine à 0.0 (Donne P(X) = 2X)
+	    double[] racinesUn = { 0.0 };
+	    int[] ordresUn = { 1 };
+	    double coeffDominantUn = 2.0;
+	    Polynome polynomeRacinesUn = new Polynome(racinesUn, ordresUn, coeffDominantUn);
+
+	    // Deuxième polynôme par racines : Deux racines simples (Donne 3X² - 9X + 6)
+	    double[] racinesDeux = { 1.0, 2.0 };
+	    int[] ordresDeux = { 1, 1 };
+	    double coeffDominantDeux = 3.0;
+	    Polynome polynomeRacinesDeux = new Polynome(racinesDeux, ordresDeux, coeffDominantDeux);
+
+	    // Troisième polynôme par racines : Une racine double (Donne X² - 6X + 9)
+	    double[] racinesTrois = { 3.0 };
+	    int[] ordresTrois = { 2 };
+	    double coeffDominantTrois = 1.0;
+	    Polynome polynomeRacinesTrois = new Polynome(racinesTrois, ordresTrois, coeffDominantTrois);
+
+	    // Quatrième polynôme par racines : Coefficient négatif (Donne -2X - 2)
+	    double[] racinesQuatre = { -1.0 };
+	    int[] ordresQuatre = { 1 };
+	    double coeffDominantQuatre = -2.0;
+	    Polynome polynomeRacinesQuatre = new Polynome(racinesQuatre, ordresQuatre, coeffDominantQuatre);
+
+	    // Cinquième polynôme par racines : Racines opposées et coeff décimal (Donne 0.5X² - 2.0)
+	    double[] racinesCinq = { 2.0, -2.0 };
+	    int[] ordresCinq = { 1, 1 };
+	    double coeffDominantCinq = 0.5;
+	    Polynome polynomeRacinesCinq = new Polynome(racinesCinq, ordresCinq, coeffDominantCinq);
+		
 	}
-	
 	
 	
 	@Test
@@ -70,6 +99,30 @@ public class PolynomeTest {
      * Vérifie la récupération d'un coefficient spécifique par son degré.
      * Teste également si la méthode retourne 0.0 pour un degré non présent.
      */
+
+	@Test
+	void testConstructeurTableauxVides() {
+		double[] coeffsVides = new double[0];
+		int[] degsVides = new int[0];
+		
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Polynome(coeffsVides, degsVides);
+        });
+		
+		assertEquals("un polynôme doit avoir au moins un monôme", exception.getMessage());
+	}
+	
+	@Test
+	void testConstructeurTableauxNonParallèles() {
+		double[] coeffsNonPara = {2.0, 3.1};
+		int[] degsNonPara = {5};
+		
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Polynome(coeffsNonPara, degsNonPara);
+        });
+		
+		assertEquals("les tableaux coefficients et degres doivent avoir la même longueur", exception.getMessage());
+	}
 	
 	@Test
 	void testGetCoefficient() {
