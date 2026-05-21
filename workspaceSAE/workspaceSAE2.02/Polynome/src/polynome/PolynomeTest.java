@@ -173,6 +173,10 @@ public class PolynomeTest {
 		assertEquals(5.0,   resultat4.getCoefficient(2), precision);
 		assertEquals(3.0,   resultat4.getCoefficient(100), precision);
   
+		Polynome resultat5 = polynomeUn.additionner(polynomeUn);
+		assertEquals(0.0, resultat5.getCoefficient(0));
+		
+		
 	}
 	
 	/**
