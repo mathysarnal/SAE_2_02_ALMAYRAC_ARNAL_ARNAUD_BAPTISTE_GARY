@@ -402,6 +402,22 @@ public class Polynome {
         
         return new Polynome(coefficientsFinaux, degresFinaux);
     }
+    
+    /**
+     * Change le signe du polynôme en son opposé.
+     *
+     * @return polynome avec signe opposé
+     */
+    public Polynome oppose() {
+        double[] newCoef = new double[this.coefficients.length];
+        int[] newDeg = this.degres;
+
+        for (int i = 0; i < coefficients.length; i++) {
+            newCoef[i] = -coefficients[i];
+        }
+
+        return new Polynome(newCoef, newDeg);
+    }
 
     /**
      * Effectue la division euclidienne de ce polynôme par un autre.
@@ -409,9 +425,30 @@ public class Polynome {
      * @param diviseur polynôme diviseur
      * @return quotient de la division euclidienne
      */
-    public Polynome diviser(Polynome diviseur) {
-        // TODO faire
-        return null;
+    public Polynome[] diviser(Polynome diviseur) {
+        if (diviseur.estNul()) {
+        	throw new ArithmeticException("Division par 0 impossible !");
+        }
+        
+        Polynome reste = new Polynome(this.coefficients, this.degres);
+        Polynome quotient = new Polynome(new double[]{0.0}, new int[]{0});
+        double coefDiviseurDePlusHautDegre = diviseur.getCoefficient(diviseur.getDegre());
+        
+        while (reste.getDegre() >= diviseur.getDegre()
+        	   && !reste.estNul()) {
+        	double alpha = reste.getCoefficient(reste.getDegre())
+        			/ coefDiviseurDePlusHautDegre;
+        	int differenceDegres = reste.getDegre() - diviseur.getDegre();
+        	Polynome polynome = new Polynome(new double[]{alpha}, new int[]{differenceDegres});
+        	quotient = quotient.additionner(polynome);
+        	reste = reste.additionner((polynome.multiplierPolynome(diviseur)).oppose());
+        }
+        
+        Polynome[] resultat = new Polynome[2];
+        resultat[0] = quotient;
+        resultat[1] = reste;
+
+        return resultat;
     }
 
     /**
