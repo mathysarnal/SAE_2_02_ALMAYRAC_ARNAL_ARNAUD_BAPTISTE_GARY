@@ -79,7 +79,7 @@ public class Polynome {
     public Polynome(double[] racines, int[] ordres, double coeffDominant) {
         if (racines.length == 0 || ordres.length == 0) {
             throw new IllegalArgumentException(
-                "Il faut que lepolynôme ait au moins une racine");
+                "Il faut que le polynôme ait au moins une racine.");
         }
         if (racines.length != ordres.length) {
             throw new IllegalArgumentException(
