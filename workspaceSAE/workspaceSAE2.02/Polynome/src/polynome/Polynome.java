@@ -208,7 +208,7 @@ public class Polynome {
     public double getLimiteMoinsInfini() {
         int degre = getDegre();
         double coef = getCoefficient(degre);
-
+ 
         if (degre % 2 == 0) {
             /* Degré pair : même limite qu'en +infini */
             if (coef > 0) {
