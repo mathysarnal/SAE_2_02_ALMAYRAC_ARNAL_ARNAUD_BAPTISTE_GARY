@@ -75,8 +75,27 @@ public class MainPolynome {
         Polynome aAjouter = new Polynome(new double[]{3.0}, new int[]{2});
         Polynome somme = p1.additionner(aAjouter);
         System.out.print(somme.toString());
-
-        // TODO ajouter les autres méthodes
+        
+        // 6. Multiplication par un scalaire
+        System.out.println("\n=== TEST DE LA MULTIPLICATION SCALAIRE ===");
+        System.out.println("On multiplie le scalaire réel 5,6 à votre polynôme...");
+        double aMultiplier = 5.6;
+        Polynome produit = p1.multiplierScalaire(aMultiplier);
+        System.out.print(produit.toString());
+        
+        // 7. Multiplication par un polynôme
+        System.out.println("\n=== TEST DE LA MULTIPLICATION POLYNOMIALE ===");
+        System.out.println("On multiplie le polynôme (3.0x^2) à votre polynôme...");
+        Polynome aMultiplier2 = new Polynome(new double[]{3.0}, new int[]{2});
+        Polynome produit2 = p1.multiplierPolynome(aMultiplier2);
+        System.out.print(produit2.toString());
+        
+        // 8. Division par un polynôme
+        System.out.println("\n=== TEST DE LA DIVISION ===");
+        System.out.println("On divise votre polynôme par le polynôme (3.0x^2)...");
+        Polynome aDiviser = new Polynome(new double[]{3.0}, new int[]{2});
+        Polynome quotient = p1.diviser(aDiviser);
+        System.out.print(quotient.toString());
         
         analyseurEntree.close();
         System.out.println("\nFin du polynome");
