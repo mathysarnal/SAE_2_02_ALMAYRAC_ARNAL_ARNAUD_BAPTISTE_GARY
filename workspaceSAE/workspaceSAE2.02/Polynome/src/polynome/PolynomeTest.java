@@ -1,6 +1,7 @@
 package polynome;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 public class PolynomeTest {
 
+	// Précision permettant de comparer les tableaux de double
     private static final double precision = 1e-6;
     
     // Attributs pour le constructeur classique
@@ -27,6 +29,13 @@ public class PolynomeTest {
     private Polynome polynomeRacinesTrois;
     private Polynome polynomeRacinesQuatre;
     private Polynome polynomeRacinesCinq;
+    
+    // Tableaux pour stocker les racines 
+    private double[] racinesUn;
+    private double[] racinesDeux;
+    private double[] racinesTrois;
+    private double[] racinesQuatre;
+    private double[] racinesCinq;
     
     @BeforeEach
     void setUp() {
@@ -61,31 +70,31 @@ public class PolynomeTest {
         polynomeSix = new Polynome(coefficientsSix, degresSix);
         
         // Premier polynôme par racines : Racine à 0.0 (Donne P(X) = 2X)
-        double[] racinesUn = { 0.0 };
+        racinesUn = new double[] { 0.0 };
         int[] ordresUn = { 1 };
         double coeffDominantUn = 2.0;
         polynomeRacinesUn = new Polynome(racinesUn, ordresUn, coeffDominantUn);
 
         // Deuxième polynôme par racines : Deux racines simples (Donne 3X² - 9X + 6)
-        double[] racinesDeux = { 1.0, 2.0 };
+        racinesDeux = new double[] { 1.0, 2.0 };
         int[] ordresDeux = { 1, 1 };
         double coeffDominantDeux = 3.0;
         polynomeRacinesDeux = new Polynome(racinesDeux, ordresDeux, coeffDominantDeux);
 
         // Troisième polynôme par racines : Une racine double (Donne X² - 6X + 9)
-        double[] racinesTrois = { 3.0 };
+        racinesTrois = new double[] { 3.0 };
         int[] ordresTrois = { 2 };
         double coeffDominantTrois = 1.0;
         polynomeRacinesTrois = new Polynome(racinesTrois, ordresTrois, coeffDominantTrois);
 
         // Quatrième polynôme par racines : Coefficient négatif (Donne -2X - 2)
-        double[] racinesQuatre = { -1.0 };
+        racinesQuatre = new double[] { -1.0 };
         int[] ordresQuatre = { 1 };
         double coeffDominantQuatre = -2.0;
         polynomeRacinesQuatre = new Polynome(racinesQuatre, ordresQuatre, coeffDominantQuatre);
 
         // Cinquième polynôme par racines : Racines opposées et coeff décimal (Donne 0.5X² - 2.0)
-        double[] racinesCinq = { 2.0, -2.0 };
+        racinesCinq = new double[] { 2.0, -2.0 };
         int[] ordresCinq = { 1, 1 };
         double coeffDominantCinq = 0.5;
         polynomeRacinesCinq = new Polynome(racinesCinq, ordresCinq, coeffDominantCinq);
@@ -205,6 +214,33 @@ public class PolynomeTest {
         assertEquals(0.0, polynomeSix.getCoefficient(0));
         assertEquals(4.0, polynomeSix.getCoefficient(3));
     }
+    
+    /**
+	 * Vérifie la récupération des racines réelles d'un polynôme.
+	 * Teste deux cas :
+	 * 		- 1 : polynôme créé avec coefficients
+	 * 		- 2 : polynôme créé avec racines
+	 * Teste si la méthode retourne un tableau vide dans le cas 1,
+	 * ou les racines fournies dans le cas 2.
+	 */
+	
+	@Test
+	void testGetRacinesReelles() {	
+		// Cas 1 : polynôme créé avec coefficients
+		assertEquals(0, polynomeUn.getRacinesReelles().length);
+		assertEquals(0, polynomeDeux.getRacinesReelles().length);
+		assertEquals(0, polynomeTrois.getRacinesReelles().length);
+		assertEquals(0, polynomeQuatre.getRacinesReelles().length);
+		assertEquals(0, polynomeCinq.getRacinesReelles().length);
+		
+		// Cas 2 : polynôme créé avec racines 
+		assertArrayEquals(racinesUn, polynomeRacinesUn.getRacinesReelles(), precision);
+		assertArrayEquals(racinesDeux, polynomeRacinesDeux.getRacinesReelles(), precision);
+		assertArrayEquals(racinesTrois, polynomeRacinesTrois.getRacinesReelles(), precision);
+		assertArrayEquals(racinesQuatre, polynomeRacinesQuatre.getRacinesReelles(), precision);
+		assertArrayEquals(racinesCinq, polynomeRacinesCinq.getRacinesReelles(), precision);
+		
+	}
     
     @Test
     void testEvaluerSimple() {

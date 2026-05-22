@@ -27,6 +27,9 @@ public class Polynome {
 
     /** Degrés des monômes non nuls du polynôme, parallèle à coefficients */
     private int[] degres;
+    
+    /** Racines réelles du polynôme */
+    private double[] racinesReelles;
 
     /**
      * Construit un polynôme à partir de deux tableaux parallèles
@@ -149,6 +152,9 @@ public class Polynome {
                 index++;
             }
         }
+        
+        /* Stockage des racines en mémoire */
+        this.racinesReelles = racines.clone();
     }
 
     /**
@@ -224,6 +230,22 @@ public class Polynome {
                 return Double.POSITIVE_INFINITY;
             }
         }
+    }
+    
+    /**
+     * Retourne les racines réelles d'un polynôme.
+     * (Temporaire en vue de la réalisation de la méthode permettant le 
+     * calcul des racines réelles d'un polynôme quelconque => extension)
+     * 
+     * @return racines réelles d'un polynôme
+     */
+    public double[] getRacinesReelles() {
+    	// Cas où le polynôme a été créé par coefficients
+    	if (this.racinesReelles == null) { 
+    		return new double[0]; 
+    	} else { // Cas où le polynôme a été créé par racines
+    		return this.racinesReelles.clone();
+    	}
     }
 
     /**
@@ -528,10 +550,9 @@ public class Polynome {
     }
     
     /**
-     * affichage du polynôme en chaîne de caractères
+     * Affichage du polynôme en chaîne de caractères.
      * 
      * @return polynome en String
-     * @Override
      */
     @Override
     public String toString() {
