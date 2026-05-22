@@ -30,11 +30,14 @@ public class MainPolynome {
 
         System.out.println("\n=== DEMONSTRATION DES GETTERS ===");
 
-        System.out.print("getDegre() : ");
+        System.out.print("Degré du polynôme : ");
         System.out.println(p1.getDegre());
-        System.out.print("getCoefficient(p1.getDegre()) : ");
+        System.out.print("Coefficient du plus grand degré du polynôme : ");
         System.out.println(p1.getCoefficient(p1.getDegre()));
-        // TODO ajouter les getters des limites une fois les tests faits
+        System.out.print("Limite en plus l'infini : ");
+        System.out.println(p1.getLimitePlusInfini());
+        System.out.print("Limite en moins l'infini : ");
+        System.out.println(p1.getLimiteMoinsInfini());
 
         System.out.println("\n=== DEMONSTRATION DES METHODES ===");
         
@@ -45,12 +48,12 @@ public class MainPolynome {
 
         // 2. Dérivation
         Polynome derivee = p1.deriver();
-        System.out.println("\n-> Polynôme Dérivé (Fiche d'identité) :");
+        System.out.println("\n-> Polynôme Dérivé :");
         System.out.print(derivee.toString());
 
         // 3. Intégration
         Polynome primitive = p1.integrer();
-        System.out.println("\n-> Polynôme Intégré / Primitive (Fiche d'identité) :");
+        System.out.println("\n-> Polynôme Intégré / Primitive :");
         System.out.print(primitive.toString());
 
         // 4. Valeur Moyenne

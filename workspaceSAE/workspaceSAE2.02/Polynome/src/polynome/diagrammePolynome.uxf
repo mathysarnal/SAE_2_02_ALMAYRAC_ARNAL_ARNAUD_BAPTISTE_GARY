@@ -26,7 +26,7 @@
 +additionner(Polynome autrePolynome): Polynome
 +multiplierScalaire(double scalaire): Polynome
 +multiplierPolynome(Polynome autrePolynome): Polynome
-+diviser(Polynome diviseur): Polynome
++diviser(Polynome diviseur): Polynome[]
 +deriver(): Polynome
 +integrer(): Polynome
 +moyenne(double a, double b): double
