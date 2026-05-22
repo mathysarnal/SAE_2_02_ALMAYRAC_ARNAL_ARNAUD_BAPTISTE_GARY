@@ -44,17 +44,17 @@ public class MainPolynome {
         // 1. Évaluation
         System.out.print("Entrez une valeur pour x afin d'évaluer le polynôme : ");
         double x = analyseurEntree.nextDouble();
-        System.out.println("-> P(" + x + ") = " + p1.evaluer(x));
+        System.out.println("P(" + x + ") = " + p1.evaluer(x));
 
         // 2. Dérivation
         Polynome derivee = p1.deriver();
-        System.out.println("\n-> Polynôme Dérivé :");
-        System.out.print(derivee.toString());
+        System.out.println("\nPolynôme dérivé :");
+        System.out.println(derivee.toString());
 
         // 3. Intégration
         Polynome primitive = p1.integrer();
-        System.out.println("\n-> Polynôme Intégré / Primitive :");
-        System.out.print(primitive.toString());
+        System.out.println("\nPolynôme intégré :");
+        System.out.println(primitive.toString());
 
         // 4. Valeur Moyenne
         System.out.println("\nCalcul de la valeur moyenne sur un intervalle [a, b] :");
@@ -64,9 +64,9 @@ public class MainPolynome {
         double b = analyseurEntree.nextDouble();
         try {
             double valMoyenne = p1.moyenne(a, b);
-            System.out.println("-> Valeur moyenne sur [" + a + ", " + b + "] = " + valMoyenne);
+            System.out.println("Valeur moyenne sur [" + a + ", " + b + "] = " + valMoyenne);
         } catch (IllegalArgumentException e) {
-            System.out.println("-> Erreur : " + e.getMessage());
+            System.out.println("Erreur : " + e.getMessage());
         }
 
         // 5. Addition (Démonstration avec un polynôme fixe : + 3x^2)
