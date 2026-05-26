@@ -22,6 +22,7 @@ public class PolynomeTest {
     private Polynome polynomeQuatre;
     private Polynome polynomeCinq;
     private Polynome polynomeSix;
+    private Polynome polynomeSept;
     
     // Attributs pour les polynômes construits par racines
     private Polynome polynomeRacinesUn;
@@ -69,6 +70,11 @@ public class PolynomeTest {
         int[] degresSix = new int[] { 3 };
         polynomeSix = new Polynome(coefficientsSix, degresSix);
         
+        // Septième polynome 1 -2x + 5x^2 -3x^4
+        double[] coefficientsSept = new double[] {1.0, -2.0, 5.0, -3.0};
+        int[] degresSept = new int[] {0, 1, 2, 4};
+        polynomeSept = new Polynome(coefficientsSept, degresSept);
+        
         // Premier polynôme par racines : Racine à 0.0 (Donne P(X) = 2X)
         racinesUn = new double[] { 0.0 };
         int[] ordresUn = { 1 };
@@ -108,6 +114,7 @@ public class PolynomeTest {
         assertEquals(1, polynomeQuatre.getDegre(), "Le degré devrait être de 1");
         assertEquals(0, polynomeCinq.getDegre(), "Le degré devrait être de 0.");
         assertEquals(3, polynomeSix.getDegre(), "Le degré devrait être de 3."); 
+        assertEquals(4, polynomeSept.getDegre(), "Le degré devrait être de 4.");
     }
     
     @Test
@@ -213,6 +220,11 @@ public class PolynomeTest {
         
         assertEquals(0.0, polynomeSix.getCoefficient(0));
         assertEquals(4.0, polynomeSix.getCoefficient(3));
+        
+        assertEquals(1.0, polynomeSept.getCoefficient(0));
+        assertEquals(-2.0, polynomeSept.getCoefficient(1));
+        assertEquals(5.0, polynomeSept.getCoefficient(2));
+        assertEquals(-3.0, polynomeSept.getCoefficient(4));
     }
     
     /**
@@ -250,6 +262,7 @@ public class PolynomeTest {
         assertEquals(-19.0, polynomeQuatre.evaluer(8.0), precision);
         assertEquals(5.0, polynomeCinq.evaluer(6.0), precision);
         assertEquals(256.0, polynomeSix.evaluer(4.0), precision);
+        assertEquals(1.0, polynomeSept.evaluer(0.0), precision);
     }
     
     @Test
@@ -260,6 +273,7 @@ public class PolynomeTest {
         assertEquals(-19.0, polynomeQuatre.evaluerHorner(8.0), precision);
         assertEquals(5.0, polynomeCinq.evaluerHorner(6.0), precision);
         assertEquals(6912.0, polynomeSix.evaluerHorner(12.0), precision);
+        assertEquals(-679.0, polynomeSept.evaluerHorner(-4.0), precision);
     }
     
     @Test 
@@ -270,6 +284,7 @@ public class PolynomeTest {
         assertFalse(polynomeQuatre.estNul(), "Le polynôme ne devrait pas être nul.");
         assertFalse(polynomeCinq.estNul(), "Le polynôme ne devrait pas être nul.");
         assertFalse(polynomeSix.estNul(), "Le polynôme ne devrait pas être nul.");
+        assertFalse(polynomeSept.estNul(), "Le polynome ne devrait pas être nul");
     }
         
     @Test
@@ -430,6 +445,9 @@ public class PolynomeTest {
         Polynome primitiveCinq = polynomeCinq.integrer();
         assertEquals(0.0, primitiveCinq.getCoefficient(0), precision); 
         assertEquals(5.0, primitiveCinq.getCoefficient(1), precision);
+        
+        Polynome primitiveSix = polynomeSix.integrer();
+        assertEquals(4.0 / 3.0 , primitive.getCoefficient(2), precision);
     }
     
     @Test

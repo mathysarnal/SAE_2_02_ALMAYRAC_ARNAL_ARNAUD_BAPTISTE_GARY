@@ -136,11 +136,6 @@ public class Polynome {
             }
         }
 
-        /* Cas dégénéré : polynôme entièrement nul, on garde au moins un terme */
-        if (nbNonNuls == 0) {
-            nbNonNuls = 1;
-        }
-
         /* Remplissage des tableaux parallèles finaux */
         this.coefficients = new double[nbNonNuls];
         this.degres = new int[nbNonNuls];
