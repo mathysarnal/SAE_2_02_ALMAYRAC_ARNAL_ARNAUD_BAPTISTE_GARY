@@ -447,7 +447,7 @@ public class PolynomeTest {
         assertEquals(5.0, primitiveCinq.getCoefficient(1), precision);
         
         Polynome primitiveSix = polynomeSix.integrer();
-        assertEquals(4.0 / 3.0 , primitive.getCoefficient(2), precision);
+        assertEquals(4.0 / 3.0 , primitiveSix.getCoefficient(2), precision);
     }
     
     @Test
