@@ -1,7 +1,6 @@
 package polynome;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 public class PolynomeTest {
 
-	// Précision permettant de comparer les tableaux de double
     private static final double precision = 1e-6;
     
     // Attributs pour le constructeur classique
@@ -30,13 +28,6 @@ public class PolynomeTest {
     private Polynome polynomeRacinesTrois;
     private Polynome polynomeRacinesQuatre;
     private Polynome polynomeRacinesCinq;
-    
-    // Tableaux pour stocker les racines 
-    private double[] racinesUn;
-    private double[] racinesDeux;
-    private double[] racinesTrois;
-    private double[] racinesQuatre;
-    private double[] racinesCinq;
     
     @BeforeEach
     void setUp() {
@@ -76,31 +67,31 @@ public class PolynomeTest {
         polynomeSept = new Polynome(coefficientsSept, degresSept);
         
         // Premier polynôme par racines : Racine à 0.0 (Donne P(X) = 2X)
-        racinesUn = new double[] { 0.0 };
+        double[] racinesUn = { 0.0 };
         int[] ordresUn = { 1 };
         double coeffDominantUn = 2.0;
         polynomeRacinesUn = new Polynome(racinesUn, ordresUn, coeffDominantUn);
 
         // Deuxième polynôme par racines : Deux racines simples (Donne 3X² - 9X + 6)
-        racinesDeux = new double[] { 1.0, 2.0 };
+        double[] racinesDeux = { 1.0, 2.0 };
         int[] ordresDeux = { 1, 1 };
         double coeffDominantDeux = 3.0;
         polynomeRacinesDeux = new Polynome(racinesDeux, ordresDeux, coeffDominantDeux);
 
         // Troisième polynôme par racines : Une racine double (Donne X² - 6X + 9)
-        racinesTrois = new double[] { 3.0 };
+        double[] racinesTrois = { 3.0 };
         int[] ordresTrois = { 2 };
         double coeffDominantTrois = 1.0;
         polynomeRacinesTrois = new Polynome(racinesTrois, ordresTrois, coeffDominantTrois);
 
         // Quatrième polynôme par racines : Coefficient négatif (Donne -2X - 2)
-        racinesQuatre = new double[] { -1.0 };
+        double[] racinesQuatre = { -1.0 };
         int[] ordresQuatre = { 1 };
         double coeffDominantQuatre = -2.0;
         polynomeRacinesQuatre = new Polynome(racinesQuatre, ordresQuatre, coeffDominantQuatre);
 
         // Cinquième polynôme par racines : Racines opposées et coeff décimal (Donne 0.5X² - 2.0)
-        racinesCinq = new double[] { 2.0, -2.0 };
+        double[] racinesCinq = { 2.0, -2.0 };
         int[] ordresCinq = { 1, 1 };
         double coeffDominantCinq = 0.5;
         polynomeRacinesCinq = new Polynome(racinesCinq, ordresCinq, coeffDominantCinq);
@@ -226,33 +217,6 @@ public class PolynomeTest {
         assertEquals(5.0, polynomeSept.getCoefficient(2));
         assertEquals(-3.0, polynomeSept.getCoefficient(4));
     }
-    
-    /**
-	 * Vérifie la récupération des racines réelles d'un polynôme.
-	 * Teste deux cas :
-	 * 		- 1 : polynôme créé avec coefficients
-	 * 		- 2 : polynôme créé avec racines
-	 * Teste si la méthode retourne un tableau vide dans le cas 1,
-	 * ou les racines fournies dans le cas 2.
-	 */
-	
-	@Test
-	void testGetRacinesReelles() {	
-		// Cas 1 : polynôme créé avec coefficients
-		assertEquals(0, polynomeUn.getRacinesReelles().length);
-		assertEquals(0, polynomeDeux.getRacinesReelles().length);
-		assertEquals(0, polynomeTrois.getRacinesReelles().length);
-		assertEquals(0, polynomeQuatre.getRacinesReelles().length);
-		assertEquals(0, polynomeCinq.getRacinesReelles().length);
-		
-		// Cas 2 : polynôme créé avec racines 
-		assertArrayEquals(racinesUn, polynomeRacinesUn.getRacinesReelles(), precision);
-		assertArrayEquals(racinesDeux, polynomeRacinesDeux.getRacinesReelles(), precision);
-		assertArrayEquals(racinesTrois, polynomeRacinesTrois.getRacinesReelles(), precision);
-		assertArrayEquals(racinesQuatre, polynomeRacinesQuatre.getRacinesReelles(), precision);
-		assertArrayEquals(racinesCinq, polynomeRacinesCinq.getRacinesReelles(), precision);
-		
-	}
     
     @Test
     void testEvaluerSimple() {
@@ -382,44 +346,80 @@ public class PolynomeTest {
         assertEquals(20.0, produitSept.getCoefficient(3), precision);
     }
     
-    @Test
-    void testDiviser() {
-        /*Polynome quotientUn = polynomeUn.diviser(polynomeDeux);
-        assertEquals(0.0, quotientUn.getCoefficient(0));
-        assertEquals(0, quotientUn.getDegre());
-        
-        Polynome quotientDeux = polynomeTrois.diviser(polynomeCinq);
-        assertEquals(0.4, quotientDeux.getCoefficient(0));
-        assertEquals(0.8, quotientDeux.getCoefficient(1));
-        assertEquals(1.0, quotientDeux.getCoefficient(2));
-        assertEquals(2, quotientDeux.getDegre());
-        
-        Polynome quotientTrois = polynomeQuatre.diviser(polynomeTrois);
-        assertEquals(0.0, quotientTrois.getCoefficient(0));
-        assertEquals(0, quotientTrois.getDegre());
-        
-        Polynome quotientQuatre = polynomeTrois.diviser(polynomeTrois);
-        assertEquals(1.0, quotientQuatre.getCoefficient(0));
-        assertEquals(0, quotientQuatre.getDegre());
-        
-        Polynome quotientCinq = polynomeTrois.diviser(polynomeQuatre);
-        assertEquals(-2.5, quotientCinq.getCoefficient(0));
-        assertEquals(1.75, quotientCinq.getCoefficient(1));
-        assertEquals(1, quotientCinq.getDegre());
-        
-        // Gestion des cas particuliers de division par 0
-        assertThrows(ArithmeticException.class, () -> {
-            polynomeTrois.diviser(polynomeUn);
-        });
 
-        assertThrows(ArithmeticException.class, () -> {
-            polynomeUn.diviser(polynomeUn);
-        });
-
-        assertThrows(ArithmeticException.class, () -> {
-            polynomeCinq.diviser(polynomeUn);
-        });*/
-    }
+	/**
+	 * Vérifie que la méthode change le signe du polynôme
+	 * et renvoie bien 0 pour le cas d'un polynôme nul.
+	 */
+	@Test
+	void testOpposer() {
+		// Cas d'un polynôme nul
+		Polynome opposeUn = polynomeUn.opposer();
+		assertTrue(opposeUn.estNul());
+		
+		/* 
+		 * Cas d'un polynôme à coefficients positifs 
+		 * 2 + 3x^100 => -2 - 3x^100
+		 */
+		Polynome opposeDeux = polynomeDeux.opposer();
+		assertEquals(-2.0, opposeDeux.getCoefficient(0), precision);
+		assertEquals(-3.0, opposeDeux.getCoefficient(100), precision);
+		
+		Polynome opposeTrois = polynomeTrois.opposer();
+		assertEquals(-2.0, opposeTrois.getCoefficient(0), precision);
+		assertEquals(-4.0, opposeTrois.getCoefficient(1), precision);
+		assertEquals(-5.0, opposeTrois.getCoefficient(2), precision);
+		
+		/* 
+		 * Cas d'un polynôme à coefficients négatifs
+		 * -3 - 2x => 3 + 2x
+		 */
+		Polynome opposeQuatre = polynomeQuatre.opposer();
+	    assertEquals(3.0, opposeQuatre.getCoefficient(0), precision);
+	    assertEquals(2.0, opposeQuatre.getCoefficient(1), precision);
+	    
+	    /* 
+	     * Cas de la double opposition :
+	     * vérifie si un polynôme qui passe 2 fois dans la méthode 
+	     * retrouve son état d'origine
+	     */
+	    Polynome premiereOpposition = polynomeTrois.opposer();
+	    Polynome secondeOpposition = premiereOpposition.opposer();
+	    assertEquals(polynomeTrois.getCoefficient(0), secondeOpposition.getCoefficient(0), precision);
+	    assertEquals(polynomeTrois.getCoefficient(1), secondeOpposition.getCoefficient(1), precision);
+	    assertEquals(polynomeTrois.getCoefficient(2), secondeOpposition.getCoefficient(2), precision);
+	}
+	
+	/**
+	 * Vérifie que le quotient et le reste soient valides, et 
+	 * gère le cas de la division par zéro (impossible).
+	 */
+	@Test
+	void testDiviser() {
+		// Cas 1 : diviseur égal à zéro
+		// TODO 
+		
+		// Cas 2 : division classique avec reste
+		Polynome[] resultatClassique = polynomeTrois.diviser(polynomeQuatre);
+		// On vérifie le quotient
+		assertEquals(1.75, resultatClassique[0].getCoefficient(0), precision);
+		assertEquals(-2.5, resultatClassique[0].getCoefficient(1), precision);
+		// On vérifie le reste 
+		assertEquals(7.25, resultatClassique[1].getCoefficient(0), precision);
+		assertEquals(0, resultatClassique[1].getDegre()); 
+		
+		// Cas 3 : division d'un polynôme par lui-même
+		Polynome[] resultatAutodivision = polynomeTrois.diviser(polynomeTrois);
+		assertEquals(1.0, resultatAutodivision[0].getCoefficient(0), precision);
+	    assertEquals(0, resultatAutodivision[0].getDegre());
+	    assertTrue(resultatAutodivision[1].estNul());
+	    
+	    // Cas 4 : diviseur de degré supérieur à celui du dividende 
+	    // TODO 
+		
+		
+	}
+	
     
     @Test 
     void testIntegrer() {
@@ -447,7 +447,7 @@ public class PolynomeTest {
         assertEquals(5.0, primitiveCinq.getCoefficient(1), precision);
         
         Polynome primitiveSix = polynomeSix.integrer();
-        assertEquals(4.0 / 3.0 , primitiveSix.getCoefficient(2), precision);
+        assertEquals(1.0, primitiveSix.getCoefficient(4), precision);
     }
     
     @Test

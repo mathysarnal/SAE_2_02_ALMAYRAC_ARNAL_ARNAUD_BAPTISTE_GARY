@@ -420,22 +420,22 @@ public class Polynome {
         return new Polynome(coefficientsFinaux, degresFinaux);
     }
     
+
     /**
      * Change le signe du polynôme en son opposé.
      *
      * @return polynome avec signe opposé
      */
-    public Polynome oppose() {
+    public Polynome opposer() {
         double[] newCoef = new double[this.coefficients.length];
         int[] newDeg = this.degres;
 
         for (int i = 0; i < coefficients.length; i++) {
             newCoef[i] = -coefficients[i];
         }
-
         return new Polynome(newCoef, newDeg);
     }
-
+    
     /**
      * Effectue la division euclidienne de ce polynôme par un autre.
      *
@@ -458,7 +458,7 @@ public class Polynome {
         	int differenceDegres = reste.getDegre() - diviseur.getDegre();
         	Polynome polynome = new Polynome(new double[]{alpha}, new int[]{differenceDegres});
         	quotient = quotient.additionner(polynome);
-        	reste = reste.additionner((polynome.multiplierPolynome(diviseur)).oppose());
+        	reste = reste.additionner((polynome.multiplierPolynome(diviseur)).opposer());
         }
         
         Polynome[] resultat = new Polynome[2];
