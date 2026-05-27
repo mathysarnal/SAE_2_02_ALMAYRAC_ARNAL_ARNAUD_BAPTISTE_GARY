@@ -6,11 +6,16 @@
  * 
  */
 module Polynome {
-    requires javafx.controls;
-    requires javafx.fxml;
+	    requires javafx.controls;
+	    requires javafx.fxml;
     requires javafx.graphics;
-    requires org.junit.jupiter.api;
+    
+    opens polynome to javafx.fxml;
+    opens polynome.menu_principal to javafx.fxml;
+    opens polynome.menu_saisie to javafx.fxml;
+    opens polynome.menu_operations to javafx.fxml;
+    opens polynome.menu_fichier to javafx.fxml;
 
+    // Permet d'exécuter la classe MainApp
     exports polynome;
-    opens polynome to javafx.fxml, javafx.graphics;
 }
