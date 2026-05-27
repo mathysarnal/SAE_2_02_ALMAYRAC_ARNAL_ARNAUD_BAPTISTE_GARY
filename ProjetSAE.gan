@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="ProjetSAE" company="IUT de Rodez" webLink="http://" view-date="2026-05-13" view-index="0" gantt-divider-location="426" resource-divider-location="300" version="3.3.3322" locale="fr_FR">
+<?xml version="1.0" encoding="UTF-8"?><project name="ProjetSAE" company="IUT de Rodez" webLink="http://" view-date="2026-04-13" view-index="0" gantt-divider-location="411" resource-divider-location="300" version="3.3.3322" locale="fr_FR">
     <description/>
-    <view zooming-state="default:3" id="gantt-chart">
-        <field id="tpd3" name="Nom" width="224" order="0"/>
-        <field id="tpd4" name="Date de début" width="69" order="1"/>
-        <field id="tpd5" name="Date de fin" width="69" order="2"/>
-        <field id="tpd7" name="Avancée" width="48" order="3"/>
+    <view zooming-state="default:4" id="gantt-chart">
+        <field id="tpd3" name="Nom" width="216" order="0"/>
+        <field id="tpd4" name="Date de début" width="66" order="1"/>
+        <field id="tpd5" name="Date de fin" width="66" order="2"/>
+        <field id="tpd7" name="Avancée" width="47" order="3"/>
         <option id="filter.completedTasks" value="false"/>
         <option id="filter.dueTodayTasks" value="false"/>
         <option id="filter.overdueTasks" value="false"/>
@@ -46,10 +46,10 @@
         <task id="5" uid="7c9b7387c68145b69125a76b25e2d6da" name="Connexions des entêtes et des Getters" meeting="false" start="2026-04-13" duration="5" complete="100" expand="true"/>
         <task id="6" uid="4531228b2b4644d69b845d4793e8df1e" name="Extensions Egit / Github" meeting="false" start="2026-04-13" duration="5" complete="100" expand="true"/>
         <task id="7" uid="cba0bf6099f144e6a7807fcdbb752b0b" name="Début User Stories / Cas d'utilisation" meeting="false" start="2026-04-13" duration="5" complete="100" expand="true"/>
-        <task id="8" uid="aa000001b5b64b0aa44ff522a19c0001" name="Fin Sprint 1 — Présentation MOA" meeting="true" start="2026-04-17" duration="0" complete="100" expand="true"/>
-        <task id="9" uid="aa000002b5b64b0aa44ff522a19c0002" name="Réalisations User Stories / Getters" meeting="false" start="2026-04-17" duration="15" complete="70" expand="true"/>
-        <task id="10" uid="aa000003b5b64b0aa44ff522a19c0003" name="Tests - itération 2" meeting="false" start="2026-04-17" duration="15" complete="40" expand="true"/>
-        <task id="11" uid="aa000004b5b64b0aa44ff522a19c0004" name="Dossier technique" meeting="false" start="2026-04-17" duration="15" complete="20" expand="true"/>
+        <task id="8" uid="aa000001b5b64b0aa44ff522a19c0001" name="Fin itérations 1" meeting="true" start="2026-04-27" duration="0" complete="100" expand="true"/>
+        <task id="9" uid="aa000002b5b64b0aa44ff522a19c0002" name="Réalisations User Stories / Getters" meeting="false" start="2026-04-20" duration="15" complete="100" expand="true"/>
+        <task id="10" uid="aa000003b5b64b0aa44ff522a19c0003" name="Tests" meeting="false" start="2026-04-20" duration="15" complete="100" expand="true"/>
+        <task id="11" uid="aa000004b5b64b0aa44ff522a19c0004" name="Dossier technique" meeting="false" start="2026-04-20" duration="15" complete="100" expand="true"/>
         <task id="15" uid="aa000008b5b64b0aa44ff522a19c0008" name="Livraison des livrables" meeting="true" start="2026-06-04" duration="0" complete="0" expand="true"/>
         <task id="16" uid="aa000009b5b64b0aa44ff522a19c0009" name="Soutenance finale" meeting="true" start="2026-06-08" duration="0" complete="0" expand="true"/>
     </tasks>
