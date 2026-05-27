@@ -6,7 +6,11 @@
  * 
  */
 module Polynome {
+    requires javafx.controls;
+    requires javafx.fxml;
+    requires javafx.graphics;
     requires org.junit.jupiter.api;
 
-       opens polynome to org.junit.platform.commons;
+    exports polynome;
+    opens polynome to javafx.fxml, javafx.graphics;
 }
