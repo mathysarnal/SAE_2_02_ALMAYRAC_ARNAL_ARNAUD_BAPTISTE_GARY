@@ -27,6 +27,9 @@ public class Polynome {
 
     /** Degrés des monômes non nuls du polynôme, parallèle à coefficients */
     private int[] degres;
+    
+    /** Racines réelles du polynôme */
+    private double[] racinesReelles;
 
     /**
      * Construit un polynôme à partir de deux tableaux parallèles
@@ -79,7 +82,7 @@ public class Polynome {
     public Polynome(double[] racines, int[] ordres, double coeffDominant) {
         if (racines.length == 0 || ordres.length == 0) {
             throw new IllegalArgumentException(
-                "Il faut que lepolynôme ait au moins une racine");
+                "Il faut que le polynôme ait au moins une racine.");
         }
         if (racines.length != ordres.length) {
             throw new IllegalArgumentException(
@@ -133,11 +136,6 @@ public class Polynome {
             }
         }
 
-        /* Cas dégénéré : polynôme entièrement nul, on garde au moins un terme */
-        if (nbNonNuls == 0) {
-            nbNonNuls = 1;
-        }
-
         /* Remplissage des tableaux parallèles finaux */
         this.coefficients = new double[nbNonNuls];
         this.degres = new int[nbNonNuls];
@@ -149,6 +147,9 @@ public class Polynome {
                 index++;
             }
         }
+        
+        /* Stockage des racines en mémoire */
+        this.racinesReelles = racines.clone();
     }
 
     /**
@@ -208,7 +209,7 @@ public class Polynome {
     public double getLimiteMoinsInfini() {
         int degre = getDegre();
         double coef = getCoefficient(degre);
-
+ 
         if (degre % 2 == 0) {
             /* Degré pair : même limite qu'en +infini */
             if (coef > 0) {
@@ -224,6 +225,22 @@ public class Polynome {
                 return Double.POSITIVE_INFINITY;
             }
         }
+    }
+    
+    /**
+     * Retourne les racines réelles d'un polynôme.
+     * (Temporaire en vue de la réalisation de la méthode permettant le 
+     * calcul des racines réelles d'un polynôme quelconque => extension)
+     * 
+     * @return racines réelles d'un polynôme
+     */
+    public double[] getRacinesReelles() {
+    	// Cas où le polynôme a été créé par coefficients
+    	if (this.racinesReelles == null) { 
+    		return new double[0]; 
+    	} else { // Cas où le polynôme a été créé par racines
+    		return this.racinesReelles.clone();
+    	}
     }
 
     /**
@@ -257,6 +274,30 @@ public class Polynome {
         }
         return total;
     }
+    
+    /**
+     * Evaluer le polynome pour une valeu donnée de x avec la méthode de horner
+     * 
+     * @param x valeur qui permet  d'évluer le polynome
+     * @return résulatat de P(x) pour un x donnée
+     */
+    
+    public double evaluerHorner(double x) {
+    	if(this.coefficients.length == 0 || (this.getDegre() == 0 && this.coefficients[0] == 0.0)) {
+    		return 0.0;
+    	}
+    	
+    	int degreMax = this.getDegre();
+    	double resultat = 0.0;
+    	
+    	for(int degre = degreMax; degre >= 0; degre--) {
+    		resultat = resultat * x + this.getCoefficient(degre);
+    	}
+    	return resultat;
+    }
+    
+    
+    
 
     /**
      * Additionne ce polynôme avec un autre polynôme.
@@ -265,6 +306,7 @@ public class Polynome {
      * @return polynôme résultant de l'addition
      */
     
+   
     public Polynome additionner(Polynome autrePolynome) {
         int degreMax = Math.max(this.getDegre(),
                                 autrePolynome.getDegre());
@@ -377,16 +419,53 @@ public class Polynome {
         
         return new Polynome(coefficientsFinaux, degresFinaux);
     }
+    
 
+    /**
+     * Change le signe du polynôme en son opposé.
+     *
+     * @return polynome avec signe opposé
+     */
+    public Polynome opposer() {
+        double[] newCoef = new double[this.coefficients.length];
+        int[] newDeg = this.degres;
+
+        for (int i = 0; i < coefficients.length; i++) {
+            newCoef[i] = -coefficients[i];
+        }
+        return new Polynome(newCoef, newDeg);
+    }
+    
     /**
      * Effectue la division euclidienne de ce polynôme par un autre.
      *
      * @param diviseur polynôme diviseur
      * @return quotient de la division euclidienne
      */
-    public Polynome diviser(Polynome diviseur) {
-        // TODO faire
-        return null;
+    public Polynome[] diviser(Polynome diviseur) {
+        if (diviseur.estNul()) {
+        	throw new ArithmeticException("Division par 0 impossible !");
+        }
+        
+        Polynome reste = new Polynome(this.coefficients, this.degres);
+        Polynome quotient = new Polynome(new double[]{0.0}, new int[]{0});
+        double coefDiviseurDePlusHautDegre = diviseur.getCoefficient(diviseur.getDegre());
+        
+        while (reste.getDegre() >= diviseur.getDegre()
+        	   && !reste.estNul()) {
+        	double alpha = reste.getCoefficient(reste.getDegre())
+        			/ coefDiviseurDePlusHautDegre;
+        	int differenceDegres = reste.getDegre() - diviseur.getDegre();
+        	Polynome polynome = new Polynome(new double[]{alpha}, new int[]{differenceDegres});
+        	quotient = quotient.additionner(polynome);
+        	reste = reste.additionner((polynome.multiplierPolynome(diviseur)).opposer());
+        }
+        
+        Polynome[] resultat = new Polynome[2];
+        resultat[0] = quotient;
+        resultat[1] = reste;
+
+        return resultat;
     }
 
     /**
@@ -466,10 +545,9 @@ public class Polynome {
     }
     
     /**
-     * affichage du polynôme en chaîne de caractères
+     * Affichage du polynôme en chaîne de caractères.
      * 
      * @return polynome en String
-     * @Override
      */
     @Override
     public String toString() {
