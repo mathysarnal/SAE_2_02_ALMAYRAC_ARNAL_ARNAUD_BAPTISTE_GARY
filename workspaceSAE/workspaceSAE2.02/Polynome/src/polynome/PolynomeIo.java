@@ -1,6 +1,6 @@
 package polynome;
 
-public class polynomeIo {
+public class PolynomeIo {
 	
 
 }
