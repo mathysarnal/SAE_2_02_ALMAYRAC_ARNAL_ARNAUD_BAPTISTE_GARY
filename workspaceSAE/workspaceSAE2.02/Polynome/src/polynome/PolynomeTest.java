@@ -429,8 +429,10 @@ public class PolynomeTest {
 	 */
 	@Test
 	void testDiviser() {
-		// Cas 1 : diviseur égal à zéro
-		// TODO 
+		// Cas 1 : diviseur égal à zéro -> polynomeUn est le polynome nul
+		assertThrows(ArithmeticException.class, () -> {
+			polynomeTrois.diviser(polynomeUn);
+		});
 		
 		// Cas 2 : division classique avec reste
 		Polynome[] resultatClassique = polynomeTrois.diviser(polynomeQuatre);
@@ -448,9 +450,13 @@ public class PolynomeTest {
 	    assertTrue(resultatAutodivision[1].estNul());
 	    
 	    // Cas 4 : diviseur de degré supérieur à celui du dividende 
-	    // TODO 
-		
-		
+	    Polynome[] resultatDegreSup = polynomeQuatre.diviser(polynomeTrois);
+
+	    assertTrue(resultatDegreSup[0].estNul()); 
+
+	    // 3. On vérifie le reste : il doit être identique au dividende ("polynomePetit")
+	    assertEquals(-3.0, resultatDegreSup[1].getCoefficient(0), precision);
+	    assertEquals(-2.0, resultatDegreSup[1].getCoefficient(1), precision);
 	}
 	
     
