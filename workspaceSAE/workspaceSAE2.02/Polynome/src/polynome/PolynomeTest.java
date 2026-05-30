@@ -340,6 +340,44 @@ public class PolynomeTest {
         assertEquals(12.0, resultat6.getCoefficient(3));
     }
     
+    @Test
+    void testCalculSuiteSturm() {
+    	double[] coeffsUn = {1.0, -1.0};
+    	int[] degresUn = {2, 0};
+    	Polynome polynomeUn = new Polynome(coeffsUn, degresUn);
+    	
+    	double[] coeffsDeux = {5.0};
+    	int[] degresDeux = { 0 };
+    	Polynome polynomeDeux = new Polynome(coeffsDeux, degresDeux);
+    	
+    	java.util.List<Polynome> suiteUn = polynomeUn.calculSuiteSturm();
+    	java.util.List<Polynome> suiteDeux = polynomeDeux.calculSuiteSturm();
+    	
+    	assertEquals(2, polynomeUn.compterChangementSigne(-2.0));
+    	assertEquals(3, suiteUn.size(), " La suite de Sturm de X^2 - 1 doit contenir 3 polynome");
+    	assertEquals(1, suiteDeux.size());
+    	assertEquals(0, suiteDeux.get(0).getDegre());
+    }
+    
+    @Test
+    void testCompterRacinesIntervalle() {
+        // Arrange : P(X) = X^2 - 1
+        double[] coeffs = {1.0, -1.0};
+        int[] degres = {2, 0};
+        Polynome polynome = new Polynome(coeffs, degres);
+        
+        // Act & Assert
+        // Sur [-2, 2], il y a deux racines (-1 et 1)
+        assertEquals(2, polynome.compterRacinesIntervalle(-2.0, 2.0), 
+                "Il doit y avoir 2 racines entre -2 et 2 pour X^2 - 1");
+                
+        // Sur [0, 2], il y a une seule racine (1)
+        assertEquals(1, polynome.compterRacinesIntervalle(0.0, 2.0), 
+                "Il doit y avoir 1 seule racine entre 0 et 2 pour X^2 - 1");
+    }
+    
+   
+    
     @Test 
     void testMultiplierPolynome() {
         Polynome produitUn = polynomeUn.multiplierPolynome(polynomeDeux);

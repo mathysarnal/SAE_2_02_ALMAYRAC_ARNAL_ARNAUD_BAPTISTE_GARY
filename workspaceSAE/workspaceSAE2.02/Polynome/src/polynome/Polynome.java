@@ -436,6 +436,8 @@ public class Polynome {
         return new Polynome(newCoef, newDeg);
     }
     
+    
+    
     /**
      * Effectue la division euclidienne de ce polynôme par un autre.
      *
@@ -467,7 +469,80 @@ public class Polynome {
 
         return resultat;
     }
+    
+    /**
+     * Calcule la suite de sturm du polynome.
+     * @return la liste des polynome formant la suite de sturm
+     */
+    public java.util.List<Polynome> calculSuiteSturm() {
+    	java.util.List<Polynome> suite = new java.util.ArrayList<>();
+    	
+    	suite.add(this);
+    	
+    	if(this.estNul() || this.getDegre() == 0) {
+    		return suite;
+    	}
+    	
+    	suite.add(this.deriver());
+    	
+    	Polynome reste;
+    	
+    	do {
+    		Polynome avantDernier = suite.get(suite.size() - 2);
+    		Polynome dernier = suite.get(suite.size() - 1);
+    		
+    		reste = avantDernier.diviser(dernier)[1];
+    		
+    		if(!reste.estNul()) {
+    			suite.add(reste.opposer());
+    		}
+    	} while (!reste.estNul());
+    	return suite;
+    }
 
+    public int compterChangementSigne(double x ) {
+    	java.util.List<Polynome> suiteSturm = this.calculSuiteSturm();
+    	java.util.List<Double> resultat = new java.util.ArrayList<>();
+    	
+    	for (Polynome polynome : suiteSturm) {
+    		double evaluation = polynome.evaluerHorner(x);
+    		
+    		if (evaluation != 0.0) {
+    			resultat.add(evaluation);
+    		}
+    	}
+    	
+    	int changement = 0;
+    	for (int position = 0; position < resultat.size() - 1; position++) {
+    		double valeur = resultat.get(position);
+    		double valeurSuivante = resultat.get(position + 1);
+    		
+    		if (( valeur > 0 && valeurSuivante < 0) || (valeur < 0 && valeurSuivante > 0)) {
+    			changement++;
+    		}
+    	}
+    	return changement;
+    }
+    
+    /**
+     * Compte le nombre de racines réelles distinctes dans l'intervalle [borneA, borneB]
+     * en utilisant le théorème de Sturm.
+     * * @param borneA la borne inférieure de l'intervalle
+     * @param borneB la borne supérieure de l'intervalle
+     * @return le nombre de racines réelles dans cet intervalle
+     * @throws IllegalArgumentException si borneA est supérieure à borneB
+     */
+    public int compterRacinesIntervalle(double borneA, double borneB) {
+        if (borneA > borneB) {
+            throw new IllegalArgumentException("La borne A doit être inférieure ou égale à la borne B.");
+        }
+        
+        int changementsEnA = this.compterChangementSigne(borneA);
+        int changementsEnB = this.compterChangementSigne(borneB);
+        
+        return changementsEnA - changementsEnB;
+    }
+    
     /**
      * Calcule la dérivée de ce polynôme.
      *
