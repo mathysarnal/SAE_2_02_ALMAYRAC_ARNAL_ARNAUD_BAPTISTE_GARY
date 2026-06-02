@@ -1,3 +1,7 @@
+/*
+ * PolynomeTest.java                                        13 avril 2026
+ * IUT de Rodez, Info1 2025-2026, pas de copyright
+ */
 package polynome;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -10,6 +14,14 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test des méthodes de Polynome.java.
+ * La fixture de tests est composée de :
+ * <ul>
+ *   <li>Sept polynômes construits à partir des coefficients et des degrés.</li>
+ *   <li>Cinq polynômes construits à partir des racines.</li>
+ * </ul>
+ */
 public class PolynomeTest {
 
     private static final double precision = 1e-6;
@@ -36,6 +48,10 @@ public class PolynomeTest {
     private double[] racinesQuatre; // = { -1.0 }
     private double[] racinesCinq; // = { 2.0, -2.0 }  
     
+    /**
+     * Initialise la fixture de tests, s'exécutant au début
+     * de chaque méthode de test.
+     */
     @BeforeEach
     void setUp() {
         // Premier polynome 0.0
@@ -104,6 +120,11 @@ public class PolynomeTest {
         polynomeRacinesCinq = new Polynome(racinesCinq, ordresCinq, coeffDominantCinq);
     }
     
+    /**
+     * Test de la méthode getDegre().
+     * Si le assert ne passe pas, on l'indique à l'utilisateur
+     * en lui donnant le degré qui devrait être renvoyé.
+     */
     @Test
     void testCreationEtDegre() {
         assertEquals(0, polynomeUn.getDegre(), "Le degré devrait être de 0.");
@@ -114,7 +135,12 @@ public class PolynomeTest {
         assertEquals(3, polynomeSix.getDegre(), "Le degré devrait être de 3."); 
         assertEquals(4, polynomeSept.getDegre(), "Le degré devrait être de 4.");
     }
-    
+
+    /**
+     * Vérifie qu'il est impossible de construire un polynôme
+     * à partir de deux tableaux vides.
+     * Le constructeur doit lever une IllegalArgumentException.
+     */
     @Test
     void testConstructeurTableauxVides() {
         double[] coeffsVides = new double[0];
@@ -127,6 +153,11 @@ public class PolynomeTest {
         assertEquals("un polynôme doit avoir au moins un monôme", exception.getMessage());
     }
     
+    /**
+     * Vérifie qu'il est impossible de construire un polynôme
+     * lorsque les tableaux des coefficients et des degrés
+     * n'ont pas la même longueur.
+     */
     @Test
     void testConstructeurTableauxNonParalleles() {
         double[] coeffsNonPara = {2.0, 3.1};
@@ -139,6 +170,10 @@ public class PolynomeTest {
         assertEquals("les tableaux coefficients et degres doivent avoir la même longueur", exception.getMessage());
     }
     
+    /**
+     * Vérifie qu'il est impossible de construire un polynôme
+     * à partir de tableaux de racines et d'ordres vides.
+     */
     @Test
     void testConstructeurTableauxVidesRacines() {
         double[] racinesT = new double[0];
@@ -152,6 +187,11 @@ public class PolynomeTest {
         assertEquals("Il faut que le polynôme ait au moins une racine.", exception.getMessage());
     }
     
+    /**
+     * Vérifie qu'il est impossible de construire un polynôme
+     * lorsque les tableaux des racines et des ordres
+     * n'ont pas la même longueur.
+     */
     @Test
     void testConstructeurTableauxNonParallelesRacines() {
         double[] racinesNonPara = {2.0, 3.5};
@@ -165,6 +205,10 @@ public class PolynomeTest {
         assertEquals("Les tableaux racines et ordres doivent avoir la même longueur.", exception.getMessage());
     }
     
+    /**
+     * Vérifie qu'un polynôme construit à partir de racines
+     * ne peut pas avoir un coefficient dominant nul.
+     */
     @Test
     void testConstructeurCoeffDominantNul() {
         double[] racinesT = {2.0};
@@ -178,6 +222,11 @@ public class PolynomeTest {
         assertEquals("Le coefficient dominant ne peut pas être nul.", exception.getMessage());
     }
     
+    /**
+     * Vérifie le comportement du constructeur dans le cas
+     * particulier où toutes les multiplicités sont nulles.
+     * Le polynôme doit néanmoins être créé sans erreur.
+     */
     @Test
     void testConstructeurRacines_CasDegenere_nbNonNulsEgalZero() {
         double[] racines = { 0.0 };
@@ -188,6 +237,10 @@ public class PolynomeTest {
         assertNotNull(p);
     }
     
+    /**
+     * Vérifie la création d'un polynôme à partir d'une racine
+     * réelle simple et d'un coefficient dominant non nul.
+     */
     @Test
     void testConstructeurRacines_CasNormal_nbNonNulsSuperieurA_Zero() {
         double[] racines = { 3.0 };
@@ -198,9 +251,18 @@ public class PolynomeTest {
         assertEquals(2.0, p.getCoefficient(1), 1e-9);
     }
     
+    /**
+     * Vérifie que la méthode retourne correctement le coefficient
+     * associé à un degré donné et renvoie 0 lorsqu'aucun monôme
+     * ne possède ce degré.
+     * On vérifie également que la méthode lève une IllegalArgumentException
+     * lorsqu'on demande le coefficient d'un degré négatif.
+     */
     @Test
     void testGetCoefficient() {
         assertEquals(0.0, polynomeUn.getCoefficient(0));
+        assertThrows(IllegalArgumentException.class,
+                () -> polynomeUn.getCoefficient(-1));
     
         assertEquals(2.0, polynomeDeux.getCoefficient(0));
         assertEquals(0.0, polynomeDeux.getCoefficient(1));
@@ -233,7 +295,6 @@ public class PolynomeTest {
      * Teste si la méthode retourne un tableau vide dans le cas 1,
      * ou les racines fournies dans le cas 2.
      */
-    
     @Test
     void testGetRacinesReelles() {  
         // Cas 1 : polynôme créé avec coefficients
@@ -251,6 +312,10 @@ public class PolynomeTest {
         assertArrayEquals(racinesCinq, polynomeRacinesCinq.getRacinesReelles(), precision);
     }
     
+    /**
+     * Vérifie l'évaluation d'un polynôme pour différentes
+     * valeurs de x à l'aide de la méthode evaluer().
+     */
     @Test
     void testEvaluerSimple() {
         assertEquals(0.0, polynomeUn.evaluer(2.0), precision);
@@ -262,6 +327,11 @@ public class PolynomeTest {
         assertEquals(1.0, polynomeSept.evaluer(0.0), precision);
     }
     
+    /**
+     * Vérifie que l'évaluation par la méthode de Horner
+     * produit les mêmes résultats attendus que l'évaluation
+     * classique du polynôme.
+     */
     @Test
     void testEvaluerHorner() {
         assertEquals(0.0, polynomeUn.evaluerHorner(2.0), precision);
@@ -273,6 +343,10 @@ public class PolynomeTest {
         assertEquals(-679.0, polynomeSept.evaluerHorner(-4.0), precision);
     }
     
+    /**
+     * Vérifie la détection correcte d'un polynôme nul
+     * et d'un polynôme non nul.
+     */
     @Test 
     void testPolynomeNul() {
         assertTrue(polynomeUn.estNul(), "Le polynôme devrait être nul.");
@@ -283,7 +357,12 @@ public class PolynomeTest {
         assertFalse(polynomeSix.estNul(), "Le polynôme ne devrait pas être nul.");
         assertFalse(polynomeSept.estNul(), "Le polynome ne devrait pas être nul");
     }
-        
+    
+    /**
+     * Vérifie l'addition de plusieurs polynômes :
+     * cas général, addition avec le polynôme nul
+     * et addition produisant un polynôme nul.
+     */
     @Test
     void testAdditionner() {
         Polynome resultat1 = polynomeTrois.additionner(polynomeUn);
@@ -315,6 +394,10 @@ public class PolynomeTest {
         assertEquals(4.0, resultat6.getCoefficient(3), precision);
     }
     
+    /**
+     * Vérifie la multiplication d'un polynôme
+     * par un scalaire réel.
+     */
     @Test
     void testMultiplierScalaire() {
         Polynome resultat1 = polynomeUn.multiplierScalaire(3.0);
@@ -340,6 +423,11 @@ public class PolynomeTest {
         assertEquals(12.0, resultat6.getCoefficient(3));
     }
     
+    /**
+     * Vérifie la construction de la suite de Sturm
+     * pour différents polynômes et le nombre de
+     * changements de signe associés.
+     */
     @Test
     void testCalculSuiteSturm() {
     	double[] coeffsUn = {1.0, -1.0};
@@ -359,6 +447,10 @@ public class PolynomeTest {
     	assertEquals(0, suiteDeux.get(0).getDegre());
     }
     
+    /**
+     * Vérifie le comptage des racines réelles distinctes
+     * dans un intervalle à l'aide du théorème de Sturm.
+     */
     @Test
     void testCompterRacinesIntervalle() {
         // Arrange : P(X) = X^2 - 1
@@ -376,8 +468,11 @@ public class PolynomeTest {
                 "Il doit y avoir 1 seule racine entre 0 et 2 pour X^2 - 1");
     }
     
-   
-    
+    /**
+     * Vérifie la multiplication de deux polynômes
+     * dans différents cas : polynôme nul, polynômes
+     * de degrés différents et produit de polynômes identiques.
+     */
     @Test 
     void testMultiplierPolynome() {
         Polynome produitUn = polynomeUn.multiplierPolynome(polynomeDeux);
@@ -497,8 +592,11 @@ public class PolynomeTest {
 	    assertEquals(-2.0, resultatDegreSup[1].getCoefficient(1), precision);
 	}
 	
-    
-    @Test 
+	/**
+	 * Vérifie le calcul de la primitive d'un polynôme
+	 * pour différents cas de figure.
+	 */
+    @Test
     void testIntegrer() {
         Polynome primitiveUn = polynomeUn.integrer();
         assertTrue(primitiveUn.estNul(), "La primitive de 0 doit être 0.");
@@ -527,6 +625,10 @@ public class PolynomeTest {
         assertEquals(1.0, primitiveSix.getCoefficient(4), precision);
     }
     
+    /**
+     * Vérifie le calcul de la dérivée d'un polynôme,
+     * notamment pour les polynômes constants et nuls.
+     */
     @Test
     void testDeriver() {
         assertTrue(polynomeUn.deriver().estNul());
@@ -542,6 +644,11 @@ public class PolynomeTest {
         assertEquals(12.0, deriveeSix.getCoefficient(2));
     }
     
+    /**
+     * Vérifie le calcul de la valeur moyenne d'un polynôme
+     * sur un intervalle ainsi que la gestion du cas où
+     * l'intervalle est de longueur nulle.
+     */
     @Test
     void testMoyenne() {
         assertEquals(0.0, polynomeUn.moyenne(1, 5), precision);
@@ -556,6 +663,9 @@ public class PolynomeTest {
         });
     }
     
+    /**
+     * Vérifie la représentation textuelle des polynômes.
+     */
     @Test
     void testToString() {
         assertEquals("0", polynomeUn.toString());
@@ -566,6 +676,10 @@ public class PolynomeTest {
         assertEquals("4.0x^3", polynomeSix.toString());
     }
     
+    /**
+     * Vérifie le calcul de la limite du polynôme
+     * lorsque x tend vers moins l'infini.
+     */
     @Test 
     void testLimitesMoinsInfini() {
         // polynomeRacinesUn vaut 2X (Degré impair, coeff dominant positif -> -Infini)
@@ -581,6 +695,10 @@ public class PolynomeTest {
         assertEquals(Double.NEGATIVE_INFINITY, polynomeSix.getLimiteMoinsInfini());
     }
 
+	/**
+	 * Vérifie le calcul de la limite du polynôme
+	 * lorsque x tend vers plus l'infini.
+	 */
     @Test 
     void testLimitesPlusInfini() {
         assertEquals(0.0, polynomeUn.getLimitePlusInfini(), precision);
