@@ -30,6 +30,9 @@ public class Polynome {
     
     /** Racines réelles du polynôme */
     private double[] racinesReelles;
+    
+    /** Ordres de la racines */
+    private int[] ordresRacines;
 
     /**
      * Construit un polynôme à partir de deux tableaux parallèles
@@ -150,6 +153,7 @@ public class Polynome {
         
         /* Stockage des racines en mémoire */
         this.racinesReelles = racines.clone();
+        this.ordresRacines = ordres.clone();
     }
 
     /**
@@ -241,6 +245,29 @@ public class Polynome {
     	} else { // Cas où le polynôme a été créé par racines
     		return this.racinesReelles.clone();
     	}
+    }
+    
+    public int[] getOrdresRacines() {
+        if (this.ordresRacines == null) {
+            return new int[0];
+        }
+        return this.ordresRacines.clone();
+    }
+    
+    /**
+     * Retourne une copie du tableau des coefficients des monômes non nuls.
+     * @return tableau des coefficients
+     */
+    public double[] getCoefficients() {
+        return this.coefficients.clone();
+    }
+
+    /**
+     * Retourne une copie du tableau des degrés des monômes non nuls.
+     * @return tableau des degrés
+     */
+    public int[] getDegres() {
+        return this.degres.clone();
     }
 
     /**
@@ -474,25 +501,20 @@ public class Polynome {
      * @return polynôme dérivé
      */
     public Polynome deriver() {
-    	
-    	int nbMonomesNonNuls = 0;
-    	for(int monomesNul = 0; monomesNul < this.degres.length; monomesNul++) {
-    		if(this.degres[monomesNul] > 0 && this.coefficients[monomesNul] != 0.0) {
-    			nbMonomesNonNuls++;
-    		}
-    	}
-    	
-    	if (nbMonomesNonNuls == 0) {
-    		double[] coefNul = new double[] { 0.0 };
-    		int[] degNul =  new int[] { 0 };
-    		
-        	Polynome pNul = new Polynome(coefNul, degNul);
-        	
-        	return pNul;
-    	}
+        int nbMonomesNonNuls = 0;
+        for (int i = 0; i < this.degres.length; i++) {
+            if (this.degres[i] > 0 && this.coefficients[i] != 0.0) {
+                nbMonomesNonNuls++;
+            }
+        }
+        
+        if (nbMonomesNonNuls == 0) {
+            return new Polynome(new double[] { 0.0 }, new int[] { 0 });
+        }
 
-        double[] nouveauxCoefs = new double[this.coefficients.length];
-        int[] nouveauxDegres = new int[this.degres.length];
+        // Dimensionnement à la taille exacte !
+        double[] nouveauxCoefs = new double[nbMonomesNonNuls];
+        int[] nouveauxDegres = new int[nbMonomesNonNuls];
         int insertion = 0;
 
         for (int i = 0; i < this.degres.length; i++) {
@@ -505,7 +527,6 @@ public class Polynome {
                 }
             }
         }
-
         return new Polynome(nouveauxCoefs, nouveauxDegres);
     }
     
