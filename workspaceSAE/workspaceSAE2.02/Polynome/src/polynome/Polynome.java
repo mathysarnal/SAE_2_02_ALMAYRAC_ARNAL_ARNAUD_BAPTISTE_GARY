@@ -7,12 +7,14 @@ package polynome;
 /**
  * Représente un polynôme à une variable réelle (x).
  * La classe stocke les coefficients du polynôme dans deux tableaux parallèles :
- * - coefficients[i] : la valeur du i-ème monôme non nul
- * - degres[i]       : le degré du i-ème monôme non nul
+ * <ul>
+ *   <li>coefficients[i] : la valeur du i-ème monôme non nul</li>
+ *   <li>degres[i] : le degré du i-ème monôme non nul</li>
+ * </ul>
  * <p>
  * Exemple : 2x^120 + 42x + 4 se stocke ainsi :
  *   coefficients = {2.0, 42.0, 4.0}
- *   degres       = {120,   1,   0}
+ *   degres = {120, 1, 0}
  * </p>
  * <p>
  * Responsabilité (SRP) :
@@ -40,10 +42,10 @@ public class Polynome {
      * </p>
      * <p>
      * Exemple : new Polynome(new double[]{3.0, 4.0, 2.0}, new int[]{0, 1, 2})
-     *           représente P(x) = 3 + 4x + 2x²
+     *           représente P(x) = 3 + 4x + 2x^2
      * </p>
      * @param coefficients valeurs des monômes non nuls
-     * @param degres       degrés correspondants (même longueur que coefficients)
+     * @param degres degrés correspondants (même longueur que coefficients)
      * @throws IllegalArgumentException si les tableaux sont vides
      *         ou n'ont pas la même longueur
      */
@@ -71,10 +73,10 @@ public class Polynome {
      * par chaque facteur (X - r) répété selon l'ordre de multiplicité.
      * <p>
      * Exemple : new Polynome(new double[]{3.0, -1.0}, new int[]{2, 1}, 2.0)
-     *           représente P(x) = 2(x-3)²(x+1) = 2x³ - 16x² + 18
+     *           représente P(x) = 2(x-3)²(x+1) = 2x³ - 10x² + 6x + 18
      * </p>
-     * @param racines 		tableau des racines réelles du polynôme
-     * @param ordres        ordres de multiplicité correspondants
+     * @param racines tableau des racines réelles du polynôme
+     * @param ordres ordres de multiplicité correspondants
      * @param coeffDominant coefficient du monôme de plus haut degré
      * @throws IllegalArgumentException si les tableaux sont vides,
      *         n'ont pas la même longueur, ou si coeffDominant est nul
@@ -177,7 +179,10 @@ public class Polynome {
      * @throws IllegalArgumentException si degre est négatif
      */
     public double getCoefficient(int degreRecherche) {
-        for(int indice = 0; indice < degres.length; indice++) {
+		if (degreRecherche < 0) {
+			throw new IllegalArgumentException("Le degré doit être positif ou nul.");
+		}
+        for (int indice = 0; indice < degres.length; indice++) {
         	if (degres[indice] == degreRecherche) {
         		return coefficients[indice];
         	}
@@ -228,11 +233,13 @@ public class Polynome {
     }
     
     /**
-     * Retourne les racines réelles d'un polynôme.
-     * (Temporaire en vue de la réalisation de la méthode permettant le 
-     * calcul des racines réelles d'un polynôme quelconque => extension)
-     * 
-     * @return racines réelles d'un polynôme
+     * Retourne les racines réelles mémorisées lors de la construction
+     * du polynôme par racines.
+     *
+     * Si le polynôme a été construit à partir de coefficients,
+     * un tableau vide est renvoyé.
+     *
+     * @return copie des racines réelles mémorisées
      */
     public double[] getRacinesReelles() {
     	// Cas où le polynôme a été créé par coefficients
@@ -276,10 +283,11 @@ public class Polynome {
     }
     
     /**
-     * Evaluer le polynome pour une valeu donnée de x avec la méthode de horner
-     * 
-     * @param x valeur qui permet  d'évluer le polynome
-     * @return résulatat de P(x) pour un x donnée
+     * Évalue le polynôme pour une valeur donnée de x
+     * à l'aide de la méthode de Horner.
+     *
+     * @param x valeur pour laquelle évaluer le polynôme
+     * @return valeur de P(x)
      */
     
     public double evaluerHorner(double x) {
@@ -442,7 +450,8 @@ public class Polynome {
      * Effectue la division euclidienne de ce polynôme par un autre.
      *
      * @param diviseur polynôme diviseur
-     * @return quotient de la division euclidienne
+     * @return quotient et reste de la division euclidienne
+     *         sous la forme d'un tableau de deux polynômes : [quotient, reste]
      */
     public Polynome[] diviser(Polynome diviseur) {
         if (diviseur.estNul()) {
@@ -471,8 +480,9 @@ public class Polynome {
     }
     
     /**
-     * Calcule la suite de sturm du polynome.
-     * @return la liste des polynome formant la suite de sturm
+     * Calcule la suite de Sturm associée au polynôme.
+     *
+     * @return liste des polynômes composant la suite de Sturm
      */
     public java.util.List<Polynome> calculSuiteSturm() {
     	java.util.List<Polynome> suite = new java.util.ArrayList<>();
@@ -500,7 +510,14 @@ public class Polynome {
     	return suite;
     }
 
-    public int compterChangementSigne(double x ) {
+    /**
+     * Compte le nombre de changements de signe dans la suite
+     * de Sturm évaluée en un point donné.
+     *
+     * @param x point d'évaluation
+     * @return nombre de changements de signe
+     */
+    public int compterChangementSigne(double x) {
     	java.util.List<Polynome> suiteSturm = this.calculSuiteSturm();
     	java.util.List<Double> resultat = new java.util.ArrayList<>();
     	
@@ -527,7 +544,7 @@ public class Polynome {
     /**
      * Compte le nombre de racines réelles distinctes dans l'intervalle [borneA, borneB]
      * en utilisant le théorème de Sturm.
-     * * @param borneA la borne inférieure de l'intervalle
+     * @param borneA la borne inférieure de l'intervalle
      * @param borneB la borne supérieure de l'intervalle
      * @return le nombre de racines réelles dans cet intervalle
      * @throws IllegalArgumentException si borneA est supérieure à borneB
@@ -544,9 +561,9 @@ public class Polynome {
     }
     
     /**
-     * Calcule la dérivée de ce polynôme.
+     * Calcule la dérivée du polynôme.
      *
-     * @return polynôme dérivé
+     * @return dérivée du polynôme
      */
     public Polynome deriver() {
     	
@@ -585,9 +602,12 @@ public class Polynome {
     }
     
     /**
-     * Calcule l'intégrale de ce polynôme.
+     * Calcule une primitive du polynôme
+     * en prenant la constante d'intégration égale à 0,
+     * afin de faciliter la manipulation du polynôme obtenu
+     * (par exemple pour calculer une moyenne sur un intervalle).
      *
-     * @return polynôme intégré
+     * @return primitive du polynôme
      */
     public Polynome integrer() {
     	double[] nouveauxCoefs = new double[this.coefficients.length];
@@ -620,9 +640,11 @@ public class Polynome {
     }
     
     /**
-     * Affichage du polynôme en chaîne de caractères.
-     * 
-     * @return polynome en String
+     * Retourne une représentation textuelle du polynôme.
+     * Les monômes sont affichés sous une forme algébrique
+     * lisible, par exemple : "2.0x^5 + 4.0x^3 - 5.0".
+     *
+     * @return représentation du polynôme sous forme de chaîne
      */
     @Override
     public String toString() {
@@ -661,9 +683,8 @@ public class Polynome {
         if (resultat.isEmpty()) {
             return "0";
         }
-
+        
         return resultat;
     }
-    
-    
+
 }
