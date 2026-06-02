@@ -1,3 +1,7 @@
+/*
+ * PolynomeTest.java                                        13 avril 2026
+ * IUT de Rodez, Info1 2025-2026, pas de copyright
+ */
 package polynome;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -10,6 +14,14 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test des méthodes de Polynome.java.
+ * La fixture de tests est composée de :
+ * <ul>
+ *   <li>Sept polynômes construits à partir des coefficients et des degrés.</li>
+ *   <li>Cinq polynômes construits à partir des racines.</li>
+ * </ul>
+ */
 public class PolynomeTest {
 
     private static final double precision = 1e-6;
@@ -36,6 +48,10 @@ public class PolynomeTest {
     private double[] racinesQuatre; // = { -1.0 }
     private double[] racinesCinq; // = { 2.0, -2.0 }  
     
+    /**
+     * Initialise la fixture de tests, s'exécutant au début
+     * de chaque méthode de test.
+     */
     @BeforeEach
     void setUp() {
         // Premier polynome 0.0
@@ -104,6 +120,11 @@ public class PolynomeTest {
         polynomeRacinesCinq = new Polynome(racinesCinq, ordresCinq, coeffDominantCinq);
     }
     
+    /**
+     * Test de la méthode getDegre().
+     * Si le assert ne passe pas, on l'indique à l'utilisateur
+     * en lui donnant le degré qui devrait être affiché.
+     */
     @Test
     void testCreationEtDegre() {
         assertEquals(0, polynomeUn.getDegre(), "Le degré devrait être de 0.");

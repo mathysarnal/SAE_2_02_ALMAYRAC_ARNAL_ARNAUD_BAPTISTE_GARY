@@ -1,5 +1,5 @@
 /*
- * Polynome.java                                        05 mai 2026
+ * Polynome.java                                            13 avril 2026
  * IUT de Rodez, Info1 2025-2026, pas de copyright
  */
 package polynome;
