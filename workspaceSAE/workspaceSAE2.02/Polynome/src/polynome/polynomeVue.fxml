@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="polynome.PolynomeController">
+
+    <top>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="15" right="15" bottom="15" left="15"/>
+            </padding>
+
+            <Label text="Prototype Polynômes — JavaFX" style="-fx-font-size: 20px;"/>
+
+            <Label text="Entrez votre polynôme :" />
+            <TextField fx:id="inputPolynome"
+                       promptText="Exemple : 2x^4 + 3.2x^-2 - 5x + 7"/>
+
+            <Button text="Créer le polynôme"
+                    onAction="#creerPolynome"/>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="15" right="15" bottom="15" left="15"/>
+            </padding>
+
+            <Label text="Actions disponibles :" style="-fx-font-size: 16px;"/>
+
+            <HBox spacing="10">
+                <Button text="Évaluer P(x)" onAction="#evaluer"/>
+                <TextField fx:id="inputX" promptText="x = ?"/>
+            </HBox>
+
+            <HBox spacing="10">
+                <Button text="Dérivée" onAction="#deriver"/>
+                <Button text="Primitive" onAction="#integrer"/>
+            </HBox>
+
+            <HBox spacing="10">
+                <Button text="Moyenne sur [a,b]" onAction="#moyenne"/>
+                <TextField fx:id="inputA" promptText="a"/>
+                <TextField fx:id="inputB" promptText="b"/>
+            </HBox>
+
+            <Button text="Ajouter 3x²" onAction="#additionner"/>
+
+            <Label text="Résultat :" style="-fx-font-size: 16px;"/>
+            <TextArea fx:id="zoneResultat" prefRowCount="10"/>
+        </VBox>
+    </center>
+
+</BorderPane>
