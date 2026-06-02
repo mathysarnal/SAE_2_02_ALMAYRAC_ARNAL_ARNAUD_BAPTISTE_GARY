@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1.0">
+  <zoom_level>7</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>84</x>
+      <y>35</y>
+      <w>315</w>
+      <h>399</h>
+    </coordinates>
+    <panel_attributes>polynome::Polynome
+--
+-coefficients: double[]
+-degres: int[]
+-racinesReelles: double[]
+-ordresRacines: int[]
+--
++Polynome(double[] coefficients, int[] degres): ctor
++Polynome(double[] racines, int[] ordres, double coeffDominant): ctor
++getDegre(): int
++getCoefficient(int degreRecherche): double
++getLimitePlusInfini(): double
++getLimiteMoinsInfini(): double
++getRacinesReelles(): double[]
++getOrdresRacines(): int[]
++getCoefficients(): double[]
++getDegres(): int[]
++estNul(): boolean
++evaluer(double x): double
++evaluerHorner(double x): double
++additionner(Polynome autrePolynome): Polynome
++multiplierScalaire(double scalaire): Polynome
++multiplierPolynome(Polynome autrePolynome): Polynome
++opposer(): Polynome
++diviser(Polynome diviseur): Polynome[]
++calculSuiteSturm(): java.util.List&lt;Polynome&gt;
++compterChangementSigne(double x): int
++compterRacinesIntervalle(double borneA, double borneB): int
++deriver(): Polynome
++integrer(): Polynome
++moyenne(double a, double b): double
++toString(): String
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>560</x>
+      <y>21</y>
+      <w>343</w>
+      <h>595</h>
+    </coordinates>
+    <panel_attributes>polynome::PolynomeTest
+--
+-precision = 1e-6: double
+-polynomeUn: Polynome
+-polynomeDeux: Polynome
+-polynomeTrois: Polynome
+-polynomeQuatre: Polynome
+-polynomeCinq: Polynome
+-polynomeSix: Polynome
+-polynomeSept: Polynome
+-polynomeRacinesUn: Polynome
+-polynomeRacinesDeux: Polynome
+-polynomeRacinesTrois: Polynome
+-polynomeRacinesQuatre: Polynome
+-polynomeRacinesCinq: Polynome
+-racinesUn: double[]
+-racinesDeux: double[]
+-racinesTrois: double[]
+-racinesQuatre: double[]
+-racinesCinq: double[]
+--
+~setUp(): void
+~testCreationEtDegre(): void
+~testConstructeurTableauxVides(): void
+~testConstructeurTableauxNonParalleles(): void
+~testConstructeurTableauxVidesRacines(): void
+~testConstructeurTableauxNonParallelesRacines(): void
+~testConstructeurCoeffDominantNul(): void
+~testConstructeurRacines_CasDegenere_nbNonNulsEgalZero(): void
+~testConstructeurRacines_CasNormal_nbNonNulsSuperieurA_Zero(): void
+~testGetCoefficient(): void
+~testGetRacinesReelles(): void
+~testEvaluerSimple(): void
+~testEvaluerHorner(): void
+~testPolynomeNul(): void
+~testAdditionner(): void
+~testMultiplierScalaire(): void
+~testCalculSuiteSturm(): void
+~testCompterRacinesIntervalle(): void
+~testMultiplierPolynome(): void
+~testOpposer(): void
+~testDiviser(): void
+~testIntegrer(): void
+~testDeriver(): void
+~testMoyenne(): void
+~testToString(): void
+~testLimitesMoinsInfini(): void
+~testLimitesPlusInfini(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>63</x>
+      <y>686</y>
+      <w>336</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>polynome::PolynomeIo
+--
+--
++sauvegarder(Polynome polynomeASauvegarder, String nomFichier): void
++charger(String nomFichier): Polynome
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>623</x>
+      <y>665</y>
+      <w>245</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>polynome::PolynomeIoTest
+--
+-io = new PolynomeIo(): PolynomeIo
+-NOM_TEST_COEFF = "test_poly_coeff": String
+-NOM_TEST_RACINES = "test_poly_racines": String
+--
++testSauvegarderEtChargerParCoefficients(): void
++testSauvegarderEtChargerParRacines(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>392</x>
+      <y>203</y>
+      <w>182</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>// Flèche de test vers Polynome
+lt=&lt;.
+teste
+fontsize=18</panel_attributes>
+    <additional_attributes>10.0;30.0;240.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>217</x>
+      <y>427</y>
+      <w>126</w>
+      <h>273</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+sauvegarde/charge
+fontsize=18</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;370.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>392</x>
+      <y>700</y>
+      <w>245</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>// Flèche de test vers Polynome
+lt=&lt;.
+teste
+fontsize=18</panel_attributes>
+    <additional_attributes>10.0;30.0;330.0;30.0</additional_attributes>
+  </element>
+</diagram>
