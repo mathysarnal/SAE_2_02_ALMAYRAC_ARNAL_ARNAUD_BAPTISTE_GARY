@@ -27,6 +27,9 @@ public class Polynome {
 
     /** Degrés des monômes non nuls du polynôme, parallèle à coefficients */
     private int[] degres;
+    
+    /** Racines réelles du polynôme */
+    private double[] racinesReelles;
 
     /**
      * Construit un polynôme à partir de deux tableaux parallèles
@@ -133,11 +136,6 @@ public class Polynome {
             }
         }
 
-        /* Cas dégénéré : polynôme entièrement nul, on garde au moins un terme */
-        if (nbNonNuls == 0) {
-            nbNonNuls = 1;
-        }
-
         /* Remplissage des tableaux parallèles finaux */
         this.coefficients = new double[nbNonNuls];
         this.degres = new int[nbNonNuls];
@@ -149,6 +147,9 @@ public class Polynome {
                 index++;
             }
         }
+        
+        /* Stockage des racines en mémoire */
+        this.racinesReelles = racines.clone();
     }
 
     /**
@@ -224,6 +225,22 @@ public class Polynome {
                 return Double.POSITIVE_INFINITY;
             }
         }
+    }
+    
+    /**
+     * Retourne les racines réelles d'un polynôme.
+     * (Temporaire en vue de la réalisation de la méthode permettant le 
+     * calcul des racines réelles d'un polynôme quelconque => extension)
+     * 
+     * @return racines réelles d'un polynôme
+     */
+    public double[] getRacinesReelles() {
+    	// Cas où le polynôme a été créé par coefficients
+    	if (this.racinesReelles == null) { 
+    		return new double[0]; 
+    	} else { // Cas où le polynôme a été créé par racines
+    		return this.racinesReelles.clone();
+    	}
     }
 
     /**
@@ -403,22 +420,24 @@ public class Polynome {
         return new Polynome(coefficientsFinaux, degresFinaux);
     }
     
+
     /**
      * Change le signe du polynôme en son opposé.
      *
      * @return polynome avec signe opposé
      */
-    public Polynome oppose() {
+    public Polynome opposer() {
         double[] newCoef = new double[this.coefficients.length];
         int[] newDeg = this.degres;
 
         for (int i = 0; i < coefficients.length; i++) {
             newCoef[i] = -coefficients[i];
         }
-
         return new Polynome(newCoef, newDeg);
     }
-
+    
+    
+    
     /**
      * Effectue la division euclidienne de ce polynôme par un autre.
      *
@@ -441,7 +460,7 @@ public class Polynome {
         	int differenceDegres = reste.getDegre() - diviseur.getDegre();
         	Polynome polynome = new Polynome(new double[]{alpha}, new int[]{differenceDegres});
         	quotient = quotient.additionner(polynome);
-        	reste = reste.additionner((polynome.multiplierPolynome(diviseur)).oppose());
+        	reste = reste.additionner((polynome.multiplierPolynome(diviseur)).opposer());
         }
         
         Polynome[] resultat = new Polynome[2];
@@ -450,7 +469,80 @@ public class Polynome {
 
         return resultat;
     }
+    
+    /**
+     * Calcule la suite de sturm du polynome.
+     * @return la liste des polynome formant la suite de sturm
+     */
+    public java.util.List<Polynome> calculSuiteSturm() {
+    	java.util.List<Polynome> suite = new java.util.ArrayList<>();
+    	
+    	suite.add(this);
+    	
+    	if(this.estNul() || this.getDegre() == 0) {
+    		return suite;
+    	}
+    	
+    	suite.add(this.deriver());
+    	
+    	Polynome reste;
+    	
+    	do {
+    		Polynome avantDernier = suite.get(suite.size() - 2);
+    		Polynome dernier = suite.get(suite.size() - 1);
+    		
+    		reste = avantDernier.diviser(dernier)[1];
+    		
+    		if(!reste.estNul()) {
+    			suite.add(reste.opposer());
+    		}
+    	} while (!reste.estNul());
+    	return suite;
+    }
 
+    public int compterChangementSigne(double x ) {
+    	java.util.List<Polynome> suiteSturm = this.calculSuiteSturm();
+    	java.util.List<Double> resultat = new java.util.ArrayList<>();
+    	
+    	for (Polynome polynome : suiteSturm) {
+    		double evaluation = polynome.evaluerHorner(x);
+    		
+    		if (evaluation != 0.0) {
+    			resultat.add(evaluation);
+    		}
+    	}
+    	
+    	int changement = 0;
+    	for (int position = 0; position < resultat.size() - 1; position++) {
+    		double valeur = resultat.get(position);
+    		double valeurSuivante = resultat.get(position + 1);
+    		
+    		if (( valeur > 0 && valeurSuivante < 0) || (valeur < 0 && valeurSuivante > 0)) {
+    			changement++;
+    		}
+    	}
+    	return changement;
+    }
+    
+    /**
+     * Compte le nombre de racines réelles distinctes dans l'intervalle [borneA, borneB]
+     * en utilisant le théorème de Sturm.
+     * * @param borneA la borne inférieure de l'intervalle
+     * @param borneB la borne supérieure de l'intervalle
+     * @return le nombre de racines réelles dans cet intervalle
+     * @throws IllegalArgumentException si borneA est supérieure à borneB
+     */
+    public int compterRacinesIntervalle(double borneA, double borneB) {
+        if (borneA > borneB) {
+            throw new IllegalArgumentException("La borne A doit être inférieure ou égale à la borne B.");
+        }
+        
+        int changementsEnA = this.compterChangementSigne(borneA);
+        int changementsEnB = this.compterChangementSigne(borneB);
+        
+        return changementsEnA - changementsEnB;
+    }
+    
     /**
      * Calcule la dérivée de ce polynôme.
      *
@@ -528,10 +620,9 @@ public class Polynome {
     }
     
     /**
-     * affichage du polynôme en chaîne de caractères
+     * Affichage du polynôme en chaîne de caractères.
      * 
      * @return polynome en String
-     * @Override
      */
     @Override
     public String toString() {
