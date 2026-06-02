@@ -1,5 +1,5 @@
 /*
- * Polynome.java                                        05 mai 2026
+ * Polynome.java                                            13 avril 2026
  * IUT de Rodez, Info1 2025-2026, pas de copyright
  */
 package polynome;
@@ -7,12 +7,14 @@ package polynome;
 /**
  * Représente un polynôme à une variable réelle (x).
  * La classe stocke les coefficients du polynôme dans deux tableaux parallèles :
- * - coefficients[i] : la valeur du i-ème monôme non nul
- * - degres[i]       : le degré du i-ème monôme non nul
+ * <ul>
+ *   <li>coefficients[i] : la valeur du i-ème monôme non nul</li>
+ *   <li>degres[i] : le degré du i-ème monôme non nul</li>
+ * </ul>
  * <p>
  * Exemple : 2x^120 + 42x + 4 se stocke ainsi :
  *   coefficients = {2.0, 42.0, 4.0}
- *   degres       = {120,   1,   0}
+ *   degres = {120, 1, 0}
  * </p>
  * <p>
  * Responsabilité (SRP) :
@@ -27,6 +29,12 @@ public class Polynome {
 
     /** Degrés des monômes non nuls du polynôme, parallèle à coefficients */
     private int[] degres;
+    
+    /** Racines réelles du polynôme */
+    private double[] racinesReelles;
+    
+    /** Ordres de la racines */
+    private int[] ordresRacines;
 
     /**
      * Construit un polynôme à partir de deux tableaux parallèles
@@ -37,10 +45,10 @@ public class Polynome {
      * </p>
      * <p>
      * Exemple : new Polynome(new double[]{3.0, 4.0, 2.0}, new int[]{0, 1, 2})
-     *           représente P(x) = 3 + 4x + 2x²
+     *           représente P(x) = 3 + 4x + 2x^2
      * </p>
      * @param coefficients valeurs des monômes non nuls
-     * @param degres       degrés correspondants (même longueur que coefficients)
+     * @param degres degrés correspondants (même longueur que coefficients)
      * @throws IllegalArgumentException si les tableaux sont vides
      *         ou n'ont pas la même longueur
      */
@@ -68,10 +76,10 @@ public class Polynome {
      * par chaque facteur (X - r) répété selon l'ordre de multiplicité.
      * <p>
      * Exemple : new Polynome(new double[]{3.0, -1.0}, new int[]{2, 1}, 2.0)
-     *           représente P(x) = 2(x-3)²(x+1) = 2x³ - 16x² + 18
+     *           représente P(x) = 2(x-3)²(x+1) = 2x³ - 10x² + 6x + 18
      * </p>
-     * @param racines 		tableau des racines réelles du polynôme
-     * @param ordres        ordres de multiplicité correspondants
+     * @param racines tableau des racines réelles du polynôme
+     * @param ordres ordres de multiplicité correspondants
      * @param coeffDominant coefficient du monôme de plus haut degré
      * @throws IllegalArgumentException si les tableaux sont vides,
      *         n'ont pas la même longueur, ou si coeffDominant est nul
@@ -79,7 +87,7 @@ public class Polynome {
     public Polynome(double[] racines, int[] ordres, double coeffDominant) {
         if (racines.length == 0 || ordres.length == 0) {
             throw new IllegalArgumentException(
-                "Il faut que lepolynôme ait au moins une racine");
+                "Il faut que le polynôme ait au moins une racine.");
         }
         if (racines.length != ordres.length) {
             throw new IllegalArgumentException(
@@ -133,11 +141,6 @@ public class Polynome {
             }
         }
 
-        /* Cas dégénéré : polynôme entièrement nul, on garde au moins un terme */
-        if (nbNonNuls == 0) {
-            nbNonNuls = 1;
-        }
-
         /* Remplissage des tableaux parallèles finaux */
         this.coefficients = new double[nbNonNuls];
         this.degres = new int[nbNonNuls];
@@ -149,16 +152,10 @@ public class Polynome {
                 index++;
             }
         }
-    }
-
-    /**
-     * Affiche les monômes non nuls du polynôme.
-     */
-    public void afficher() {
-        for (int i = 0; i < coefficients.length; i++) {
-            System.out.println("coefficient degré " + degres[i]
-                               + " : " + coefficients[i]);
-        }
+        
+        /* Stockage des racines en mémoire */
+        this.racinesReelles = racines.clone();
+        this.ordresRacines = ordres.clone();
     }
 
     /**
@@ -186,7 +183,10 @@ public class Polynome {
      * @throws IllegalArgumentException si degre est négatif
      */
     public double getCoefficient(int degreRecherche) {
-        for(int indice = 0; indice < degres.length; indice++) {
+		if (degreRecherche < 0) {
+			throw new IllegalArgumentException("Le degré doit être positif ou nul.");
+		}
+        for (int indice = 0; indice < degres.length; indice++) {
         	if (degres[indice] == degreRecherche) {
         		return coefficients[indice];
         	}
@@ -218,7 +218,7 @@ public class Polynome {
     public double getLimiteMoinsInfini() {
         int degre = getDegre();
         double coef = getCoefficient(degre);
-
+ 
         if (degre % 2 == 0) {
             /* Degré pair : même limite qu'en +infini */
             if (coef > 0) {
@@ -234,6 +234,47 @@ public class Polynome {
                 return Double.POSITIVE_INFINITY;
             }
         }
+    }
+    
+    /**
+     * Retourne les racines réelles mémorisées lors de la construction
+     * du polynôme par racines.
+     *
+     * Si le polynôme a été construit à partir de coefficients,
+     * un tableau vide est renvoyé.
+     *
+     * @return copie des racines réelles mémorisées
+     */
+    public double[] getRacinesReelles() {
+    	// Cas où le polynôme a été créé par coefficients
+    	if (this.racinesReelles == null) { 
+    		return new double[0]; 
+    	} else { // Cas où le polynôme a été créé par racines
+    		return this.racinesReelles.clone();
+    	}
+    }
+    
+    public int[] getOrdresRacines() {
+        if (this.ordresRacines == null) {
+            return new int[0];
+        }
+        return this.ordresRacines.clone();
+    }
+    
+    /**
+     * Retourne une copie du tableau des coefficients des monômes non nuls.
+     * @return tableau des coefficients
+     */
+    public double[] getCoefficients() {
+        return this.coefficients.clone();
+    }
+
+    /**
+     * Retourne une copie du tableau des degrés des monômes non nuls.
+     * @return tableau des degrés
+     */
+    public int[] getDegres() {
+        return this.degres.clone();
     }
 
     /**
@@ -267,6 +308,31 @@ public class Polynome {
         }
         return total;
     }
+    
+    /**
+     * Évalue le polynôme pour une valeur donnée de x
+     * à l'aide de la méthode de Horner.
+     *
+     * @param x valeur pour laquelle évaluer le polynôme
+     * @return valeur de P(x)
+     */
+    
+    public double evaluerHorner(double x) {
+    	if(this.coefficients.length == 0 || (this.getDegre() == 0 && this.coefficients[0] == 0.0)) {
+    		return 0.0;
+    	}
+    	
+    	int degreMax = this.getDegre();
+    	double resultat = 0.0;
+    	
+    	for(int degre = degreMax; degre >= 0; degre--) {
+    		resultat = resultat * x + this.getCoefficient(degre);
+    	}
+    	return resultat;
+    }
+    
+    
+    
 
     /**
      * Additionne ce polynôme avec un autre polynôme.
@@ -275,6 +341,7 @@ public class Polynome {
      * @return polynôme résultant de l'addition
      */
     
+   
     public Polynome additionner(Polynome autrePolynome) {
         int degreMax = Math.max(this.getDegre(),
                                 autrePolynome.getDegre());
@@ -387,43 +454,159 @@ public class Polynome {
         
         return new Polynome(coefficientsFinaux, degresFinaux);
     }
+    
 
+    /**
+     * Change le signe du polynôme en son opposé.
+     *
+     * @return polynome avec signe opposé
+     */
+    public Polynome opposer() {
+        double[] newCoef = new double[this.coefficients.length];
+        int[] newDeg = this.degres;
+
+        for (int i = 0; i < coefficients.length; i++) {
+            newCoef[i] = -coefficients[i];
+        }
+        return new Polynome(newCoef, newDeg);
+    }
+    
+    
+    
     /**
      * Effectue la division euclidienne de ce polynôme par un autre.
      *
      * @param diviseur polynôme diviseur
-     * @return quotient de la division euclidienne
+     * @return quotient et reste de la division euclidienne
+     *         sous la forme d'un tableau de deux polynômes : [quotient, reste]
      */
-    public Polynome diviser(Polynome diviseur) {
-        // TODO faire
-        return null;
+    public Polynome[] diviser(Polynome diviseur) {
+        if (diviseur.estNul()) {
+        	throw new ArithmeticException("Division par 0 impossible !");
+        }
+        
+        Polynome reste = new Polynome(this.coefficients, this.degres);
+        Polynome quotient = new Polynome(new double[]{0.0}, new int[]{0});
+        double coefDiviseurDePlusHautDegre = diviseur.getCoefficient(diviseur.getDegre());
+        
+        while (reste.getDegre() >= diviseur.getDegre()
+        	   && !reste.estNul()) {
+        	double alpha = reste.getCoefficient(reste.getDegre())
+        			/ coefDiviseurDePlusHautDegre;
+        	int differenceDegres = reste.getDegre() - diviseur.getDegre();
+        	Polynome polynome = new Polynome(new double[]{alpha}, new int[]{differenceDegres});
+        	quotient = quotient.additionner(polynome);
+        	reste = reste.additionner((polynome.multiplierPolynome(diviseur)).opposer());
+        }
+        
+        Polynome[] resultat = new Polynome[2];
+        resultat[0] = quotient;
+        resultat[1] = reste;
+
+        return resultat;
+    }
+    
+    /**
+     * Calcule la suite de Sturm associée au polynôme.
+     *
+     * @return liste des polynômes composant la suite de Sturm
+     */
+    public java.util.List<Polynome> calculSuiteSturm() {
+    	java.util.List<Polynome> suite = new java.util.ArrayList<>();
+    	
+    	suite.add(this);
+    	
+    	if(this.estNul() || this.getDegre() == 0) {
+    		return suite;
+    	}
+    	
+    	suite.add(this.deriver());
+    	
+    	Polynome reste;
+    	
+    	do {
+    		Polynome avantDernier = suite.get(suite.size() - 2);
+    		Polynome dernier = suite.get(suite.size() - 1);
+    		
+    		reste = avantDernier.diviser(dernier)[1];
+    		
+    		if(!reste.estNul()) {
+    			suite.add(reste.opposer());
+    		}
+    	} while (!reste.estNul());
+    	return suite;
     }
 
     /**
-     * Calcule la dérivée de ce polynôme.
+     * Compte le nombre de changements de signe dans la suite
+     * de Sturm évaluée en un point donné.
      *
-     * @return polynôme dérivé
+     * @param x point d'évaluation
+     * @return nombre de changements de signe
      */
-    public Polynome deriver() {
+    public int compterChangementSigne(double x) {
+    	java.util.List<Polynome> suiteSturm = this.calculSuiteSturm();
+    	java.util.List<Double> resultat = new java.util.ArrayList<>();
     	
-    	int nbMonomesNonNuls = 0;
-    	for(int monomesNul = 0; monomesNul < this.degres.length; monomesNul++) {
-    		if(this.degres[monomesNul] > 0 && this.coefficients[monomesNul] != 0.0) {
-    			nbMonomesNonNuls++;
+    	for (Polynome polynome : suiteSturm) {
+    		double evaluation = polynome.evaluerHorner(x);
+    		
+    		if (evaluation != 0.0) {
+    			resultat.add(evaluation);
     		}
     	}
     	
-    	if (nbMonomesNonNuls == 0) {
-    		double[] coefNul = new double[] { 0.0 };
-    		int[] degNul =  new int[] { 0 };
+    	int changement = 0;
+    	for (int position = 0; position < resultat.size() - 1; position++) {
+    		double valeur = resultat.get(position);
+    		double valeurSuivante = resultat.get(position + 1);
     		
-        	Polynome pNul = new Polynome(coefNul, degNul);
-        	
-        	return pNul;
+    		if (( valeur > 0 && valeurSuivante < 0) || (valeur < 0 && valeurSuivante > 0)) {
+    			changement++;
+    		}
     	}
+    	return changement;
+    }
+    
+    /**
+     * Compte le nombre de racines réelles distinctes dans l'intervalle [borneA, borneB]
+     * en utilisant le théorème de Sturm.
+     * @param borneA la borne inférieure de l'intervalle
+     * @param borneB la borne supérieure de l'intervalle
+     * @return le nombre de racines réelles dans cet intervalle
+     * @throws IllegalArgumentException si borneA est supérieure à borneB
+     */
+    public int compterRacinesIntervalle(double borneA, double borneB) {
+        if (borneA > borneB) {
+            throw new IllegalArgumentException("La borne A doit être inférieure ou égale à la borne B.");
+        }
+        
+        int changementsEnA = this.compterChangementSigne(borneA);
+        int changementsEnB = this.compterChangementSigne(borneB);
+        
+        return changementsEnA - changementsEnB;
+    }
+    
+    /**
+     * Calcule la dérivée du polynôme.
+     *
+     * @return dérivée du polynôme
+     */
+    public Polynome deriver() {
+        int nbMonomesNonNuls = 0;
+        for (int i = 0; i < this.degres.length; i++) {
+            if (this.degres[i] > 0 && this.coefficients[i] != 0.0) {
+                nbMonomesNonNuls++;
+            }
+        }
+        
+        if (nbMonomesNonNuls == 0) {
+            return new Polynome(new double[] { 0.0 }, new int[] { 0 });
+        }
 
-        double[] nouveauxCoefs = new double[this.coefficients.length];
-        int[] nouveauxDegres = new int[this.degres.length];
+        // Dimensionnement à la taille exacte !
+        double[] nouveauxCoefs = new double[nbMonomesNonNuls];
+        int[] nouveauxDegres = new int[nbMonomesNonNuls];
         int insertion = 0;
 
         for (int i = 0; i < this.degres.length; i++) {
@@ -436,14 +619,16 @@ public class Polynome {
                 }
             }
         }
-
         return new Polynome(nouveauxCoefs, nouveauxDegres);
     }
     
     /**
-     * Calcule l'intégrale de ce polynôme.
+     * Calcule une primitive du polynôme
+     * en prenant la constante d'intégration égale à 0,
+     * afin de faciliter la manipulation du polynôme obtenu
+     * (par exemple pour calculer une moyenne sur un intervalle).
      *
-     * @return polynôme intégré
+     * @return primitive du polynôme
      */
     public Polynome integrer() {
     	double[] nouveauxCoefs = new double[this.coefficients.length];
@@ -476,16 +661,51 @@ public class Polynome {
     }
     
     /**
-     * affichage du polynome 
-     * 
-     * @return le polynome
-     * @Override
+     * Retourne une représentation textuelle du polynôme.
+     * Les monômes sont affichés sous une forme algébrique
+     * lisible, par exemple : "2.0x^5 + 4.0x^3 - 5.0".
+     *
+     * @return représentation du polynôme sous forme de chaîne
      */
     @Override
     public String toString() {
-        // TODO faire
-        return "";
+        String resultat = "";
+
+        for (int i = 0; i < coefficients.length; i++) {
+
+            if (coefficients[i] == 0) {
+                continue;
+            }
+
+            // Signe
+            if (!resultat.isEmpty() && coefficients[i] > 0) {
+                resultat += " + ";
+            } else if (coefficients[i] < 0) {
+                resultat += " - ";
+            }
+
+            double coeff = Math.abs(coefficients[i]);
+
+            // Coefficient
+            if (!(coeff == 1 && degres[i] != 0)) {
+                resultat += coeff;
+            }
+
+            // x et puissance
+            if (degres[i] > 0) {
+                resultat += "x";
+
+                if (degres[i] > 1) {
+                    resultat += "^" + degres[i];
+                }
+            }
+        }
+
+        if (resultat.isEmpty()) {
+            return "0";
+        }
+        
+        return resultat;
     }
-    
-    
+
 }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>120</x>
+      <y>30</y>
+      <w>210</w>
+      <h>380</h>
+    </coordinates>
+    <panel_attributes>polynome::PolynomeTest
+--
+-precision = 1e-6: double
+-polynomeUn: Polynome
+-polynomeDeux: Polynome
+-polynomeTrois: Polynome
+-polynomeQuatre: Polynome
+-polynomeCinq: Polynome
+--
+~setUp(): void
+~testCreationEtDegre(): void
+~testGetCoefficient(): void
+~testEvaluerSimple(): void
+~testPolynomeNul(): void
+~testAdditionner(): void
+~testMultiplierScalaire(): void
+~testMultiplierPolynome(): void
+~testDiviser(): void
+~testIntegrer(): void
+~testDeriver(): void
+~testMoyenne(): void
+~testToString(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+
+<VBox xmlns="http://javafx.com/javafx/25.0.2"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="polynome.menu_saisie.MenuSaisieChoixController"
+      spacing="20">
+
+    <padding>
+        <Insets top="20" right="30" bottom="30" left="30"/>
+    </padding>
+
+    <Label text="Mode de création" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+    <VBox style="-fx-background-color: #eee; -fx-padding: 10; -fx-background-radius: 5;">
+        <Label text="Polynôme actuel en mémoire :" style="-fx-font-size: 12px; -fx-text-fill: #555;"/>
+        <Label fx:id="labelPolynome" text="" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+    </VBox>
+
+    <Button text="Saisie directe (ex: 2x^4 - 3x + 5)" onAction="#choisirDirecte" maxWidth="Infinity"/>
+    <Button text="Saisie classique (Par Degré et Coefficients)" onAction="#choisirClassique" maxWidth="Infinity"/>
+    <Button text="Saisie par racines" onAction="#choisirRacines" maxWidth="Infinity"/>
+    <Button text="Retour" onAction="#retour" maxWidth="Infinity"/>
+
+</VBox>
