@@ -24,6 +24,7 @@
     <Button text="Créer / Saisir un polynôme" onAction="#ouvrirMenuSaisie" maxWidth="Infinity"/>
     <Button text="Opérations algébriques" onAction="#ouvrirMenuOperations" maxWidth="Infinity"/>
     <Button text="Charger depuis un fichier" onAction="#ouvrirMenuChargement" maxWidth="Infinity"/>
+    <Button text="Sauvegarder le polynôme actuel" onAction="#ouvrirMenuSauvegarde" maxWidth="Infinity"/>
     <Button text="Quitter" onAction="#quitter" maxWidth="Infinity"/>
 
 </VBox>

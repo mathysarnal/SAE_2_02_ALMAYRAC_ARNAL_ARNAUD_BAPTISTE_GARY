@@ -31,6 +31,11 @@ public class MenuPrincipalController {
     private void ouvrirMenuChargement() {
         MainApp.changerScene("menu_fichier/menu_chargement.fxml");
     }
+    
+    @FXML
+    private void ouvrirMenuSauvegarde() {
+        MainApp.changerScene("menu_fichier/menu_sauvegarde.fxml");
+    }
 
     @FXML
     private void quitter() {
