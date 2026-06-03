@@ -6,16 +6,41 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Classe de test JUnit 5 mise à jour pour PolynomeIo.
+ * Classe de validation unitaire JUnit 6 pour le composant PolynomeIo.
+ * <p>
+ * Ces tests assurent le fonctionnement complet des méthodes charger et sauvegarder de PolynomeIo
+ * en vérifiant que le coverage de tests soit de 100% sur toutes les méthodes.
+ * </p>
+ * <p>
+ * Chaque scénario écrit un fichier temporaire dans le dossier de sauvegarde, 
+ * vérifie l'égalité des structures mathématiques avant et après stockage 
+ * puis assure un nettoyage automatique du système de fichiers à la fin de 
+ * son exécution.
+ * </p>
  */
 public class PolynomeIoTest {
 
+    /** Instance unique du gestionnaire d'entrées/sorties soumise au protocole de test. */
     private final PolynomeIo io = new PolynomeIo();
     
-    // On ne met plus l'extension .txt ici car la classe PolynomeIo la gère toute seule !
+    /** Nom du fichier texte temporaire employé pour tester le format d'export par monômes. */
     private final String NOM_TEST_COEFF = "test_poly_coeff";
+    
+    /** Nom du fichier texte temporaire employé pour tester le format d'export par racines. */
     private final String NOM_TEST_RACINES = "test_poly_racines";
 
+    /**
+     * Valide la persistance d'un polynôme défini par ses coefficients.
+     * <p>
+     * Le cas de test applique le scénario suivant :
+     * </p>
+     * <ol>
+     *   <li>Création du polynôme P(x) = 3.0x^2 - 5.0.</li>
+     *   <li>Exportation textuelle via la méthode sauvegarder().</li>
+     *   <li>Importation et reconstruction via la méthode charger().</li>
+     *   <li>Vérifie la conformité du polynôme (présence, degré et coefficients).</li>
+     * </ol>
+     */
     @Test
     public void testSauvegarderEtChargerParCoefficients() {
         try {
@@ -47,6 +72,20 @@ public class PolynomeIoTest {
         }
     }
 
+    /**
+     * Valide la persistance d'un polynôme défini sous sa forme factorisée (par racines).
+     * <p>
+     * Le cas de test applique le scénario suivant :
+     * </p>
+     * <ol>
+     *   <li>Création du polynôme P(x) = 2.0 * (x - 3.0)^2.</li>
+     *   <li>Exportation textuelle via la méthode sauvegarder().</li>
+     *   <li>Importation et reconstruction via la méthode charger().</li>
+     *   <li>Vérification par assertions de la parfaite correspondance
+     *       des tableaux de racines, des ordres de multiplicité
+     *       associés ainsi que du coefficient de plus haut degré.</li>
+     * </ol>
+     */
     @Test
     public void testSauvegarderEtChargerParRacines() {
         try {
