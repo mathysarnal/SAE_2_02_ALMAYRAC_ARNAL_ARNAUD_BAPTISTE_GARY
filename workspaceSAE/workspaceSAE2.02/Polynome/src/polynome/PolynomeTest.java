@@ -126,7 +126,7 @@ public class PolynomeTest {
      * en lui donnant le degré qui devrait être renvoyé.
      */
     @Test
-    void testCreationEtDegre() {
+    void testDegre() {
         assertEquals(0, polynomeUn.getDegre(), "Le degré devrait être de 0.");
         assertEquals(100, polynomeDeux.getDegre(), "Le degré devrait être de 100.");
         assertEquals(2, polynomeTrois.getDegre(), "Le degré devrait être de 2.");
@@ -228,7 +228,7 @@ public class PolynomeTest {
      * Le polynôme doit néanmoins être créé sans erreur.
      */
     @Test
-    void testConstructeurRacines_CasDegenere_nbNonNulsEgalZero() {
+    void testConstructeurRacinesCasDegenereNbNonNulsEgalZero() {
         double[] racines = { 0.0 };
         int[] ordres = { 0 }; 
         double coeffDominant = 0.0000000001; 
@@ -242,7 +242,7 @@ public class PolynomeTest {
      * réelle simple et d'un coefficient dominant non nul.
      */
     @Test
-    void testConstructeurRacines_CasNormal_nbNonNulsSuperieurA_Zero() {
+    void testConstructeurRacinesCasNormalNbNonNulsSuperieurAZero() {
         double[] racines = { 3.0 };
         int[] ordres = { 1 };
         double coeffDominant = 2.0;

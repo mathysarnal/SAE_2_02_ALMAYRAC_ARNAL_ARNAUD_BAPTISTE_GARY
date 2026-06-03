@@ -122,7 +122,7 @@ public class PolynomeIo {
 				throw new IllegalArgumentException("Le fichier est vide, impossible de charger un polynôme.");
 			}
 			
-			String elements[] = ligne.split(";");
+			String[] elements = ligne.split(";");
 			
 			String type = elements[0];
 			
@@ -136,9 +136,9 @@ public class PolynomeIo {
 	            int indexInsertion = 0;
 	            
 	            // On parcourt les éléments textuels de 2 en 2 en partant de l'indice 1
-	            for (int nbPaire = 1; nbPaire < elements.length; nbPaire += 2) {
-	                coeffs[indexInsertion] = Double.parseDouble(elements[nbPaire]);
-	                degres[indexInsertion] = Integer.parseInt(elements[nbPaire + 1]);
+	            for (int nbImpaire = 1; nbImpaire < elements.length; nbImpaire += 2) {
+	                coeffs[indexInsertion] = Double.parseDouble(elements[nbImpaire]);
+	                degres[indexInsertion] = Integer.parseInt(elements[nbImpaire + 1]);
 	                indexInsertion++;
 	            }
 	            
@@ -156,7 +156,7 @@ public class PolynomeIo {
 	        	
 	        	int indexInsertion = 0;
 	        	
-	        	// On parcourt les éléments textuels de 2 en 2 en partant de l'indice 1
+	        	// On parcourt les éléments textuels de 2 en 2 en partant de l'indice 2
 	            for (int nbPaire = 2; nbPaire < elements.length; nbPaire += 2) {
 	                racines[indexInsertion] = Double.parseDouble(elements[nbPaire]);
 	                ordres[indexInsertion] = Integer.parseInt(elements[nbPaire + 1]);
@@ -166,7 +166,8 @@ public class PolynomeIo {
 	            return new Polynome(racines, ordres, coeffDominant);
 	        }
 		}
-		
+	
+	// on return null au lieu de lever une excpetion pour permettre la compilation
 	return null;
 	
 	}

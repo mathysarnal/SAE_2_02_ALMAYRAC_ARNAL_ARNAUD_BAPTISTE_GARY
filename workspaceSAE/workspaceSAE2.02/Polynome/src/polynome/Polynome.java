@@ -302,9 +302,9 @@ public class Polynome {
         for (int indice = 0; indice < coefficients.length; indice++) {
         	
         	double coeffActuel = coefficients[indice];
-        	int puissanceActuel = degres[indice];
+        	int puissanceActuelle = degres[indice];
         	
-            total += coeffActuel * Math.pow(x, puissanceActuel);
+            total += coeffActuel * Math.pow(x, puissanceActuelle);
         }
         return total;
     }
@@ -318,7 +318,7 @@ public class Polynome {
      */
     
     public double evaluerHorner(double x) {
-    	if(this.coefficients.length == 0 || (this.getDegre() == 0 && this.coefficients[0] == 0.0)) {
+    	if(this.getDegre() == 0 && this.coefficients[0] == 0.0) {
     		return 0.0;
     	}
     	
@@ -331,9 +331,6 @@ public class Polynome {
     	return resultat;
     }
     
-    
-    
-
     /**
      * Additionne ce polynôme avec un autre polynôme.
      *
@@ -409,13 +406,13 @@ public class Polynome {
 
         double[] resultat = new double[degMaxResultat + 1];
        
-        for (int monomep1 = 0; monomep1 < this.coefficients.length; monomep1++) {
-        	double coef1 = this.coefficients[monomep1];
-        	int deg1 = this.degres[monomep1];
+        for (int monomeP1 = 0; monomeP1 < this.coefficients.length; monomeP1++) {
+        	double coef1 = this.coefficients[monomeP1];
+        	int deg1 = this.degres[monomeP1];
         	
-        	for(int monomep2 = 0; monomep2 < autrePolynome.coefficients.length; monomep2++) {
-        		double coef2 = autrePolynome.coefficients[monomep2];
-        		int deg2 = autrePolynome.degres[monomep2];
+        	for(int monomeP2 = 0; monomeP2 < autrePolynome.coefficients.length; monomeP2++) {
+        		double coef2 = autrePolynome.coefficients[monomeP2];
+        		int deg2 = autrePolynome.degres[monomeP2];
         		
         		int degreFinal = deg1 + deg2;
         		double coefFinal = coef1 * coef2;
@@ -470,8 +467,6 @@ public class Polynome {
         }
         return new Polynome(newCoef, newDeg);
     }
-    
-    
     
     /**
      * Effectue la division euclidienne de ce polynôme par un autre.
