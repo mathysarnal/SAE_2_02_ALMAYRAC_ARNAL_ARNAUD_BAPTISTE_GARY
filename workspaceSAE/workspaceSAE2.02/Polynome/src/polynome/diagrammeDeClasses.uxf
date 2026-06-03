@@ -4,9 +4,9 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>84</x>
+      <x>35</x>
       <y>35</y>
-      <w>315</w>
+      <w>392</w>
       <h>399</h>
     </coordinates>
     <panel_attributes>polynome::Polynome
@@ -40,6 +40,7 @@
 +deriver(): Polynome
 +integrer(): Polynome
 +moyenne(double a, double b): double
++approcherRacineDichotomie(double borneInferieure, double borneSuperieure): double
 +toString(): String
 --
 </panel_attributes>
@@ -98,6 +99,7 @@
 ~testIntegrer(): void
 ~testDeriver(): void
 ~testMoyenne(): void
+~testApprocherRacineDichotomie(): void
 ~testToString(): void
 ~testLimitesMoinsInfini(): void
 ~testLimitesPlusInfini(): void
@@ -145,16 +147,16 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>392</x>
+      <x>420</x>
       <y>203</y>
-      <w>182</w>
+      <w>154</w>
       <h>35</h>
     </coordinates>
     <panel_attributes>// Flèche de test vers Polynome
 lt=&lt;.
 teste
 fontsize=18</panel_attributes>
-    <additional_attributes>10.0;30.0;240.0;30.0</additional_attributes>
+    <additional_attributes>10.0;30.0;200.0;30.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>

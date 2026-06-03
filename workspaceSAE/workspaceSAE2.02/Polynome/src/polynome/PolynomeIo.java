@@ -7,14 +7,46 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Composant de sauvegarde/chargement pour les polynômes.
+ * <p>
+ * Cette classe permet de sauvegarder et de charger des objets
+ * de type Polynome dans des fichiers texte situés dans
+ * un sous-dossier dédié nommé sauvegardes.
+ * </p>
+ * <p>
+ * Elle prend en charge deux formats d'exportation distincts
+ * selon la structure interne du polynôme :
+ * </p>
+ * <ul>
+ *   <li>Le mode <b>COEFF</b> : pour les polynômes définis par 
+ *       leurs monômes (coefficients et degrés).</li>
+ *   <li>Le mode <b>RACINE</b> : pour les polynômes définis par 
+ *       leurs racines réelles, leurs ordres de multiplicité 
+ *       et leur coefficient dominant.</li>
+ * </ul>
+ */
 public class PolynomeIo {
 	
 	/**
-	 * Sauvegarde un polynôme dans un fichier au format texte.
-	 * Chaque monôme non nul est écrit sous la forme "coefficient;degré".
-	 * @param polynomeASauvegarder l'objet Polynome que l'on souhaite enregistrer
-	 * @param cheminFichier le nom ou le chemin du fichier cible (ex: "polynome.txt")
-	 * @throws IOException si un problème d'écriture survient (fichier protégé, disque plein...)
+	 * Sauvegarde un polynôme dans un fichier au format texte standardisé.
+	 * <p>
+	 * Le fichier est automatiquement créé ou écrasé à l'intérieur du dossier sauvegardes.
+	 * Si ce dossier de transit n'existe pas, la méthode se charge de le générer à la
+	 * racine du projet.
+	 * </p>
+	 * <p>
+	 * <b>Format des lignes générées :</b><br>
+	 * Mode Coefficients :
+	 * COEFF;coeff1;degre1;coeff2;degre2;...<br>
+	 * Mode Racines :
+	 * RACINE;coeffDominant;racine1;ordre1;racine2;ordre2;...
+	 * </p>
+	 * @param polynomeASauvegarder l'objet Polynome à enregistrer dans le fichier
+	 * @param nomFichier le nom brut du fichier cible, sans le préfixe 
+	 * du dossier ni l'extension (ex: "mon_polynome")
+	 * @throws IOException si un problème d'accès physique ou
+	 * d'écriture survient sur le disque dur
 	 */
 	public void sauvegarder(Polynome polynomeASauvegarder, String nomFichier) throws IOException {
 	    
@@ -62,12 +94,21 @@ public class PolynomeIo {
 	}
 	
 	/**
-	 * Charge un polynôme à partir d'un fichier texte précédemment sauvegardé.
-	 * Elle lit les coefficients et les degrés pour reconstruire l'objet.
-	 * @param cheminFichier le nom ou le chemin du fichier à lire
-	 * @return un nouvel objet Polynome initialisé avec les données du fichier
-	 * @throws IOException si un problème de lecture survient (fichier introuvable...)
-	 * @throws IllegalArgumentException si le contenu du fichier est mal formaté ou corrompu
+	 * Charge et reconstruit un polynôme à partir d'un fichier
+	 * texte précédemment sauvegardé.
+	 * <p>
+	 * La méthode analyse le premier élément de la ligne (le marqueur de type) 
+	 * afin d'aiguiller la lecture et d'appeler le constructeur de Polynome
+	 * adéquat (par coefficients ou par racines).
+	 * </p>
+	 * @param nomFichier le nom brut du fichier à charger, sans le
+	 * préfixe du dossier ni l'extension (ex: "mon_polynome")
+	 * @return un nouvel objet Polynome initialisé avec les données 
+	 * extraites du fichier, ou null si le type est inconnu
+	 * @throws IOException si le fichier est introuvable, inaccessible
+	 * ou si un problème de lecture survient
+	 * @throws IllegalArgumentException si le contenu du fichier texte
+	 * est vide ou si sa structure interne est corrompue
 	 */
 	public Polynome charger(String nomFichier) throws IOException {
 		
@@ -81,7 +122,7 @@ public class PolynomeIo {
 				throw new IllegalArgumentException("Le fichier est vide, impossible de charger un polynôme.");
 			}
 			
-			String elements[] = ligne.split(";");
+			String[] elements = ligne.split(";");
 			
 			String type = elements[0];
 			
@@ -95,9 +136,9 @@ public class PolynomeIo {
 	            int indexInsertion = 0;
 	            
 	            // On parcourt les éléments textuels de 2 en 2 en partant de l'indice 1
-	            for (int nbPaire = 1; nbPaire < elements.length; nbPaire += 2) {
-	                coeffs[indexInsertion] = Double.parseDouble(elements[nbPaire]);
-	                degres[indexInsertion] = Integer.parseInt(elements[nbPaire + 1]);
+	            for (int nbImpaire = 1; nbImpaire < elements.length; nbImpaire += 2) {
+	                coeffs[indexInsertion] = Double.parseDouble(elements[nbImpaire]);
+	                degres[indexInsertion] = Integer.parseInt(elements[nbImpaire + 1]);
 	                indexInsertion++;
 	            }
 	            
@@ -115,7 +156,7 @@ public class PolynomeIo {
 	        	
 	        	int indexInsertion = 0;
 	        	
-	        	// On parcourt les éléments textuels de 2 en 2 en partant de l'indice 1
+	        	// On parcourt les éléments textuels de 2 en 2 en partant de l'indice 2
 	            for (int nbPaire = 2; nbPaire < elements.length; nbPaire += 2) {
 	                racines[indexInsertion] = Double.parseDouble(elements[nbPaire]);
 	                ordres[indexInsertion] = Integer.parseInt(elements[nbPaire + 1]);
@@ -125,7 +166,8 @@ public class PolynomeIo {
 	            return new Polynome(racines, ordres, coeffDominant);
 	        }
 		}
-		
+	
+	// on return null au lieu de lever une excpetion pour permettre la compilation
 	return null;
 	
 	}

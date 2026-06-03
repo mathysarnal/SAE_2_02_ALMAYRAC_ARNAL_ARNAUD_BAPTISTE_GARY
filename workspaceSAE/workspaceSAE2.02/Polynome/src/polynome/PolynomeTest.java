@@ -126,7 +126,7 @@ public class PolynomeTest {
      * en lui donnant le degré qui devrait être renvoyé.
      */
     @Test
-    void testCreationEtDegre() {
+    void testDegre() {
         assertEquals(0, polynomeUn.getDegre(), "Le degré devrait être de 0.");
         assertEquals(100, polynomeDeux.getDegre(), "Le degré devrait être de 100.");
         assertEquals(2, polynomeTrois.getDegre(), "Le degré devrait être de 2.");
@@ -228,7 +228,7 @@ public class PolynomeTest {
      * Le polynôme doit néanmoins être créé sans erreur.
      */
     @Test
-    void testConstructeurRacines_CasDegenere_nbNonNulsEgalZero() {
+    void testConstructeurRacinesCasDegenereNbNonNulsEgalZero() {
         double[] racines = { 0.0 };
         int[] ordres = { 0 }; 
         double coeffDominant = 0.0000000001; 
@@ -242,7 +242,7 @@ public class PolynomeTest {
      * réelle simple et d'un coefficient dominant non nul.
      */
     @Test
-    void testConstructeurRacines_CasNormal_nbNonNulsSuperieurA_Zero() {
+    void testConstructeurRacinesCasNormalNbNonNulsSuperieurAZero() {
         double[] racines = { 3.0 };
         int[] ordres = { 1 };
         double coeffDominant = 2.0;
@@ -661,6 +661,59 @@ public class PolynomeTest {
         assertThrows(IllegalArgumentException.class, () -> {
             polynomeTrois.moyenne(4.5, 4.5);
         });
+    }
+    
+    /**
+     * Vérifie le bon fonctionnement de la méthode
+     * {@code approcherRacineDichotomie(double, double)}.
+     * <p>
+     * Cas testés :
+     * <ul>
+     *   <li>Approximation correcte d'une racine unique.</li>
+     *   <li>Approximation correcte de racines positives et négatives.</li>
+     *   <li>Levée d'une exception lorsqu'aucune racine n'est présente
+     *       dans l'intervalle.</li>
+     *   <li>Levée d'une exception lorsque plusieurs racines sont présentes
+     *       dans l'intervalle.</li>
+     *   <li>Levée d'une exception lorsque les bornes sont invalides.</li>
+     * </ul>
+     * </p>
+     */
+    @Test
+    void testApprocherRacineDichotomie() {
+
+        // Polynôme possédant une unique racine en -1.5.
+        double racineQuatreApprochee =
+                polynomeQuatre.approcherRacineDichotomie(-2.0, 0.0);
+        assertEquals(-1.5, racineQuatreApprochee, precision,
+                "La racine de -3 - 2x devrait être de -1.5");
+
+        // Recherche de la racine positive.
+        double racineCinqPositiveApprochee =
+                polynomeRacinesCinq.approcherRacineDichotomie(0.0, 3.0);
+        assertEquals(2.0, racineCinqPositiveApprochee, precision,
+                "La racine approchée devrait être de 2.0");
+
+        // Recherche de la racine négative.
+        double racineCinqNegativeApprochee =
+                polynomeRacinesCinq.approcherRacineDichotomie(-4.0, 0.0);
+        assertEquals(-2.0, racineCinqNegativeApprochee, precision,
+                "La racine approchée devrait être de -2.0");
+
+        // Aucun zéro réel dans l'intervalle.
+        assertThrows(IllegalArgumentException.class, () -> {
+            polynomeTrois.approcherRacineDichotomie(-10.0, 10.0);
+        }, "Devrait lever une exception car polynomeTrois n'a aucune racine réelle.");
+
+        // Plusieurs racines dans l'intervalle.
+        assertThrows(IllegalArgumentException.class, () -> {
+            polynomeRacinesCinq.approcherRacineDichotomie(-3.0, 3.0);
+        }, "Devrait lever une exception car l'intervalle contient 2 racines.");
+
+        // Bornes invalides.
+        assertThrows(IllegalArgumentException.class, () -> {
+            polynomeQuatre.approcherRacineDichotomie(5.0, 2.0);
+        }, "Devrait lever une exception car la borne inférieure est plus grande que la borne supérieure.");
     }
     
     /**
