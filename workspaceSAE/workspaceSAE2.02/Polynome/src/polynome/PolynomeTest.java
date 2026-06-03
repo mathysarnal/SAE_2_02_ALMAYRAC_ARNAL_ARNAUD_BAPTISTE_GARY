@@ -664,6 +664,59 @@ public class PolynomeTest {
     }
     
     /**
+     * Vérifie le bon fonctionnement de la méthode
+     * {@code approcherRacineDichotomie(double, double)}.
+     * <p>
+     * Cas testés :
+     * <ul>
+     *   <li>Approximation correcte d'une racine unique.</li>
+     *   <li>Approximation correcte de racines positives et négatives.</li>
+     *   <li>Levée d'une exception lorsqu'aucune racine n'est présente
+     *       dans l'intervalle.</li>
+     *   <li>Levée d'une exception lorsque plusieurs racines sont présentes
+     *       dans l'intervalle.</li>
+     *   <li>Levée d'une exception lorsque les bornes sont invalides.</li>
+     * </ul>
+     * </p>
+     */
+    @Test
+    void testApprocherRacineDichotomie() {
+
+        // Polynôme possédant une unique racine en -1.5.
+        double racineQuatreApprochee =
+                polynomeQuatre.approcherRacineDichotomie(-2.0, 0.0);
+        assertEquals(-1.5, racineQuatreApprochee, precision,
+                "La racine de -3 - 2x devrait être de -1.5");
+
+        // Recherche de la racine positive.
+        double racineCinqPositiveApprochee =
+                polynomeRacinesCinq.approcherRacineDichotomie(0.0, 3.0);
+        assertEquals(2.0, racineCinqPositiveApprochee, precision,
+                "La racine approchée devrait être de 2.0");
+
+        // Recherche de la racine négative.
+        double racineCinqNegativeApprochee =
+                polynomeRacinesCinq.approcherRacineDichotomie(-4.0, 0.0);
+        assertEquals(-2.0, racineCinqNegativeApprochee, precision,
+                "La racine approchée devrait être de -2.0");
+
+        // Aucun zéro réel dans l'intervalle.
+        assertThrows(IllegalArgumentException.class, () -> {
+            polynomeTrois.approcherRacineDichotomie(-10.0, 10.0);
+        }, "Devrait lever une exception car polynomeTrois n'a aucune racine réelle.");
+
+        // Plusieurs racines dans l'intervalle.
+        assertThrows(IllegalArgumentException.class, () -> {
+            polynomeRacinesCinq.approcherRacineDichotomie(-3.0, 3.0);
+        }, "Devrait lever une exception car l'intervalle contient 2 racines.");
+
+        // Bornes invalides.
+        assertThrows(IllegalArgumentException.class, () -> {
+            polynomeQuatre.approcherRacineDichotomie(5.0, 2.0);
+        }, "Devrait lever une exception car la borne inférieure est plus grande que la borne supérieure.");
+    }
+    
+    /**
      * Vérifie la représentation textuelle des polynômes.
      */
     @Test

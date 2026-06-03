@@ -661,6 +661,62 @@ public class Polynome {
     }
     
     /**
+     * Approxime une racine réelle du polynôme par la méthode de dichotomie.
+     * <p>
+     * L'intervalle fourni doit contenir exactement une unique racine réelle.
+     * À chaque itération, l'intervalle de recherche est divisé en deux et
+     * la moitié contenant la racine est conservée. Après 30 itérations,
+     * la valeur retournée correspond au milieu de l'intervalle résiduel.
+     * </p>
+     *
+     * @param borneInferieure borne inférieure de l'intervalle de recherche
+     * @param borneSuperieure borne supérieure de l'intervalle de recherche
+     * @return une approximation de la racine réelle contenue dans l'intervalle
+     *
+     * @throws IllegalArgumentException si la borne inférieure est supérieure à la
+     *                                  borne supérieure
+     * @throws IllegalArgumentException si l'intervalle ne contient pas exactement
+     *                                  une racine réelle
+     */
+    public double approcherRacineDichotomie(double borneInferieure, double borneSuperieure) {
+
+        if (borneInferieure > borneSuperieure) {
+            throw new IllegalArgumentException(
+                    "La borne inférieure doit être inférieure ou égale à la borne supérieure.");
+        }
+
+        if (this.compterRacinesIntervalle(borneInferieure, borneSuperieure) != 1) {
+            throw new IllegalArgumentException(
+                    "L'intervalle doit contenir exactement une seule racine.");
+        }
+
+        double debutIntervalle = borneInferieure;
+        double finIntervalle = borneSuperieure;
+
+        // Réalise 30 divisions successives de l'intervalle.
+        for (int iteration = 0; iteration < 30; iteration++) {
+
+            double milieuIntervalle =
+                    debutIntervalle + (finIntervalle - debutIntervalle) / 2.0;
+
+            // Arrêt immédiat si le milieu correspond exactement à une racine.
+            if (this.evaluerHorner(milieuIntervalle) == 0.0) {
+                return milieuIntervalle;
+            }
+
+            // Conserve la moitié de l'intervalle contenant l'unique racine.
+            if (this.compterRacinesIntervalle(debutIntervalle, milieuIntervalle) == 1) {
+                finIntervalle = milieuIntervalle;
+            } else {
+                debutIntervalle = milieuIntervalle;
+            }
+        }
+
+        // Retourne le centre de l'intervalle final comme approximation.
+        return debutIntervalle + (finIntervalle - debutIntervalle) / 2.0;
+    }
+    
+    /**
      * Retourne une représentation textuelle du polynôme.
      * Les monômes sont affichés sous une forme algébrique
      * lisible, par exemple : "2.0x^5 + 4.0x^3 - 5.0".
