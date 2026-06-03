@@ -2,7 +2,7 @@
  * PolynomeTest.java                                        13 avril 2026
  * IUT de Rodez, Info1 2025-2026, pas de copyright
  */
-package polynome;
+package iut.info1.polynome.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -13,6 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import iut.info1.polynome.Polynome;
 
 /**
  * Test des méthodes de Polynome.java.

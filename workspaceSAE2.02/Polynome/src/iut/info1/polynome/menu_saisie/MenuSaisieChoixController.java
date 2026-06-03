@@ -1,8 +1,8 @@
-package polynome.menu_saisie;
+package iut.info1.polynome.menu_saisie;
 
+import iut.info1.polynome.MainApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import polynome.MainApp;
 
 public class MenuSaisieChoixController {
 

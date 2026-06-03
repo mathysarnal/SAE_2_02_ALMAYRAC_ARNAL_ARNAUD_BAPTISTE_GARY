@@ -2,7 +2,7 @@
  * Polynome.java                                            13 avril 2026
  * IUT de Rodez, Info1 2025-2026, pas de copyright
  */
-package polynome;
+package iut.info1.polynome;
 
 /**
  * Représente un polynôme à une variable réelle (x).

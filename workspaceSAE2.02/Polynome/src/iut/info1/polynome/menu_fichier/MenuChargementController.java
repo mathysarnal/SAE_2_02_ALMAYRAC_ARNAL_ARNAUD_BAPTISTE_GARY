@@ -1,13 +1,14 @@
-package polynome.menu_fichier;
+package iut.info1.polynome.menu_fichier;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
-import polynome.MainApp;
-import polynome.PolynomeIo;
-import polynome.Polynome;
 
 import java.io.File;
+
+import iut.info1.polynome.MainApp;
+import iut.info1.polynome.Polynome;
+import iut.info1.polynome.PolynomeIo;
 
 public class MenuChargementController {
 

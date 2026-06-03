@@ -1,4 +1,4 @@
-package polynome;
+package iut.info1.polynome;
 
 import java.io.BufferedReader;
 import java.io.File;

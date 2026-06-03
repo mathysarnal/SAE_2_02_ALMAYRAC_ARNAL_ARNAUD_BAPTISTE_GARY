@@ -1,15 +1,16 @@
-package polynome.menu_operations;
+package iut.info1.polynome.menu_operations;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import polynome.MainApp;
-import polynome.Polynome;
-import polynome.PolynomeIo;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+
+import iut.info1.polynome.MainApp;
+import iut.info1.polynome.Polynome;
+import iut.info1.polynome.PolynomeIo;
 
 public class MenuOperationsController {
 

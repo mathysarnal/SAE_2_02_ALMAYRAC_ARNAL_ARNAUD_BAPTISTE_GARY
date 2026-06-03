@@ -1,11 +1,13 @@
-package polynome.menu_saisie;
+package iut.info1.polynome.menu_saisie;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import polynome.MainApp;
-import polynome.Polynome;
+
 import java.util.ArrayList;
+
+import iut.info1.polynome.MainApp;
+import iut.info1.polynome.Polynome;
 
 public class SaisieDirecteController {
 

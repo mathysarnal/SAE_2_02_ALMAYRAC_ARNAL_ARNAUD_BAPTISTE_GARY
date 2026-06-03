@@ -9,7 +9,7 @@
 
 <VBox xmlns="http://javafx.com/javafx/25.0.2"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="polynome.menu_operations.MenuOperationsController"
+      fx:controller="iut.info1.polynome.menu_operations.MenuOperationsController"
       spacing="15">
 
     <padding>

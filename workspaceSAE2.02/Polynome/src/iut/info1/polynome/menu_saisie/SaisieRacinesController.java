@@ -1,9 +1,9 @@
-package polynome.menu_saisie;
+package iut.info1.polynome.menu_saisie;
 
+import iut.info1.polynome.MainApp;
+import iut.info1.polynome.Polynome;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import polynome.MainApp;
-import polynome.Polynome;
 
 public class SaisieRacinesController {
 
