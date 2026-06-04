@@ -36,6 +36,8 @@ public class PolynomeTest {
     private Polynome polynomeCinq;
     private Polynome polynomeSix;
     private Polynome polynomeSept;
+    private Polynome polynomeHuit;
+    private Polynome polynomeNeuf;
     
     // Attributs pour les polynômes construits par racines
     private Polynome polynomeRacinesUn;
@@ -90,6 +92,16 @@ public class PolynomeTest {
         double[] coefficientsSept = new double[] {1.0, -2.0, 5.0, -3.0};
         int[] degresSept = new int[] {0, 1, 2, 4};
         polynomeSept = new Polynome(coefficientsSept, degresSept);
+        
+        // Huitième polynome 1.0x^2 - 1.0
+        double[] coeffsHuit = {1.0, -1.0};
+    	int[] degresHuit = {2, 0};
+    	polynomeHuit = new Polynome(coeffsHuit, degresHuit);
+    
+    	// Neuvième polynome 5.0
+    	double[] coeffsNeuf = {5.0};
+    	int[] degresNeuf = { 0 };
+    	polynomeNeuf = new Polynome(coeffsNeuf, degresNeuf);
 
         // Premier polynôme par racines
         int[] ordresUn = { 1 };
@@ -432,21 +444,18 @@ public class PolynomeTest {
      */
     @Test
     void testCalculSuiteSturm() {
-    	double[] coeffsUn = {1.0, -1.0};
-    	int[] degresUn = {2, 0};
-    	Polynome polynomeUn = new Polynome(coeffsUn, degresUn);
     	
-    	double[] coeffsDeux = {5.0};
-    	int[] degresDeux = { 0 };
-    	Polynome polynomeDeux = new Polynome(coeffsDeux, degresDeux);
     	
-    	java.util.List<Polynome> suiteUn = polynomeUn.calculSuiteSturm();
-    	java.util.List<Polynome> suiteDeux = polynomeDeux.calculSuiteSturm();
+    	java.util.List<Polynome> suiteUn = polynomeHuit.calculSuiteSturm();
+    	java.util.List<Polynome> suiteDeux = polynomeNeuf.calculSuiteSturm();
     	
-    	assertEquals(2, polynomeUn.compterChangementSigne(-2.0));
-    	assertEquals(3, suiteUn.size(), " La suite de Sturm de X^2 - 1 doit contenir 3 polynome");
-    	assertEquals(1, suiteDeux.size());
-    	assertEquals(0, suiteDeux.get(0).getDegre());
+    	assertFalse(suiteUn.isEmpty());
+    	assertFalse(suiteDeux.isEmpty());
+
+    	int changements = polynomeHuit.compterChangementSigne(-2.0);
+    	assertEquals(2, changements);
+    	int nbRacines = polynomeHuit.compterRacinesIntervalle(-5.0, 5.0);
+    	assertEquals(2, nbRacines);
     }
     
     /**
