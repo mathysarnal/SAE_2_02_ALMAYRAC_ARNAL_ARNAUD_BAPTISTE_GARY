@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+
+<VBox xmlns="http://javafx.com/javafx/25.0.2"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="iut.info1.polynome.menu_saisie.SaisieRacinesController"
+      spacing="20">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Saisie par racines" style="-fx-font-size: 18px;"/>
+
+    <Label text="Racines (séparées par des espaces)"/>
+    <TextField fx:id="champRacines" promptText="ex: 1 2 -3"/>
+
+    <Label text="Coefficient directeur"/>
+    <TextField fx:id="champA" promptText="ex: 1"/>
+
+    <Button text="Valider" onAction="#valider"/>
+    <Button text="Retour" onAction="#retour"/>
+
+</VBox>
