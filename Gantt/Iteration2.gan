@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="ProjetSAE - Itération 2" company="IUT de Rodez" webLink="http://" view-date="2026-04-27" view-index="0" gantt-divider-location="348" resource-divider-location="300" version="3.3.3322" locale="fr_FR">
+    <description/>
+    <view zooming-state="default:5" id="gantt-chart">
+        <field id="tpd3" name="Nom" width="189" order="0"/>
+        <field id="tpd4" name="Date de début" width="58" order="1"/>
+        <field id="tpd5" name="Date de fin" width="58" order="2"/>
+        <field id="tpd7" name="Avancée" width="42" order="3"/>
+        <option id="filter.completedTasks" value="false"/>
+        <option id="filter.dueTodayTasks" value="false"/>
+        <option id="filter.overdueTasks" value="false"/>
+        <option id="filter.inProgressTodayTasks" value="false"/>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Nom" width="210" order="0"/>
+        <field id="1" name="Rôle par défaut" width="86" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="35" uid="eee52d26fcf64732b12532ac2413fe14" name="Plan projet / Gestion de Projet" meeting="false" start="2026-04-27" duration="18" complete="80" expand="true"/>
+        <task id="36" uid="c8bda0aeb24e41a5a56d97413817959f" name="Dossier technique" meeting="false" start="2026-04-27" duration="18" complete="60" expand="true"/>
+        <task id="24" uid="3ea7b31b6ae74d26abc119e4960d1810" name="Développement" meeting="false" start="2026-04-27" duration="18" complete="100" expand="true">
+            <task id="25" uid="2cbb986b21b4473ca8f19b6b40aae582" name="Opérations Arithmétiques" meeting="false" start="2026-04-27" duration="6" complete="100" expand="true"/>
+            <task id="29" uid="0385bb2b7ed4441ba59f1608a9b182ac" name="Limites" meeting="false" start="2026-04-27" duration="6" complete="100" expand="true"/>
+            <task id="33" uid="364803aeb3804c11a8fad63b7fcb3625" name="Division" meeting="false" start="2026-05-04" duration="6" complete="100" expand="true"/>
+            <task id="34" uid="3bb72a7fc94548cabc86bff801e10024" name="Dériver, Integrer, moyenne" meeting="false" start="2026-05-04" duration="6" complete="100" expand="true"/>
+            <task id="37" uid="3c02e63c6ba44831a666f52e00a280d4" name="Réalisations des getters" meeting="false" start="2026-05-11" duration="8" complete="100" expand="true"/>
+            <task id="38" uid="158a5257dbad4f34b9a239dbf771657a" name="Racines et premier prototype" meeting="false" start="2026-05-11" duration="8" complete="100" expand="true"/>
+        </task>
+        <task id="17" uid="089044a93a004e2abed9389934da4cfc" name="Fin itérations 2" color="#000000" meeting="true" start="2026-05-20" duration="0" complete="100" expand="true"/>
+    </tasks>
+    <resources>
+        <resource id="0" name="Julie" function="4" contacts="" phone=""/>
+        <resource id="1" name="Léo" function="3" contacts="" phone=""/>
+        <resource id="2" name="Félix" function="4" contacts="" phone=""/>
+        <resource id="3" name="Mathys" function="2" contacts="" phone=""/>
+        <resource id="4" name="Franck" function="1" contacts="" phone=""/>
+    </resources>
+    <allocations>
+        <allocation task-id="25" resource-id="0" function="4" responsible="true" load="60.0"/>
+        <allocation task-id="33" resource-id="0" function="2" responsible="true" load="25.0"/>
+        <allocation task-id="35" resource-id="0" function="4" responsible="true" load="20.0"/>
+        <allocation task-id="34" resource-id="0" function="4" responsible="true" load="35.0"/>
+        <allocation task-id="37" resource-id="0" function="4" responsible="true" load="60.0"/>
+        <allocation task-id="36" resource-id="0" function="4" responsible="true" load="20.0"/>
+        <allocation task-id="25" resource-id="1" function="3" responsible="true" load="60.0"/>
+        <allocation task-id="33" resource-id="1" function="1" responsible="true" load="25.0"/>
+        <allocation task-id="35" resource-id="1" function="3" responsible="false" load="20.0"/>
+        <allocation task-id="34" resource-id="1" function="3" responsible="true" load="35.0"/>
+        <allocation task-id="36" resource-id="1" function="3" responsible="true" load="20.0"/>
+        <allocation task-id="38" resource-id="1" function="3" responsible="false" load="60.0"/>
+        <allocation task-id="29" resource-id="2" function="4" responsible="true" load="60.0"/>
+        <allocation task-id="35" resource-id="2" function="4" responsible="false" load="20.0"/>
+        <allocation task-id="34" resource-id="2" function="4" responsible="false" load="60.0"/>
+        <allocation task-id="37" resource-id="2" function="4" responsible="false" load="60.0"/>
+        <allocation task-id="36" resource-id="2" function="4" responsible="true" load="20.0"/>
+        <allocation task-id="25" resource-id="3" function="2" responsible="true" load="60.0"/>
+        <allocation task-id="33" resource-id="3" function="4" responsible="true" load="60.0"/>
+        <allocation task-id="35" resource-id="3" function="2" responsible="false" load="20.0"/>
+        <allocation task-id="36" resource-id="3" function="2" responsible="true" load="20.0"/>
+        <allocation task-id="38" resource-id="3" function="2" responsible="true" load="60.0"/>
+        <allocation task-id="25" resource-id="4" function="1" responsible="true" load="30.0"/>
+        <allocation task-id="35" resource-id="4" function="1" responsible="false" load="20.0"/>
+        <allocation task-id="34" resource-id="4" function="3" responsible="false" load="60.0"/>
+        <allocation task-id="37" resource-id="4" function="1" responsible="false" load="60.0"/>
+        <allocation task-id="36" resource-id="4" function="1" responsible="true" load="20.0"/>
+        <allocation task-id="29" resource-id="4" function="1" responsible="false" load="30.0"/>
+    </allocations>
+    <vacations>
+        <vacation start="2026-04-20" end="2026-04-27" resourceid="0"/>
+        <vacation start="2026-04-20" end="2026-04-27" resourceid="1"/>
+        <vacation start="2026-04-20" end="2026-04-27" resourceid="2"/>
+        <vacation start="2026-04-20" end="2026-04-27" resourceid="3"/>
+        <vacation start="2026-04-20" end="2026-04-27" resourceid="4"/>
+    </vacations>
+    <previous/>
+    <roles roleset-name="Default"/>
+    <roles>
+        <role id="1" name="Chef de Projet"/>
+        <role id="2" name="Secrétaire"/>
+        <role id="3" name="Gestionnaire de Configurations"/>
+        <role id="4" name="Equipier"/>
+    </roles>
+</project>
